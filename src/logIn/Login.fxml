@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.control.PasswordField?>
+<VBox fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logIn.LoginController">
+   <children>
+      <HBox style="-fx-background-color: #e8e9f1;">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+         </children>
+      </HBox>
+      <HBox VBox.vgrow="ALWAYS">
+         <children>
+            <VBox prefHeight="710.0" prefWidth="378.0" style="-fx-background-color: #151a23;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #ffffff; -fx-font-size: 24px;" text="DC2">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="333.0" prefWidth="316.0" VBox.vgrow="ALWAYS">
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                     <children>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 24px;" text="Welcome">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18px; -fx-fill: #595d61;" text="Haven't made an account?">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #595d61;" text="bkajslfkjlasjdflkjals lakjsasasjdlfklaksjdflakj lsdkjflak jsldfkjlajsdlfkasddfaklsjdfkajs ldfjklkasjdflkja lsdjflklasjlkfjalskdjflkjas ldfkj alsjdlfasdflfkjalksjdflja lskd falksjdlfkjalksjdfl asd" wrappingWidth="425.22259521484375">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <HBox alignment="CENTER_RIGHT" VBox.vgrow="NEVER">
+                           <children>
+                              <Button fx:id="btnRegister" mnemonicParsing="false" onMouseClicked="#registerUser" style="-fx-background-color: #58C6B3; -fx-text-fill: #ffffff; -fx-background-radius: 0px;" text="Register">
+                                 <HBox.margin>
+                                    <Insets right="40.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <AnchorPane prefHeight="367.0" prefWidth="525.0" style="-fx-background-color: #004C4C#004C4C;">
+                     <children>
+                        <Text fill="WHITE" layoutX="176.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 24px;" text="You won't get the full functionality of this app though!" wrappingWidth="367.28607177734375" />
+                        <Button fx:id="btnGuestLogIn" layoutX="245.0" layoutY="76.0" mnemonicParsing="false" onMouseClicked="#logInAsGuest" prefHeight="54.0" prefWidth="173.0" style="-fx-background-color: ffffff; -fx-text-fill: #151a23; -fx-background-radius-fx-background-radius: 0px;" text="Log in as Guest" AnchorPane.bottomAnchor="203.0" AnchorPane.leftAnchor="245.0" AnchorPane.rightAnchor="255.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="427.0" prefWidth="381.0" style="-fx-background-color: #58C6B3;" HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 24px; -fx-fill: #ffffff;" text="Login to DC2">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextField fx:id="txtUsername" maxHeight="300.0" maxWidth="300.0" promptText="username" style="-fx-background-color: transparent; -fx-border-width: 0 0 2px 0; -fx-border-color: white; -fx-text-fill: white;">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </TextField>
+                  <PasswordField fx:id="txtPassword" maxHeight="300.0" maxWidth="300.0" promptText="password" style="-fx-background-color: transparent; -fx-border-width: 0 0 2px 0; -fx-border-color: white; -fx-text-fill: white;">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </PasswordField>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Button fx:id="btnLogIn" mnemonicParsing="false" onMouseClicked="#logInUser" style="-fx-background-color: white; -fx-text-fill: #58C6B3; -fx-background-radius: 0px;" text="Login Here" />
+                        <Text fx:id="lblForgot" onMouseClicked="#forgotPassword" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: white;" text="Forgot password">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

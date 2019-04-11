@@ -1,0 +1,157 @@
+
+#albumArt{
+    -fx-background-color: #2489CC;
+}
+#albumCoverButton{
+    -fx-background-color: #2489CC;
+    -fx-border-color: #CC2524;
+    -fx-border-width: 10px;
+}
+#backButton{
+    -fx-background-color: #CC2524;
+    -fx-text-fill: #FF6E53;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Futura' ;
+    -fx-background-radius: 5em;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+    -fx-border-width: 4px;
+    -fx-border-radius: 50px;
+    -fx-border-color: #2489CC ;
+    -fx-effect: dropshadow(three-pass-box, #274152, 4, 0.10, 0, 3);
+}
+#forwardButton{
+    -fx-background-color: #CC2524;
+    -fx-text-fill: #FF6E53;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Futura' ;
+    -fx-background-radius: 5em;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+    -fx-border-width: 4px;
+    -fx-border-radius: 50px;
+    -fx-border-color: #2489CC ;
+    -fx-effect: dropshadow(three-pass-box, #274152, 4, 0.10, 0, 3);
+}
+#pauseButton{
+    -fx-background-color: #FF6E53;
+    -fx-text-fill: #CC2524;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Futura' ;
+    -fx-background-radius: 5em;
+    -fx-min-width: 65px;
+    -fx-min-height: 65px;
+    -fx-max-width: 65px;
+    -fx-max-height: 65px;
+    -fx-border-width: 4px;
+    -fx-border-radius: 65px;
+    -fx-border-color: #2489CC ;
+    -fx-effect: dropshadow(three-pass-box, #274152, 4, 0.10, 0, 3);
+}
+#playButton{
+    -fx-background-color: #FF6E53;
+    -fx-text-fill: #CC2524;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Futura' ;
+    -fx-background-radius: 5em;
+    -fx-min-width: 65px;
+    -fx-min-height: 65px;
+    -fx-max-width: 65px;
+    -fx-max-height: 65px;
+    -fx-border-width: 4px;
+    -fx-border-radius: 65px;
+    -fx-border-color: #2489CC ;
+    -fx-effect: dropshadow(three-pass-box, #274152, 4, 0.10, 0, 3);
+}
+#timeLabel{
+    -fx-text-fill: #14FFDF;
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
+    -fx-font-family: 'Futura' ;
+    -fx-border-width: 4px ;
+    -fx-border-color: #FF6E53 ;
+
+}
+#mediaPlayerPane{
+    -fx-background-color: #497999;
+}
+#panePane{
+    -fx-background-color: #497999;
+}
+#backback{
+    -fx-background-color: #CC2524;
+    -fx-text-fill: #FF6E53;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Futura' ;
+    -fx-background-radius: 5em;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+    -fx-border-width: 4px;
+    -fx-border-radius: 50px;
+    -fx-border-color: #2489CC ;
+    -fx-effect: dropshadow(three-pass-box, #274152, 4, 0.10, 0, 3);
+}
+#forfor{
+    -fx-background-color: #CC2524;
+    -fx-text-fill: #FF6E53;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Futura' ;
+    -fx-background-radius: 5em;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+    -fx-border-width: 4px;
+    -fx-border-radius: 50px;
+    -fx-border-color: #2489CC ;
+    -fx-effect: dropshadow(three-pass-box, #274152, 4, 0.10, 0, 3);
+}
+
+#repeatSong{
+    -fx-background-color: #FF6E53;
+    -fx-text-fill: #CC2524;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Futura' ;
+    -fx-background-radius: 5em;
+    -fx-min-width: 65px;
+    -fx-min-height: 65px;
+    -fx-max-width: 65px;
+    -fx-max-height: 65px;
+    -fx-border-width: 4px;
+    -fx-border-radius: 65px;
+    -fx-border-color: #14FFDF ;
+    -fx-effect: dropshadow(three-pass-box, #274152, 4, 0.10, 0, 3);
+}
+
+#shuffleSongs{
+    -fx-background-color: #FF6E53;
+    -fx-text-fill: #CC2524;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Futura' ;
+    -fx-background-radius: 5em;
+    -fx-min-width: 65px;
+    -fx-min-height: 65px;
+    -fx-max-width: 65px;
+    -fx-max-height: 65px;
+    -fx-border-width: 4px;
+    -fx-border-radius: 65px;
+    -fx-border-color: #14FFDF ;
+    -fx-effect: dropshadow(three-pass-box, #274152, 4, 0.10, 0, 3);
+}
+.root{
+    -fx-background-color: #274152;
+}

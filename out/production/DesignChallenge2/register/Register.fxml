@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="register.RegisterController">
+   <children>
+      <HBox style="-fx-background-color: #e8e9f1;">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+         </children>
+      </HBox>
+      <HBox VBox.vgrow="ALWAYS">
+         <children>
+            <VBox prefHeight="710.0" prefWidth="378.0" style="-fx-background-color: #151a23;" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #ffffff; -fx-font-size: 24px;" text="DC2">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <AnchorPane prefHeight="453.0" prefWidth="1287.0">
+                     <children>
+                        <FlowPane layoutX="355.0" layoutY="48.0" prefHeight="312.0" prefWidth="580.0" style="-fx-background-color: ffffff;">
+                           <children>
+                              <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="580.0">
+                                 <children>
+                                    <Label layoutX="224.0" layoutY="23.0" text="Account Registration" />
+                                 </children></Pane>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <Label layoutX="70.0" layoutY="46.0" text="Username" AnchorPane.leftAnchor="71.0" />
+                                    <Label layoutX="71.0" layoutY="121.0" text="Password" AnchorPane.leftAnchor="71.0" />
+                                 </children>
+                              </AnchorPane>
+                              <VBox alignment="CENTER_LEFT" prefHeight="176.0" prefWidth="337.0">
+                                 <children>
+                                    <TextField fx:id="txtUsername" />
+                                    <Label fx:id="lblUserMin" text="*Usernames should have a minimum of 3 characters" />
+                                    <Pane prefHeight="27.0" prefWidth="337.0" />
+                                    <TextField fx:id="txtPassword" prefHeight="27.0" prefWidth="296.0" />
+                                    <Label fx:id="lblPassMin" text="*Passwords should have a minimum of 8 characters" />
+                                 </children>
+                              </VBox>
+                              <Pane prefHeight="35.0" prefWidth="349.0">
+                                 <children>
+                                    <CheckBox fx:id="checkArtist" layoutX="71.0" layoutY="8.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="I am an artist" />
+                                 </children></Pane>
+                              <Button fx:id="btnRegister" mnemonicParsing="false" onMouseClicked="#registerUser" prefHeight="27.0" prefWidth="189.0" text="Register" />
+                           </children>
+                        </FlowPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="172.0" prefWidth="1280.0" style="-fx-background-color: #004C4C;">
+                     <children>
+                        <Text fill="WHITE" layoutX="248.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 24px;" text="You won't get the full functionality of this app though!" wrappingWidth="888.5662841796875" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="148.0" AnchorPane.topAnchor="100.0" />
+                        <Button fx:id="btnGuestLogIn" layoutX="299.0" layoutY="88.0" mnemonicParsing="false" onMouseClicked="#logInAsGuest" prefHeight="54.0" prefWidth="173.0" style="-fx-background-color: ffffff; -fx-text-fill: #151a23 #151a23; -fx-background-radius-fx-background-radius: 0px;" text="Log in as Guest" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="40.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>
