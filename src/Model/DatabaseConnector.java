@@ -87,35 +87,34 @@ public class DatabaseConnector {
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
-                    "NATURAL LEFT JOIN Genres\n" +
-                    "NATURAL LEFT JOIN Artists\n";
+                    "NATURAL LEFT JOIN Genres\n" ;
+//                    "NATURAL LEFT JOIN Artists\n";
             selectAllSongs = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
-                    "NATURAL LEFT JOIN Artists\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE song_id = ?";
             selectSongFromId = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
-                    "NATURAL LEFT JOIN Artists\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE album_id = ?";
             selectSongsWithAlbumId = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
-                    "NATURAL LEFT JOIN Artists\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE artist_id = ?";
             selectSongsWithArtistId = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
-                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE genre_id = ?";
             selectSongsWithGenreId = connection.prepareStatement(stmt);
 
@@ -123,7 +122,7 @@ public class DatabaseConnector {
                     "NATURAL LEFT JOIN Playlist_Songs\n" +
                     "NATURAL LEFT JOIN Songs\n" +
                     "LEFT JOIN Albums using(album_id)\n" +
-                    "NATURAL LEFT JOIN Artists\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
                     "NATURAL LEFT JOIN Genres\n" +
                     "WHERE playlist_id = ? AND user_id = ?";
             selectSongsWithPlaylistId = connection.prepareStatement(stmt);
@@ -131,14 +130,14 @@ public class DatabaseConnector {
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
-                    "NATURAL LEFT JOIN Artists\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE user_id = ?";
             selectSongsWithUserId = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums \n" +
                     "NATURAL LEFT JOIN Genres \n" +
-                    "NATURAL LEFT JOIN Artists \n" +
+//                    "NATURAL LEFT JOIN Artists \n" +
                     "WHERE year = ?";
             selectSongsWithYear = connection.prepareStatement(stmt);
 
@@ -154,7 +153,7 @@ public class DatabaseConnector {
 
             stmt = "SELECT DISTINCT * FROM Songs\n" +
                     "NATURAL LEFT JOIN Genres\n" +
-                    "NATURAL LEFT JOIN Artists\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Times_played\n" +
                     "WHERE user_id = ?\n" +
@@ -180,10 +179,10 @@ public class DatabaseConnector {
             stmt = "INSERT INTO Songs (song_name, genre_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?)";
             insertSongWGenreAlbum = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, artist_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name,  album_id, song_path, user_id) VALUES (?, ?, ?, ?)";
             insertSongWArtistAlbum = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, genre_id, artist_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?,?)";
+            stmt = "INSERT INTO Songs (song_name, genre_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?)";
             insertSongWGenreArtistAlbum = connection.prepareStatement(stmt);
 
             stmt = "INSERT INTO Playlists (title, user_id) VALUES (?, ?)";
@@ -226,10 +225,10 @@ public class DatabaseConnector {
             stmt = "INSERT INTO Songs (song_name, genre_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)";
             insertSongWGenreAlbumBlob = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, artist_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?)";
             insertSongWArtistAlbumBlob = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, genre_id, artist_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, genre_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)";
             insertSongWGenreArtistAlbumBlob = connection.prepareStatement(stmt);
 
 
@@ -239,7 +238,7 @@ public class DatabaseConnector {
             stmt = "SELECT song_id FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
-                    "NATURAL LEFT JOIN Artists\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE song_name = %?%"  ;
             selectIDFromSongName = connection.prepareStatement(stmt);
 
@@ -395,19 +394,19 @@ public class DatabaseConnector {
         }
     }
 
-    public void createArtist (String artist_name) {
-        System.out.println("createArtist(" + artist_name +")");
-        String stmt = "INSERT INTO Artists (artist_name) VALUES (?);";
-        try {
-            PreparedStatement ps = connection.prepareStatement(stmt);
-            ps.setString(1, artist_name);
-            boolean success = ps.execute();
-            System.out.println(success);
-        } catch (SQLException se) {
-            System.out.println("fail");
-            se.printStackTrace();
-        }
-    }
+//    public void createArtist (String artist_name) {
+//        System.out.println("createArtist(" + artist_name +")");
+//        String stmt = "INSERT INTO Artists (artist_name) VALUES (?);";
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(stmt);
+//            ps.setString(1, artist_name);
+//            boolean success = ps.execute();
+//            System.out.println(success);
+//        } catch (SQLException se) {
+//            System.out.println("fail");
+//            se.printStackTrace();
+//        }
+//    }
 
     public void createAlbum (String album_name, String img_path, int year) {
         String stmt = "INSERT INTO Albums (album_name, img_path, year) VALUES (?, ?, ?)";
@@ -495,28 +494,28 @@ public class DatabaseConnector {
         }
     }
 
-    public void createSongWArtistAlbum (String song_name, String song_path, int artist_id, int album_id, int user_id) {
+    public void createSongWArtistAlbum (String song_name, String song_path, int album_id, int user_id) {
         try {
             insertSongWArtistAlbum.setString(1, song_name);
             insertSongWArtistAlbum.setString(2, song_path);
-            insertSongWArtistAlbum.setInt(3, artist_id);
-            insertSongWArtistAlbum.setInt(4, album_id);
-            insertSongWArtistAlbum.setInt(5, user_id);
+
+            insertSongWArtistAlbum.setInt(3, album_id);
+            insertSongWArtistAlbum.setInt(4, user_id);
             insertSongWArtistAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
         }
     }
 
-    public void createSongWGenreArtistAlbum (String song_name, String song_path, int genre_id, int artist_id, int album_id, int user_id) {
+    public void createSongWGenreArtistAlbum (String song_name, String song_path, int genre_id, int album_id, int user_id) {
         try { //INSERT INTO Songs (song_name, genre_id, artist_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?, ?)
 
             insertSongWGenreArtistAlbum.setString(1, song_name);
             insertSongWGenreArtistAlbum.setInt(2, genre_id);
-            insertSongWGenreArtistAlbum.setInt(3, artist_id);
-            insertSongWGenreArtistAlbum.setInt(4, album_id);
-            insertSongWGenreArtistAlbum.setString(5, song_path);
-            insertSongWGenreArtistAlbum.setInt(6, user_id);
+
+            insertSongWGenreArtistAlbum.setInt(3, album_id);
+            insertSongWGenreArtistAlbum.setString(4, song_path);
+            insertSongWGenreArtistAlbum.setInt(5, user_id);
             insertSongWGenreArtistAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -567,27 +566,27 @@ public class DatabaseConnector {
     }
 
 
-    public int getArtistIdFromName (String name) {
-        String stmt = "SELECT artist_id FROM Artists WHERE artist_name LIKE ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(stmt);
-            ps.setString(1, name);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return -1;
-    }
+//    public int getArtistIdFromName (String name) {
+//        String stmt = "SELECT artist_id FROM Artists WHERE artist_name LIKE ?";
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(stmt);
+//            ps.setString(1, name);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt(1);
+//            }
+//        } catch (SQLException se) {
+//            se.printStackTrace();
+//        }
+//        return -1;
+//    }
 
-    public int getAlbumIdFromNameYear (String name, int year) {
+    public int getAlbumIdFromNameYear (String name, int user_id) {
         String stmt = "SELECT album_id FROM Albums WHERE album_name LIKE ? AND year = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setString(1, name);
-            ps.setInt(2, year);
+            ps.setInt(2, user_id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
@@ -662,16 +661,16 @@ public class DatabaseConnector {
         return null;
     }
 
-    public ResultSet getArtistInfo () {
-        String stmt = "SELECT * FROM Artists";
-        try {
-            PreparedStatement ps = connection.prepareStatement(stmt);
-            return ps.executeQuery();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return null;
-    }
+//    public ResultSet getArtistInfo () {
+//        String stmt = "SELECT * FROM Artists";
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(stmt);
+//            return ps.executeQuery();
+//        } catch (SQLException se) {
+//            se.printStackTrace();
+//        }
+//        return null;
+//    }
 
     public ResultSet getArtistSongs (int artist_id) {
         try {
@@ -914,31 +913,30 @@ public class DatabaseConnector {
         }
     }
 
-    public void createSongWArtistAlbumBlob (String song_name, String song_path, int artist_id, int album_id,Blob song_blob, int user_id) {
+    public void createSongWArtistAlbumBlob (String song_name, String song_path, int album_id,Blob song_blob, int user_id) {
         try {//INSERT INTO Songs (song_name, artist_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)
 
             insertSongWArtistAlbumBlob.setString(1, song_name);
-            insertSongWArtistAlbumBlob.setString(4, song_path);
-            insertSongWArtistAlbumBlob.setInt(2, artist_id);
-            insertSongWArtistAlbumBlob.setInt(3, album_id);
-            insertSongWArtistAlbumBlob.setBlob(5, song_blob);
-            insertSongWArtistAlbumBlob.setInt(6, user_id);
+            insertSongWArtistAlbumBlob.setString(3, song_path);
+            insertSongWArtistAlbumBlob.setInt(2, album_id);
+            insertSongWArtistAlbumBlob.setBlob(4, song_blob);
+            insertSongWArtistAlbumBlob.setInt(5, user_id);
             insertSongWArtistAlbumBlob.execute();
         } catch (SQLException se) {
             se.printStackTrace();
         }
     }
 
-    public void createSongWGenreArtistAlbumBlob (String song_name, String song_path, int genre_id, int artist_id, int album_id, Blob song_blob, int user_id) {
+    public void createSongWGenreArtistAlbumBlob (String song_name, String song_path, int genre_id, int album_id, Blob song_blob, int user_id) {
         try {// INSERT INTO Songs (song_name, genre_id, artist_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)
 
             insertSongWGenreArtistAlbumBlob.setString(1, song_name);
             insertSongWGenreArtistAlbumBlob.setInt(2, genre_id);
-            insertSongWGenreArtistAlbumBlob.setInt(3, artist_id);
-            insertSongWGenreArtistAlbumBlob.setInt(4, album_id);
-            insertSongWGenreArtistAlbumBlob.setString(5, song_path);
-            insertSongWGenreArtistAlbumBlob.setBlob(6, song_blob);
-            insertSongWGenreArtistAlbumBlob.setInt(7, user_id);
+
+            insertSongWGenreArtistAlbumBlob.setInt(3, album_id);
+            insertSongWGenreArtistAlbumBlob.setString(4, song_path);
+            insertSongWGenreArtistAlbumBlob.setBlob(5, song_blob);
+            insertSongWGenreArtistAlbumBlob.setInt(6, user_id);
             insertSongWGenreArtistAlbumBlob.execute();
         } catch (SQLException se) {
             se.printStackTrace();
