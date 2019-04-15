@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import AddSong.Song;
 
+
 public class DatabaseConnector {
 
     private static DatabaseConnector instance = null;
@@ -35,11 +36,37 @@ public class DatabaseConnector {
     private PreparedStatement updateTimesPlayed;
     private PreparedStatement insertSongToTimesPlayed;
 
-    private DatabaseConnector() {
+
+
+//UPDATE
+    private PreparedStatement insertBlob;
+    private PreparedStatement insertSongWBlob;
+    private PreparedStatement insertSongWAlbumBlob;
+    private PreparedStatement insertSongWArtistBlob;
+    private PreparedStatement insertSongWGenreBlob;
+    private PreparedStatement insertSongWGenreArtistBlob;
+    private PreparedStatement insertSongWGenreAlbumBlob;
+    private PreparedStatement insertSongWArtistAlbumBlob;
+    private PreparedStatement insertSongWGenreArtistAlbumBlob;
+//    private PreparedStatement selectSongBlob;
+    private PreparedStatement insertBlobToSong;
+    private PreparedStatement selectIDFromSongName;
+    private PreparedStatement deleteSongWID;
+    private PreparedStatement deleteAlbumWID;
+    private PreparedStatement removeSongInPlaylist;
+    private PreparedStatement removeSongInAlbum;
+    private PreparedStatement deletePlaylistWID;
+    private PreparedStatement updatePublish;
+    private PreparedStatement isSongPublic;
+
+
+
+    public DatabaseConnector() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/musicplayerudc?autoReconnect=true&useSSL=false",
-                    "despa2", "#str3ssp4");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306//musicplayerudc?autoReconnect=true&useSSL=false",
+                    "root", "qwe123");
+
             prepareStatements();
         } catch (Exception se) {
             se.printStackTrace();
@@ -119,6 +146,12 @@ public class DatabaseConnector {
                     "ORDER BY year desc";
             selectDistinctYears = connection.prepareStatement(stmt);
 
+            stmt = "SELECT * FROM songs \n" +
+                    "INNER join albums\n" +
+                    "on songs.album_id = albums.album_id\n" +
+                    "WHERE albums.publish =1";
+            isSongPublic=connection.prepareStatement(stmt);
+
             stmt = "SELECT DISTINCT * FROM Songs\n" +
                     "NATURAL LEFT JOIN Genres\n" +
                     "NATURAL LEFT JOIN Artists\n" +
@@ -150,7 +183,7 @@ public class DatabaseConnector {
             stmt = "INSERT INTO Songs (song_name, artist_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?)";
             insertSongWArtistAlbum = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, genre_id, artist_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, genre_id, artist_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?,?)";
             insertSongWGenreArtistAlbum = connection.prepareStatement(stmt);
 
             stmt = "INSERT INTO Playlists (title, user_id) VALUES (?, ?)";
@@ -168,9 +201,84 @@ public class DatabaseConnector {
 
             updateTimesPlayed = connection.prepareStatement(stmt);
 
-            stmt =  "INSERT INTO Times_played (song_id, user_id) VALUES (?, ?)";
+            stmt =  "INSERT INTO songs (song_id, user_id) VALUES (?, ?)";
 
             insertSongToTimesPlayed = connection.prepareStatement(stmt);
+
+
+ //Update
+
+            stmt = "INSERT INTO Songs (song_name, song_path, song_blob, user_id) VALUES (?, ?, ?, ?)";
+            insertSongWBlob = connection.prepareStatement(stmt);
+
+            stmt = "INSERT INTO Songs (song_name, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?)";
+            insertSongWAlbumBlob = connection.prepareStatement(stmt);
+
+            stmt = "INSERT INTO Songs (song_name, artist_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?)";
+            insertSongWArtistBlob = connection.prepareStatement(stmt);
+
+            stmt = "INSERT INTO Songs (song_name, genre_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?)";
+            insertSongWGenreBlob = connection.prepareStatement(stmt);
+
+            stmt = "INSERT INTO Songs (song_name, genre_id, artist_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+            insertSongWGenreArtistBlob = connection.prepareStatement(stmt);
+
+            stmt = "INSERT INTO Songs (song_name, genre_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+            insertSongWGenreAlbumBlob = connection.prepareStatement(stmt);
+
+            stmt = "INSERT INTO Songs (song_name, artist_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+            insertSongWArtistAlbumBlob = connection.prepareStatement(stmt);
+
+            stmt = "INSERT INTO Songs (song_name, genre_id, artist_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            insertSongWGenreArtistAlbumBlob = connection.prepareStatement(stmt);
+
+
+            stmt = "INSERT INTO Songs (song_name, song_blob, user_id) VALUES (?, ?, ?)";
+            insertBlob = connection.prepareStatement(stmt);
+
+            stmt = "SELECT song_id FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Artists\n" +
+                    "WHERE song_name = %?%"  ;
+            selectIDFromSongName = connection.prepareStatement(stmt);
+
+            stmt =  "INSERT INTO Times_played (song_id, user_id) VALUES (?, ?)";
+            insertSongToTimesPlayed = connection.prepareStatement(stmt);
+
+            stmt = "UPDATE Songs\n" +
+                    "SET song_blob = ?\n" +
+                    "WHERE song_id = ?\n";
+            insertBlobToSong= connection.prepareStatement(stmt);
+
+
+//DELETE/REMOVE
+
+
+            stmt = "DELETE FROM Songs WHERE songs_id=?";
+            deleteSongWID= connection.prepareStatement(stmt);
+
+            stmt = "DELETE FROM albums WHERE album_id=?";
+            deleteAlbumWID= connection.prepareStatement(stmt);
+
+            stmt ="DELETE FROM palylists WHERE song_id = ? AND user_id = ?";
+            removeSongInPlaylist=connection.prepareStatement(stmt);
+
+            stmt = "DELETE FROM song WHERE album_id =?";
+            removeSongInAlbum=connection.prepareStatement(stmt);
+
+            stmt = "DELETE FROM playlists WHERE playlist_id=?";
+            deletePlaylistWID = connection.prepareStatement(stmt);
+
+
+//   for publish
+            stmt = "UPDATE albums\n" +
+                    "SET  publish = ?\n" +
+                    "WHERE album_id = ?\n";
+
+            updatePublish = connection.prepareStatement(stmt);
+
+
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -274,13 +382,12 @@ public class DatabaseConnector {
         return null;
     }
 
-    public void createUser(String username, String password, Boolean isArtist) {
-        String stmt = "INSERT INTO Accounts (username, password, type) VALUES (?, ?, ?)";
+    public void createUser(String username, String password) {
+        String stmt = "INSERT INTO Accounts (username, password) VALUES (?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setString(1, username);
             ps.setString(2, password);
-            ps.setBoolean(3, isArtist);
             ps.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -402,6 +509,7 @@ public class DatabaseConnector {
 
     public void createSongWGenreArtistAlbum (String song_name, String song_path, int genre_id, int artist_id, int album_id, int user_id) {
         try { //INSERT INTO Songs (song_name, genre_id, artist_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?, ?)
+
             insertSongWGenreArtistAlbum.setString(1, song_name);
             insertSongWGenreArtistAlbum.setInt(2, genre_id);
             insertSongWGenreArtistAlbum.setInt(3, artist_id);
@@ -618,7 +726,7 @@ public class DatabaseConnector {
     }
 
 
-    public ResultSet getUserSongs (int user_id) {
+    public ResultSet getUserSongs (int user_id) { ///artists
         try {
             selectSongsWithUserId.setInt(1, user_id);
             ResultSet rs = selectSongsWithUserId.executeQuery();
@@ -673,6 +781,9 @@ public class DatabaseConnector {
         return -1;
     }
 
+
+
+
     public void updateTimesPlayed (int timesPlayed, int song_id, int user_id) {
         try {
             updateTimesPlayed.setInt(1, timesPlayed);
@@ -693,20 +804,386 @@ public class DatabaseConnector {
             se.printStackTrace();
         }
     }
+//Update
 
-    public boolean userIsArtist (int user_id) {
-        String stmt = "SELECT type FROM Accounts WHERE user_id = ?";
+
+public void addBlobToSong (Blob song_blob, int song_id) {
+    try {
+        insertBlobToSong.setBlob(1, song_blob);
+        insertBlobToSong.setInt(2, song_id);
+        insertBlobToSong.execute();
+    } catch (SQLException se) {
+        se.printStackTrace();
+    }
+}
+
+    public void createBlob (String song_name, Blob song_blob, int user_id) {
+        try {// "INSERT INTO Songs (song_name, song_blob, user_id) VALUES (?, ?, ?)
+
+            insertBlob.setString(1, song_name);
+            insertBlob.setBlob(2, song_blob);
+            insertBlob.setInt(3, user_id);
+            insertBlob.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void createSongWBlob (String song_name, String song_path,Blob song_blob, int user_id) {
+        try {//INSERT INTO Songs (song_name, song_path, song_blob, user_id) VALUES (?, ?, ?, ?)
+            insertSongWBlob.setString(1, song_name);
+            insertSongWBlob.setString(2, song_path);
+            insertSongWBlob.setBlob(3, song_blob);
+            insertSongWBlob.setInt(4, user_id);
+            insertSongWBlob.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void createSongWGenreBlob (String song_name, String song_path, int genre_id, Blob song_blob, int user_id) {
+        try {//INSERT INTO Songs (song_name, genre_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?)";
+
+
+            insertSongWGenreBlob.setString(1, song_name);
+            insertSongWGenreBlob.setString(3, song_path);
+            insertSongWGenreBlob.setInt(2, genre_id);
+            insertSongWGenreBlob.setBlob(4, song_blob);
+            insertSongWGenreBlob.setInt(5, user_id);
+            insertSongWGenreBlob.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void createSongWArtist (String song_name, String song_path, int artist_id, Blob song_blob,int user_id) {
+        try {
+            // INSERT INTO Songs (song_name, artist_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?)
+
+            insertSongWArtistBlob.setString(3, song_path);
+            insertSongWArtistBlob.setString(1, song_name);
+            insertSongWArtistBlob.setInt(3, artist_id);
+            insertSongWArtistBlob.setBlob(4, song_blob);
+            insertSongWArtistBlob.setInt(5, user_id);
+            insertSongWArtistBlob.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void createSongWAlbumBlob (String song_name, String song_path, int album_id,  Blob song_blob, int user_id) {
+        try {// INSERT INTO Songs (song_name, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?)
+
+
+            insertSongWAlbumBlob .setString(1, song_name);
+            insertSongWAlbumBlob .setString(3, song_path);
+            insertSongWAlbumBlob .setInt(2, album_id);
+            insertSongWAlbumBlob .setBlob(4, song_blob);
+            insertSongWAlbumBlob .setInt(5, user_id);
+            insertSongWAlbumBlob .execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void createSongWGenreAlbumBlob (String song_name, String song_path, int genre_id, int album_id,Blob song_blob, int user_id) {
+        try { //INSERT INTO Songs (song_name, genre_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)
+
+
+            insertSongWGenreAlbumBlob.setString(1, song_name);
+            insertSongWGenreAlbumBlob.setString(4, song_path);
+            insertSongWGenreAlbumBlob.setInt(2, genre_id);
+            insertSongWGenreAlbumBlob.setInt(3, album_id);
+            insertSongWGenreAlbumBlob.setBlob(5, song_blob);
+            insertSongWGenreAlbumBlob.setInt(6, user_id);
+            insertSongWGenreAlbumBlob.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void createSongWGenreArtistBlob (String song_name, String song_path, int genre_id, int artist_id, Blob song_blob, int user_id) {
+        try { //INSERT INTO Songs (song_name, genre_id, artist_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)
+
+            insertSongWGenreArtistBlob.setString(1, song_name);
+            insertSongWGenreArtistBlob.setString(4, song_path);
+            insertSongWGenreArtistBlob.setInt(2, genre_id);
+            insertSongWGenreArtistBlob.setInt(3, artist_id);
+            insertSongWGenreArtistBlob.setBlob(5, song_blob);
+            insertSongWGenreArtistBlob.setInt(6, user_id);
+            insertSongWGenreArtistBlob.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void createSongWArtistAlbumBlob (String song_name, String song_path, int artist_id, int album_id,Blob song_blob, int user_id) {
+        try {//INSERT INTO Songs (song_name, artist_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)
+
+            insertSongWArtistAlbumBlob.setString(1, song_name);
+            insertSongWArtistAlbumBlob.setString(4, song_path);
+            insertSongWArtistAlbumBlob.setInt(2, artist_id);
+            insertSongWArtistAlbumBlob.setInt(3, album_id);
+            insertSongWArtistAlbumBlob.setBlob(5, song_blob);
+            insertSongWArtistAlbumBlob.setInt(6, user_id);
+            insertSongWArtistAlbumBlob.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void createSongWGenreArtistAlbumBlob (String song_name, String song_path, int genre_id, int artist_id, int album_id, Blob song_blob, int user_id) {
+        try {// INSERT INTO Songs (song_name, genre_id, artist_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)
+
+            insertSongWGenreArtistAlbumBlob.setString(1, song_name);
+            insertSongWGenreArtistAlbumBlob.setInt(2, genre_id);
+            insertSongWGenreArtistAlbumBlob.setInt(3, artist_id);
+            insertSongWGenreArtistAlbumBlob.setInt(4, album_id);
+            insertSongWGenreArtistAlbumBlob.setString(5, song_path);
+            insertSongWGenreArtistAlbumBlob.setBlob(6, song_blob);
+            insertSongWGenreArtistAlbumBlob.setInt(7, user_id);
+            insertSongWGenreArtistAlbumBlob.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public Blob getSongBlob (Blob song_blob) {
+
+        String stmt = "SELECT song_blob FROM songs WHERE song_id LIKE ?";
         try {
             PreparedStatement ps = connection.prepareStatement(stmt);
-            ps.setInt(1, user_id);
+            ps.setBlob(1, song_blob);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getBoolean(1);
+                return rs.getBlob(1);
             }
         } catch (SQLException se) {
             se.printStackTrace();
         }
+
+        return null;
+    }
+
+//    public Song getIDFromSongname(String song_name) {
+//        Song song = null;
+//        try {
+//            selectIDFromSongName.setString(1, song_name);
+//            ResultSet rs = selectSongFromId.executeQuery();
+//            if (rs.next()) {
+//                song = new Song();
+//                song.setName(rs.getString(song_name));
+//            }
+//        } catch (SQLException se) {
+//            se.printStackTrace();
+//        }
+//        return song;
+//    }
+
+    public ResultSet getIDFromSongname () {
+        try {
+            return selectIDFromSongName.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+
+// FOR FAVORITE
+    public boolean SongIsSetFavorite(int user_id, int fave_id) {
+        String stmt = "SELECT * FROM favorite WHERE user_id = ? AND fave_id = ? AND fave_type = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, user_id);
+            ps.setInt(2, fave_id);
+            ps.setInt(3, 0);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
+}
+
+
+    public boolean PlaylistIsSetFavorite(int user_id, int fave_id) {
+        String stmt = "SELECT * FROM favorite WHERE user_id = ? AND fave_id = ? AND fave_type = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, user_id);
+            ps.setInt(2, fave_id);
+            ps.setInt(3, 1);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void songIsFavorite (int user_id, int fave_id){
+        String stmt =  "INSERT INTO favorite(fave_userid, fave_id,fave_type) VALUES (?, ?, ?)";;
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,user_id);
+            ps.setInt(2,fave_id);
+            ps.setInt(3,0);
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void playlistIsFavorite (int user_id, int fave_id){
+        String stmt =  "INSERT INTO favorite(fave_userid, fave_id,fave_type) VALUES (?, ?, ?)";;
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,user_id);
+            ps.setInt(2,fave_id);
+            ps.setInt(3,1);
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeIsFavoriteSong (int user_id, int fave_id){
+        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";;
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,user_id);
+            ps.setInt(2,fave_id);
+            ps.setInt(3,0);
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeIsFavoritePlaylist (int user_id, int fave_id){
+        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";;
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,user_id);
+            ps.setInt(2,fave_id);
+            ps.setInt(3,1);
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+// END OF FAVORITE
+
+
+    public void DeleteSong (int song_id) {
+        try {
+            deleteSongWID.setInt(1, song_id);
+            deleteSongWID.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void DeleteAlbum ( int album_id) {
+        try {
+            deleteAlbumWID.setInt(1, album_id);
+            deleteAlbumWID.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void DeletePlaylist(int playlist_id){
+        try{//"DELETE FROM playlists WHERE playlist_id=?"
+            deletePlaylistWID.setInt(1,playlist_id);
+            deletePlaylistWID.execute();
+        }catch(SQLException se){
+            se.printStackTrace();
+        }
+
+    }
+
+    public void deleteSongInPlaylist (int song_id, int user_id) {
+        try {// DELETE FROM palylists WHERE song_id = ? AND user_id = ?"
+            removeSongInPlaylist.setInt(1, song_id);
+            removeSongInPlaylist.setInt(2, user_id);
+            removeSongInPlaylist.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public void deleteSongInAlbum (int album_id) {
+        try {// "DELETE FROM song WHERE album_id =?";
+            removeSongInAlbum.setInt(1, album_id);
+            removeSongInAlbum.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+
+
+
+
+//pa check this part, not sure if tama or not
+
+//    check if album is empty if true we can delete it otherwise we can not
+    public boolean isAlbumEmpty(int album_id) {
+        String stmt = "SELECT COUNT(*) FROM songs WHERE album_id=?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, album_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.equals("0"))
+                return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+//    Publish
+
+
+
+    public void setUpdatePublish (Boolean publish, int album_id) {
+        try {
+            updatePublish.setBoolean(1, publish);
+            updatePublish.setInt(2, album_id);
+            updatePublish.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+//    public boolean isSongPublic(){
+//        String stmt = "SELECT * \n" +
+//                "FROM songs INNER join albums\n" +
+//                "on songs.album_id = albums.album_id\n" +
+//                "WHERE albums.publish =1";
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(stmt);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.equals("0"))
+//                return true;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
+
+    public ResultSet getPublicSongs () {
+        try {
+            return isSongPublic.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
     }
 
 }
