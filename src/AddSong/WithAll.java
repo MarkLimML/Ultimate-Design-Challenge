@@ -46,15 +46,15 @@ public class WithAll implements Metadata
         genre = song.getGenre();
 
         System.out.println(artist);
-        artist_id = dbc.getArtistIdFromName(artist);
-        System.out.println(artist_id);
-        album_id = dbc.getAlbumIdFromNameYear(album, year);
+//        artist_id = dbc.getArtistIdFromName(artist);
+//        System.out.println(artist_id);
+        album_id = dbc.getAlbumIdFromNameYear(album, user_id);
         genre_id = dbc.getGenreIdFromName(genre);
         System.out.println("if (artist_id == -1) {");
-        if (artist_id == -1) {
-            dbc.createArtist(artist);
-            artist_id = dbc.getArtistIdFromName(artist);
-        }
+//        if (artist_id == -1) {
+//            dbc.createArtist(artist);
+//            artist_id = dbc.getArtistIdFromName(artist);
+//        }
         System.out.println("if (album_id == -1) {");
         if (album_id == -1) {
             dbc.createAlbum(album, imgPath, year);
@@ -62,7 +62,7 @@ public class WithAll implements Metadata
         }
         System.out.println("dbc.createSongWGenreArtistAlbum(name, songPath, genre_id, artist_id, album_id);");
 
-        dbc.createSongWGenreArtistAlbum(name, songPath, genre_id, artist_id, album_id, user_id);
+        dbc.createSongWGenreArtistAlbum(name, songPath, genre_id, album_id, user_id);
     }
 
 }
