@@ -17,15 +17,15 @@ public class ConcreteMetadataFactory implements MetadataFactory
                 case "WithAlbumNGenre":
                     metadata = new WithAlbumNGenre();
                     break;
-                case "WithArtistNGenre":
-                    metadata = new WithArtistNGenre();
-                    break;
+//                case "WithArtistNGenre":
+//                    metadata = new WithArtistNGenre();
+//                    break;
                 case "WithAlbum":
                     metadata = new WithAlbum();
                     break;
-                case "WithArtist":
-                    metadata = new WithArtist();
-                    break;
+//                case "WithArtist":
+//                    metadata = new WithArtist();
+//                    break;
                 case "WithGenre":
                     metadata = new WithGenre();
                     break;
