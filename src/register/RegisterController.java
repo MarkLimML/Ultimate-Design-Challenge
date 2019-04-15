@@ -39,6 +39,7 @@ public class RegisterController extends ControllerAbstract {
     public void registerUser(MouseEvent mouseEvent) {
         String username, password;
         Boolean isArtist = checkArtist.isSelected();
+        invalidInput = false;
 
         username = txtUsername.getText().trim();
         password = txtPassword.getText();
