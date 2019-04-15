@@ -44,18 +44,18 @@ public class WithAlbumNArtist implements Metadata
         imgPath = song.getImgPath();
         songPath = song.getSongPath();
 
-        artist_id = dbc.getArtistIdFromName(artist);
+//        artist_id = dbc.getArtistIdFromName(artist);
         album_id = dbc.getAlbumIdFromNameYear(album, year);
-
-        if (artist_id == -1) {
-            dbc.createArtist(artist);
-            artist_id = dbc.getArtistIdFromName(artist);
-        }
+//
+//        if (artist_id == -1) {
+//            dbc.createArtist(artist);
+//            artist_id = dbc.getArtistIdFromName(artist);
+ //       }
         if (album_id == -1) {
             dbc.createAlbum(album, imgPath, year);
             album_id = dbc.getAlbumIdFromNameYear(album, year);
         }
 
-        dbc.createSongWArtistAlbum(name, songPath, artist_id, album_id, user_id);
+        dbc.createSongWArtistAlbum(name, songPath, album_id, user_id);
     }
 }
