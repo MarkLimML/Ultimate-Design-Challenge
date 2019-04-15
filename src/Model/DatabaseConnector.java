@@ -64,7 +64,7 @@ public class DatabaseConnector {
     public DatabaseConnector() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306//musicplayerudc?autoReconnect=true&useSSL=false",
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/musicplayerudc?useLegacyDatetimeCode=false&amp&serverTimezone=Europe/Amsterdam&amp&useSSL=false",
                     "root", "qwe123");
 
             prepareStatements();
