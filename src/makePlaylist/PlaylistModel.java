@@ -87,8 +87,8 @@ public class PlaylistModel extends ModelAbstract {
             playlistID = getDbc().getAlbumIdFromNameYear(title, albumYear);
         else if(playlistType.equals("AllUserSongs"))
             playlistID = this.getUser_id();
-        else if(playlistType.equals("ArtistPlaylist"))
-            playlistID = getDbc().getArtistIdFromName(artistName);
+//        else if(playlistType.equals("ArtistPlaylist"))
+//            playlistID = getDbc().getArtistIdFromName(artistName);
         else if(playlistType.equals("GenrePlaylist"))
             playlistID = getDbc().getGenreIdFromName(genre);
         else if(playlistType.equals("YearPlaylist"))
