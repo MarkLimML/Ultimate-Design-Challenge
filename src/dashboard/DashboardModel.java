@@ -20,9 +20,9 @@ public class DashboardModel extends ModelAbstract {
             case "GenrePlaylist":
                 this.setGenrePlaylists(boxes);
                 break;
-            case "ArtistPlaylist":
-                this.setArtistPlaylists(boxes);
-                break;
+//            case "ArtistPlaylist":
+//                this.setArtistPlaylists(boxes);
+//                break;
             case "YearPlaylist":
                 this.setYearPlaylist(boxes);
                 break;
@@ -95,21 +95,21 @@ public class DashboardModel extends ModelAbstract {
         return boxes;
     }
 
-    private ArrayList<PlaylistBox> setArtistPlaylists(ArrayList<PlaylistBox> boxes) {
-        ResultSet rs = getDbc().getArtistInfo();
-        PlaylistBox box;
-        try {
-            while (rs.next()) {
-                box = new PlaylistBox();
-                box.setPlaylistId(rs.getInt("artist_id"));
-                box.setPlaylistName(rs.getString("artist_name"));
-                boxes.add(box);
-            }
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return boxes;
-    }
+//    private ArrayList<PlaylistBox> setArtistPlaylists(ArrayList<PlaylistBox> boxes) {
+//        ResultSet rs = getDbc().getArtistInfo();
+//        PlaylistBox box;
+//        try {
+//            while (rs.next()) {
+//                box = new PlaylistBox();
+//                box.setPlaylistId(rs.getInt("artist_id"));
+//                box.setPlaylistName(rs.getString("artist_name"));
+//                boxes.add(box);
+//            }
+//        } catch (SQLException se) {
+//            se.printStackTrace();
+//        }
+//        return boxes;
+//    }
 
     public boolean isArtist () {
         return getUser().isArtist();
