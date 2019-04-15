@@ -382,12 +382,13 @@ public class DatabaseConnector {
         return null;
     }
 
-    public void createUser(String username, String password) {
-        String stmt = "INSERT INTO Accounts (username, password) VALUES (?, ?)";
+    public void createUser(String username, String password, Boolean isArtist) {
+        String stmt = "INSERT INTO Accounts (username, password, type) VALUES (?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setString(1, username);
             ps.setString(2, password);
+            ps.setBoolean(3, isArtist);
             ps.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -782,8 +783,6 @@ public class DatabaseConnector {
     }
 
 
-
-
     public void updateTimesPlayed (int timesPlayed, int song_id, int user_id) {
         try {
             updateTimesPlayed.setInt(1, timesPlayed);
@@ -804,18 +803,16 @@ public class DatabaseConnector {
             se.printStackTrace();
         }
     }
-//Update
 
-
-public void addBlobToSong (Blob song_blob, int song_id) {
-    try {
-        insertBlobToSong.setBlob(1, song_blob);
-        insertBlobToSong.setInt(2, song_id);
-        insertBlobToSong.execute();
-    } catch (SQLException se) {
-        se.printStackTrace();
+    public void addBlobToSong (Blob song_blob, int song_id) {
+        try {
+            insertBlobToSong.setBlob(1, song_blob);
+            insertBlobToSong.setInt(2, song_id);
+            insertBlobToSong.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
     }
-}
 
     public void createBlob (String song_name, Blob song_blob, int user_id) {
         try {// "INSERT INTO Songs (song_name, song_blob, user_id) VALUES (?, ?, ?)
@@ -1185,5 +1182,22 @@ public void addBlobToSong (Blob song_blob, int song_id) {
         }
         return null;
     }
+
+    public boolean userIsArtist (int user_id) {
+        String stmt = "SELECT type FROM Accounts WHERE user_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, user_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return false;
+    }
+
+
 
 }
