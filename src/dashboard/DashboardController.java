@@ -111,6 +111,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
         this.setScene(mainPane.getScene());
         PlaylistModel pm = new PlaylistModel();
         pm.setPlaylistType(currentPlaylistsType);
+        System.out.println(currentPlaylistsType);
         if (currentPlaylistsType.equals("AllUserSongs")) {
             pm.setTitle("All User Songs");
             pm.setPlaylistID(ModelAbstract.getUser().getUser_id());
@@ -123,6 +124,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
             pm.setTitle(box.getPlaylistName());
             pm.setPlaylistID(box.getPlaylistId());
         }
+        System.out.println(pm.getPlaylistID());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[6]));
             this.setRoot(loader.load());
