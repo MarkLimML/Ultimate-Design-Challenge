@@ -13,7 +13,7 @@ public class MostPlayed implements Playlist {
 
     @Override
     public ResultSet getSongs(int id) {
-        return dbc.getFavoriteSongs(id);
+        return dbc.getMostPlayedSongs(id);
     }
 
     @Override
