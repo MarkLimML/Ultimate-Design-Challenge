@@ -20,7 +20,7 @@ public class DatabaseConnector {
     private PreparedStatement selectSongsWithYear;
     private PreparedStatement selectDistinctYears;
     private PreparedStatement selectAllSongs;
-    private PreparedStatement selectFavoriteSongs;
+    private PreparedStatement selectMostPlayed;
     private PreparedStatement timesPlayedFromID;
 
     private PreparedStatement insertSong;
@@ -58,7 +58,8 @@ public class DatabaseConnector {
     private PreparedStatement deletePlaylistWID;
     private PreparedStatement updatePublish;
     private PreparedStatement isSongPublic;
-
+    private PreparedStatement selectFavoriteSongs;
+    private PreparedStatement selectFavoritePlaylist;
 
 
     public DatabaseConnector() {
@@ -159,7 +160,7 @@ public class DatabaseConnector {
                     "WHERE user_id = ?\n" +
                     "ORDER BY Times_played\n" +
                     "DESC LIMIT 10";
-            selectFavoriteSongs = connection.prepareStatement(stmt);
+            selectMostPlayed = connection.prepareStatement(stmt);
 
             stmt = "INSERT INTO Songs (song_name, song_path, user_id) VALUES (?, ?, ?)";
             insertSong = connection.prepareStatement(stmt);
@@ -276,6 +277,24 @@ public class DatabaseConnector {
                     "WHERE album_id = ?\n";
 
             updatePublish = connection.prepareStatement(stmt);
+
+            stmt = "SELECT DISTINCT * FROM Songs\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Times_played\n" +
+                    "WHERE fave_userid = ? AND fave_id=? AND fave_type=?\n" +
+                    "DESC LIMIT 10";
+            selectFavoriteSongs = connection.prepareStatement(stmt);
+
+            stmt = "SELECT DISTINCT * FROM Songs\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Times_played\n" +
+                    "WHERE fave_userid = ? AND fave_id=? AND fave_type=?\n" +
+                    "DESC LIMIT 10";
+            selectFavoritePlaylist = connection.prepareStatement(stmt);
 
 
 
@@ -738,10 +757,10 @@ public class DatabaseConnector {
         return null;
     }
 
-    public ResultSet getFavoriteSongs (int user_id) {
+    public ResultSet getMostPlayedSongs (int user_id) {
         try {
-            selectFavoriteSongs.setInt(1, user_id);
-            ResultSet rs = selectFavoriteSongs.executeQuery();
+            selectMostPlayed.setInt(1, user_id);
+            ResultSet rs = selectMostPlayed.executeQuery();
             return rs;
         } catch (SQLException se) {
             se.printStackTrace();
@@ -1195,6 +1214,33 @@ public class DatabaseConnector {
         }
         return false;
     }
+
+    public ResultSet getFavoriteSongs (int user_id, int fave_id) {
+        try {
+            selectFavoriteSongs.setInt(1, user_id);
+            selectFavoriteSongs.setInt(2, fave_id);
+            selectFavoriteSongs.setInt(3, 0);
+            ResultSet rs = selectFavoriteSongs.executeQuery();
+            return rs;
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getFavoritePlaylist (int user_id, int fave_id) {
+        try {
+            selectFavoritePlaylist.setInt(1, user_id);
+            selectFavoritePlaylist.setInt(2, fave_id);
+            selectFavoritePlaylist.setInt(3, 1);
+            ResultSet rs = selectFavoritePlaylist.executeQuery();
+            return rs;
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
 
 
 
