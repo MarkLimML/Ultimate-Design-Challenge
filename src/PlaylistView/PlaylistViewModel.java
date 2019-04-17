@@ -60,7 +60,7 @@ public class PlaylistViewModel extends ModelAbstract{
 		System.out.println("aksdfjalksasdfa");
 	}
 
-	public String getPlaylistTitle() {
+    public String getPlaylistTitle() {
 		return playlistModel.getTitle();
 	}
 

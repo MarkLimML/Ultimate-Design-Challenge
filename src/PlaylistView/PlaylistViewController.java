@@ -2,6 +2,7 @@ package PlaylistView;
 
 import AddFromLib.AddFromLibToCurPlaylist;
 import AddSong.Song;
+import Search.SearchController;
 import dashboard.ControllerAbstract;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -9,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -19,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
+import makePlaylist.PlaylistModel;
 import mediaPlayer.MediaPlayerController;
 import mediaPlayer.MediaPlayerStage;
 
@@ -26,6 +29,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class PlaylistViewController extends ControllerAbstract {
+
+    public Button searchButton;
+    public Button deleteSongs;
+    public Button sortByUpload;
+    public Button sortByYear;
+    public Button publicButton;
+    public Button addFavorite;
 
     private PlaylistViewModel model;
 
@@ -68,6 +78,16 @@ public class PlaylistViewController extends ControllerAbstract {
 
     public void setObservableValues () {
         System.out.println("setObservableValues()");
+
+        if (!model.getPlaylistModel().isPlaylistNull()) {
+            btnBack.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent me) {
+                    backToPlaylist(me);
+                }
+            });
+        }
+
+
         if (model.getPlaylistType().equals("UserPlaylist")) {
             //btnAddSong.setVisible(true);
             btnAddSong.setVisible(false);
@@ -150,11 +170,16 @@ public class PlaylistViewController extends ControllerAbstract {
 
     private ObservableList<Song> getSongList() {
         System.out.println("getSongList()");
-        songArrayList = model.getPlaylistSongs();
-        if (songArrayList == null)
+        if (songArrayList == null) {
+            if (model.getPlaylistModel() != null)
+                songArrayList = model.getPlaylistSongs();
             return null;
-        else;
-            return FXCollections.observableArrayList(songArrayList);
+        }
+        return FXCollections.observableArrayList(songArrayList);
+    }
+
+    public void setSongListFromAL (ArrayList<Song> songList)  {
+        songArrayList = songList;
     }
 
     public void play(MouseEvent e)
@@ -227,5 +252,53 @@ public class PlaylistViewController extends ControllerAbstract {
     public void returnToDashboard(MouseEvent mouseEvent) {
         this.setScene(playlistViewPane.getScene());
         this.switchScene(this.getScreenUrls()[0]);
+    }
+
+    public void setSearchPlaylist(ArrayList<Song> playlist) {
+        model.getPlaylistModel().setPlaylist(playlist);
+        btnBack.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent me) {
+                backToPlaylist(me);
+            }
+        });
+    }
+
+    public void backToPlaylist(MouseEvent mouseEvent) {
+        btnBack.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent me) {
+                returnToDashboard(me);
+            }
+        });
+        model.getPlaylistModel().setEmptyPlaylist();
+        setObservableValues();
+    }
+
+    public void switchToSearch(MouseEvent mouseEvent) {
+        this.setScene(playlistViewPane.getScene());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[7]));
+            this.setRoot(loader.load());
+            SearchController searchController = loader.getController();
+            searchController.getModel().setPlaylistModel(model.getPlaylistModel());
+            searchController.getModel().setController(searchController);
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
+    }
+
+    public void deleteCheckedSongs(MouseEvent mouseEvent) {
+
+    }
+
+    public void sortUpload(MouseEvent mouseEvent) {
+
+    }
+
+    public void setToPublicOrNot(MouseEvent mouseEvent) {
+
+    }
+
+    public void addToFavorites(MouseEvent mouseEvent) {
+
     }
 }
