@@ -88,7 +88,7 @@ public class DatabaseConnector {
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
-                    "NATURAL LEFT JOIN Genres\n" ;
+                    "NATURAL LEFT JOIN Genres\n";
 //                    "NATURAL LEFT JOIN Artists\n";
             selectAllSongs = connection.prepareStatement(stmt);
 
@@ -110,7 +110,7 @@ public class DatabaseConnector {
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
 //                    "NATURAL LEFT JOIN Artists\n" +
-                    "WHERE artist_id = ?";
+                    "WHERE user_id = ?";
             selectSongsWithArtistId = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
@@ -500,18 +500,18 @@ public class DatabaseConnector {
         }
     }
 
-    public void createSongWGenreArtist (String song_name, String song_path, int genre_id, int artist_id, int user_id) {
-        try {
-            insertSongWGenreArtist.setString(1, song_name);
-            insertSongWGenreArtist.setString(2, song_path);
-            insertSongWGenreArtist.setInt(3, genre_id);
-            insertSongWGenreArtist.setInt(4, artist_id);
-            insertSongWGenreArtist.setInt(5, user_id);
-            insertSongWGenreArtist.execute();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-    }
+//    public void createSongWGenreArtist (String song_name, String song_path, int genre_id, int artist_id, int user_id) {
+//        try {
+//            insertSongWGenreArtist.setString(1, song_name);
+//            insertSongWGenreArtist.setString(2, song_path);
+//            insertSongWGenreArtist.setInt(3, genre_id);
+//            insertSongWGenreArtist.setInt(4, artist_id);
+//            insertSongWGenreArtist.setInt(5, user_id);
+//            insertSongWGenreArtist.execute();
+//        } catch (SQLException se) {
+//            se.printStackTrace();
+//        }
+//    }
 
     public void createSongWArtistAlbum (String song_name, String song_path, int album_id, int user_id) {
         try {
@@ -585,20 +585,20 @@ public class DatabaseConnector {
     }
 
 
-//    public int getArtistIdFromName (String name) {
-//        String stmt = "SELECT artist_id FROM Artists WHERE artist_name LIKE ?";
-//        try {
-//            PreparedStatement ps = connection.prepareStatement(stmt);
-//            ps.setString(1, name);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) {
-//                return rs.getInt(1);
-//            }
-//        } catch (SQLException se) {
-//            se.printStackTrace();
-//        }
-//        return -1;
-//    }
+    public int getArtistIdFromName (String name) {
+        String stmt = "SELECT artist_id FROM Artists WHERE artist_name LIKE ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return -1;
+    }
 
     public int getAlbumIdFromNameYear (String name, int user_id) {
         String stmt = "SELECT album_id FROM Albums WHERE album_name LIKE ? AND year = ?";
@@ -680,16 +680,16 @@ public class DatabaseConnector {
         return null;
     }
 
-//    public ResultSet getArtistInfo () {
-//        String stmt = "SELECT * FROM Artists";
-//        try {
-//            PreparedStatement ps = connection.prepareStatement(stmt);
-//            return ps.executeQuery();
-//        } catch (SQLException se) {
-//            se.printStackTrace();
-//        }
-//        return null;
-//    }
+    public ResultSet getArtistInfo () {
+        String stmt = "SELECT * FROM Artists";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            return ps.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
 
     public ResultSet getArtistSongs (int artist_id) {
         try {
@@ -1021,7 +1021,6 @@ public class DatabaseConnector {
         return false;
 }
 
-
     public boolean PlaylistIsSetFavorite(int user_id, int fave_id) {
         String stmt = "SELECT * FROM favorite WHERE user_id = ? AND fave_id = ? AND fave_type = ?";
         try {
@@ -1240,7 +1239,6 @@ public class DatabaseConnector {
         }
         return null;
     }
-
 
 
 
