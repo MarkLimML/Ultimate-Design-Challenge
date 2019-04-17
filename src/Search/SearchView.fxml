@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Search.SearchController">
+   <children>
+      <Button fx:id="searchButton" layoutX="942.0" layoutY="355.0" mnemonicParsing="false" onMouseClicked="#startSearch" prefHeight="37.0" prefWidth="126.0" text="Search" />
+      <Button fx:id="backButton" layoutX="1045.0" layoutY="599.0" mnemonicParsing="false" onMouseClicked="#goBack" prefHeight="68.0" prefWidth="106.0" text="Back" />
+      <TextField fx:id="searchField" layoutX="139.0" layoutY="360.0" prefHeight="27.0" prefWidth="782.0" />
+      <Label layoutX="139.0" layoutY="270.0" prefHeight="80.0" prefWidth="332.0" text="Search">
+         <font>
+            <Font size="50.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
