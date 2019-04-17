@@ -38,7 +38,7 @@ public class DatabaseConnector {
 
 
 
-//UPDATE
+    //UPDATE
     private PreparedStatement insertBlob;
     private PreparedStatement insertSongWBlob;
     private PreparedStatement insertSongWAlbumBlob;
@@ -48,7 +48,7 @@ public class DatabaseConnector {
     private PreparedStatement insertSongWGenreAlbumBlob;
     private PreparedStatement insertSongWArtistAlbumBlob;
     private PreparedStatement insertSongWGenreArtistAlbumBlob;
-//    private PreparedStatement selectSongBlob;
+    //    private PreparedStatement selectSongBlob;
     private PreparedStatement insertBlobToSong;
     private PreparedStatement selectIDFromSongName;
     private PreparedStatement deleteSongWID;
@@ -65,9 +65,8 @@ public class DatabaseConnector {
     public DatabaseConnector() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/musicplayerudc?useLegacyDatetimeCode=false&amp&serverTimezone=Europe/Amsterdam&amp&useSSL=false",
-                    "root", "qwe123");
-
+            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/musicplayerudc?autoReconnect=true&useSSL=false",
+                    "despa2", "#str3ssp4");
             prepareStatements();
         } catch (Exception se) {
             se.printStackTrace();
@@ -585,20 +584,20 @@ public class DatabaseConnector {
     }
 
 
-    public int getArtistIdFromName (String name) {
-        String stmt = "SELECT artist_id FROM Artists WHERE artist_name LIKE ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(stmt);
-            ps.setString(1, name);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return -1;
-    }
+//    public int getArtistIdFromName (String name) {
+//        String stmt = "SELECT artist_id FROM Artists WHERE artist_name LIKE ?";
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(stmt);
+//            ps.setString(1, name);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt(1);
+//            }
+//        } catch (SQLException se) {
+//            se.printStackTrace();
+//        }
+//        return -1;
+//    }
 
     public int getAlbumIdFromNameYear (String name, int user_id) {
         String stmt = "SELECT album_id FROM Albums WHERE album_name LIKE ? AND year = ?";
@@ -680,16 +679,16 @@ public class DatabaseConnector {
         return null;
     }
 
-    public ResultSet getArtistInfo () {
-        String stmt = "SELECT * FROM Artists";
-        try {
-            PreparedStatement ps = connection.prepareStatement(stmt);
-            return ps.executeQuery();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return null;
-    }
+//    public ResultSet getArtistInfo () {
+//        String stmt = "SELECT * FROM Artists";
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(stmt);
+//            return ps.executeQuery();
+//        } catch (SQLException se) {
+//            se.printStackTrace();
+//        }
+//        return null;
+//    }
 
     public ResultSet getArtistSongs (int artist_id) {
         try {
