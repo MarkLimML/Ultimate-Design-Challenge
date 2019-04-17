@@ -65,14 +65,13 @@ public class DashboardController extends dashboard.ControllerAbstract {
 
 
     public DashboardController() {
-        searchSong.setVisible(false);
         model = new DashboardModel();
         DashboardView view = new DashboardView(this, model);
         model.attach(view);
     }
 
     public void initialize() {
-
+        searchSong.setVisible(false);
         playlistScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         playlistPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         playlistScroll.setFitToWidth(true);
