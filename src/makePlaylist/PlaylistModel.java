@@ -14,6 +14,7 @@ public class PlaylistModel extends ModelAbstract {
     private int albumYear;
     private String genre;
     private String playlistType;
+    private ArrayList<Song> playlist;
     private ConcretePlaylistFactory playlistFactory;
 
     public String getAlbumTitle() {
@@ -163,13 +164,27 @@ public class PlaylistModel extends ModelAbstract {
     }
 
     public ArrayList<Song> getPlaylist() {
-        System.out.println("getPlaylist()");
-        Playlist playlist = playlistFactory.getPlaylist(playlistType);
-        System.out.println(playlist.getType());
-        playlist.attachDB(getDbc());
-        System.out.println("playlist.getSongs("+ playlistID+")");
-        ResultSet rs = playlist.getSongs(playlistID);
-        return resultSetToSong(rs);
+        if (playlist == null) {
+            System.out.println("getPlaylist()");
+            Playlist playlist = playlistFactory.getPlaylist(playlistType);
+            System.out.println(playlist.getType());
+            playlist.attachDB(getDbc());
+            System.out.println("playlist.getSongs(" + playlistID + ")");
+            ResultSet rs = playlist.getSongs(playlistID);
+            return resultSetToSong(rs);
+        }
+        return playlist;
     }
 
+    public void setPlaylist(ArrayList<Song> playlist) {
+        this.playlist = playlist;
+    }
+
+    public void setEmptyPlaylist () {
+        playlist = null;
+    }
+
+    public boolean isPlaylistNull () {
+        return playlist == null;
+    }
 }

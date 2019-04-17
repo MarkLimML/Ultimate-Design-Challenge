@@ -6,10 +6,10 @@ import java.sql.ResultSet;
 
 public class MostPlayed implements Playlist {
     private DatabaseConnector dbc;
-	private static final String type = "MostPlayed";
-	
+    private static final String type = "MostPlayed";
+
     public MostPlayed() {
-	}
+    }
 
     @Override
     public ResultSet getSongs(int id) {
