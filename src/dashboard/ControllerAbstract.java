@@ -22,7 +22,8 @@ public class ControllerAbstract {
             "/AddSong/NewSongView.fxml",
             "/makePlaylist/makePlaylist.fxml",
             "/AddFromLib/AddFromLib.fxml",
-            "/PlaylistView/PlaylistView.fxml"};
+            "/PlaylistView/PlaylistView.fxml",
+            "/Search/SearchView.fxml"};
 
     /*
             0 = "/dashboard/dashboard.fxml",

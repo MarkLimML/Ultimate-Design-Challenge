@@ -3,6 +3,7 @@ package dashboard;
 import Model.ModelAbstract;
 import PlaylistView.PlaylistViewController;
 import PlaylistView.PlaylistViewModel;
+import Search.SearchController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,9 +11,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -30,6 +33,12 @@ public class DashboardController extends dashboard.ControllerAbstract {
 
 
     public HBox hbxUserAlbums;
+    public AnchorPane anchorPane;
+    public TextField artistInput;
+    public TextField albumInput;
+    public Button searchArtist;
+    public Button searchAlbum;
+    public Button searchSong;
     private DashboardModel model;
 
     @FXML
@@ -56,6 +65,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
 
 
     public DashboardController() {
+        searchSong.setVisible(false);
         model = new DashboardModel();
         DashboardView view = new DashboardView(this, model);
         model.attach(view);
@@ -111,7 +121,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
         this.setScene(mainPane.getScene());
         PlaylistModel pm = new PlaylistModel();
         pm.setPlaylistType(currentPlaylistsType);
-        System.out.println(currentPlaylistsType);
+
         if (currentPlaylistsType.equals("AllUserSongs")) {
             pm.setTitle("All User Songs");
             pm.setPlaylistID(ModelAbstract.getUser().getUser_id());
@@ -124,7 +134,6 @@ public class DashboardController extends dashboard.ControllerAbstract {
             pm.setTitle(box.getPlaylistName());
             pm.setPlaylistID(box.getPlaylistId());
         }
-        System.out.println(pm.getPlaylistID());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[6]));
             this.setRoot(loader.load());
@@ -221,4 +230,24 @@ public class DashboardController extends dashboard.ControllerAbstract {
         this.switchScene(this.getScreenUrls()[1]);
     }
 
+    public void searchArtistButt(MouseEvent mouseEvent) {
+    }
+
+    public void searchAlbumButt(MouseEvent mouseEvent) {
+    }
+
+    public void searchSongButt(MouseEvent mouseEvent) {
+        this.setScene(playlistPane.getScene());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[7]));
+            this.setRoot(loader.load());
+            SearchController searchController = loader.getController();
+            PlaylistModel pm = new PlaylistModel();
+            pm.setPlaylistType("All");
+            //searchController.getModel().setPlaylistModel();
+            searchController.getModel().setController(searchController);
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
+    }
 }
