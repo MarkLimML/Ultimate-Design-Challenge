@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import AddFromLib.AddFromLibView;
+import Model.ModelAbstract;
 import dashboard.ControllerAbstract;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -105,9 +106,14 @@ public class AddSongController extends ControllerAbstract
     public void initialize() 
     {
     	songGenreInput.getItems().removeAll(songGenreInput.getItems());
-    	songGenreInput.getItems().addAll("", "Pop", "Rock", "Kpop", "Metal", "Jazz", "Country", "Instrumental", "Classic");
+    	songGenreInput.getItems().addAll("", "Pop", "Rock", "K-Pop", "J-Pop",
+                                                "Metal", "Jazz", "Country", "Instrumental", "Classic");
     	songGenreInput.getSelectionModel().select("");
 
+    	artistNameInput.setText(ModelAbstract.getUser().getUsername());
+    	System.out.println(ModelAbstract.getUser().getUsername());
+
+    	artistNameInput.setEditable(false);
         songChosenPath.setEditable(false);
         imageChosenPath.setEditable(false);
     }
@@ -204,8 +210,7 @@ public class AddSongController extends ControllerAbstract
             {
                 File file2 = new File(file.getAbsolutePath());
 
-
-                String songPath = "src/mediaPlayer/song/" + file2.getName();
+                String songPath = "src\\mediaPlayer\\song\\" + file2.getName();
 
                 if(file2.renameTo(new File(songPath)))
                 {
