@@ -49,12 +49,13 @@ public class LoginModel extends ModelAbstract {
         setUser(new User());
         getUser().setUser_id(userId);
         getUser().setUsername(username);
-        getUser().setUsername(password);
+        getUser().setPassword(password);
         getUser().setArtist(isArtist);
     }
 
-    public boolean isValidId() {
-        if (userId > 0)
+    public boolean isValidId()
+    {
+        if(userId > 0)
             return true;
         return false;
     }
