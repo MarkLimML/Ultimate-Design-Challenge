@@ -23,7 +23,8 @@ public class ControllerAbstract {
             "/makePlaylist/makePlaylist.fxml",
             "/AddFromLib/AddFromLib.fxml",
             "/PlaylistView/PlaylistView.fxml",
-            "/Search/SearchView.fxml"};
+            "/Search/SearchView.fxml",
+            "/Profile/Profile.fxml"};
 
     /*
             0 = "/dashboard/dashboard.fxml",
@@ -31,6 +32,10 @@ public class ControllerAbstract {
             2 = "/register/Register.fxml",
             3 = "/AddSong/NewSongView.fxml",
             4 = "/makePlaylist/makePlaylist.fxml"
+            5 = "/AddFromLib/AddFromLib.fxml"
+            6 = "/PlaylistView/PlaylistView.fxml"
+            7 = "/Search/SearchView.fxml"
+            8 = "/Profile/Profile.fxml"
      */
 
     public Stage getStage() {
