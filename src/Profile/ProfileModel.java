@@ -30,4 +30,8 @@ public class ProfileModel extends ModelAbstract {
         }
         return boxes;
     }
+
+    public void setCurrentProfile(User user) {
+        setUser(user);
+    }
 }

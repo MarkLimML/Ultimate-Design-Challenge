@@ -1,6 +1,8 @@
 package Profile;
 
+import Model.ModelAbstract;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 
@@ -26,6 +28,8 @@ public class ProfileController {
     public TableView followlist;
     @FXML
     public TableView songlist;
+    @FXML
+    public Button back;
 
     public ProfileController() {
         model = new ProfileModel();
@@ -34,6 +38,13 @@ public class ProfileController {
     }
 
     public void initialize() {
+        username.setText(ModelAbstract.getUser().getUsername());
+        if(ModelAbstract.getUser().isArtist())
+            usertype.setText("Artist");
+        else
+            usertype.setText("Listener");
+        name.setText("Username");
+        type.setText("User Type");
 
     }
 
