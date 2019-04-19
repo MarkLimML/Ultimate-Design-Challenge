@@ -299,6 +299,13 @@ public class PlaylistViewController extends ControllerAbstract {
     }
 
     public void addToFavorites(MouseEvent mouseEvent) {
-
+        if (!(model.getDbc().PlaylistIsSetFavorite(
+                model.getUser().getUser_id(),
+                model.getDbc().getPlaylistIdFromTitleUser(
+                        model.getPlaylistTitle(), model.getUser().getUser_id()))))
+        {  System.out.println("Functionworks");
+            model.getDbc().playlistIsFavorite(model.getUser().getUser_id(), model.getDbc().getPlaylistIdFromTitleUser(model.getPlaylistTitle(), model.getUser().getUser_id()));}
+        else
+            model.getDbc().removeIsFavoritePlaylist(model.getUser().getUser_id(), model.getDbc().getPlaylistIdFromTitleUser(model.getPlaylistTitle(), model.getUser().getUser_id()));
     }
 }
