@@ -87,13 +87,15 @@ public class DatabaseConnector {
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
-                    "NATURAL LEFT JOIN Genres\n";
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n";
 //                    "NATURAL LEFT JOIN Artists\n";
             selectAllSongs = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
 //                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE song_id = ?";
             selectSongFromId = connection.prepareStatement(stmt);
@@ -101,6 +103,7 @@ public class DatabaseConnector {
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
 //                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE album_id = ?";
             selectSongsWithAlbumId = connection.prepareStatement(stmt);
@@ -108,6 +111,7 @@ public class DatabaseConnector {
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
 //                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE user_id = ?";
             selectSongsWithArtistId = connection.prepareStatement(stmt);
@@ -115,21 +119,24 @@ public class DatabaseConnector {
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
                     "WHERE genre_id = ?";
             selectSongsWithGenreId = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Playlists\n" +
                     "NATURAL LEFT JOIN Playlist_Songs\n" +
                     "NATURAL LEFT JOIN Songs\n" +
-                    "LEFT JOIN Albums using(album_id)\n" +
+                    "LEFT JOIN Albums using(user_id)\n" +
 //                    "NATURAL LEFT JOIN Artists\n" +
                     "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
                     "WHERE playlist_id = ? AND user_id = ?";
             selectSongsWithPlaylistId = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
 //                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE user_id = ?";
             selectSongsWithUserId = connection.prepareStatement(stmt);
@@ -137,6 +144,7 @@ public class DatabaseConnector {
             stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums \n" +
                     "NATURAL LEFT JOIN Genres \n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
 //                    "NATURAL LEFT JOIN Artists \n" +
                     "WHERE year = ?";
             selectSongsWithYear = connection.prepareStatement(stmt);
@@ -153,6 +161,7 @@ public class DatabaseConnector {
 
             stmt = "SELECT DISTINCT * FROM Songs\n" +
                     "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
 //                    "NATURAL LEFT JOIN Artists\n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Times_played\n" +
@@ -238,6 +247,7 @@ public class DatabaseConnector {
             stmt = "SELECT song_id FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
 //                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE song_name = %?%"  ;
             selectIDFromSongName = connection.prepareStatement(stmt);
@@ -319,13 +329,12 @@ public class DatabaseConnector {
                 song = new Song();
                 song.setSongId(song_id);
                 song.setName(rs.getString("name"));
-                song.setAlbumId(rs.getInt("artist_id"));
                 song.setAlbumId(rs.getInt("album_id"));
                 song.setGenreId(rs.getInt("genre_id"));
                 song.setYear(rs.getInt("year"));
                 song.setAlbum(rs.getString("album_name"));
                 song.setGenre(rs.getString("genre_name"));
-                song.setArtist(rs.getString("artist_name"));
+                song.setArtist(rs.getString("username"));
                 song.setImgPath(rs.getString("img_path"));
                 song.setSongPath(rs.getString("song_path"));
             }
@@ -344,13 +353,12 @@ public class DatabaseConnector {
                 song = new Song();
                 song.setSongId(rs.getInt("song_id"));
                 song.setName(rs.getString("name"));
-                song.setAlbumId(rs.getInt("artist_id"));
                 song.setAlbumId(rs.getInt("album_id"));
                 song.setGenreId(rs.getInt("genre_id"));
                 song.setYear(rs.getInt("year"));
                 song.setAlbum(rs.getString("album_name"));
                 song.setGenre(rs.getString("genre_name"));
-                song.setArtist(rs.getString("artist_name"));
+                song.setArtist(rs.getString("username"));
                 song.setImgPath(rs.getString("img_path"));
                 song.setSongPath(rs.getString("song_path"));
                 songs.add(song);
@@ -1004,12 +1012,12 @@ public class DatabaseConnector {
 
 
 // FOR FAVORITE
-    public boolean songIsFavorite(int user_id, int song_id) {
+    public boolean SongIsSetFavorite(int user_id, int fave_id) {
         String stmt = "SELECT * FROM favorite WHERE fave_userid = ? AND fave_id = ? AND fave_type = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1, user_id);
-            ps.setInt(2, song_id);
+            ps.setInt(2, fave_id);
             ps.setInt(3, 0);
             ResultSet rs = ps.executeQuery();
             if (rs.next())
@@ -1020,7 +1028,7 @@ public class DatabaseConnector {
         return false;
 }
 
-    public boolean playlistIsFavorite(int user_id, int fave_id) {
+    public boolean PlaylistIsSetFavorite(int user_id, int fave_id) {
         String stmt = "SELECT * FROM favorite WHERE fave_userid = ? AND fave_id = ? AND fave_type = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(stmt);
@@ -1036,7 +1044,7 @@ public class DatabaseConnector {
         return false;
     }
 
-    public void setSongFavorite (int user_id, int fave_id){
+    public void songIsFavorite (int user_id, int fave_id){
         String stmt =  "INSERT INTO favorite(fave_userid, fave_id,fave_type) VALUES (?, ?, ?)";
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
@@ -1049,7 +1057,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void setPlaylistFavorite (int user_id, int fave_id){
+    public void playlistIsFavorite (int user_id, int fave_id){
         String stmt =  "INSERT INTO favorite(fave_userid, fave_id,fave_type) VALUES (?, ?, ?)";
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
@@ -1063,7 +1071,7 @@ public class DatabaseConnector {
     }
 
     public void removeIsFavoriteSong (int user_id, int fave_id){
-        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";
+        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";;
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1,user_id);
@@ -1076,7 +1084,7 @@ public class DatabaseConnector {
     }
 
     public void removeIsFavoritePlaylist (int user_id, int fave_id){
-        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";
+        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";;
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1,user_id);
@@ -1213,17 +1221,11 @@ public class DatabaseConnector {
         return false;
     }
 
-    public ResultSet getFavoriteSongs (int user_id) {
-        String stmt = "SELECT * \n" +
-                "FROM songs\n" +
-                "INNER JOIN favorite\n" +
-                "ON songs.song_id = favorite.fave_id\n" +
-                "INNER JOIN accounts\n" +
-                "ON favorite.fave_userid = accounts.user_id\n" +
-                "WHERE accounts.user_id = ?";
+    public ResultSet getFavoriteSongs (int user_id, int fave_id) {
         try {
-            PreparedStatement ps = connection.prepareStatement(stmt);
             selectFavoriteSongs.setInt(1, user_id);
+            selectFavoriteSongs.setInt(2, fave_id);
+            selectFavoriteSongs.setInt(3, 0);
             ResultSet rs = selectFavoriteSongs.executeQuery();
             return rs;
         } catch (SQLException se) {
@@ -1264,7 +1266,7 @@ public class DatabaseConnector {
     }
 
     public void followUser (int follower, int following){
-        String stmt =  "INSERT INTO follow(follower, following) VALUES (?, ?)";;
+        String stmt =  "INSERT INTO follow(follower, following) VALUES (?, ?)";
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1,follower);
@@ -1276,7 +1278,7 @@ public class DatabaseConnector {
     }
 
     public void unfollowUser (int follower, int following){
-        String stmt =  "DELETE FROM follow where follower=? AND following=?";;
+        String stmt =  "DELETE FROM follow where follower=? AND following=?";
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1,follower);
