@@ -1004,12 +1004,12 @@ public class DatabaseConnector {
 
 
 // FOR FAVORITE
-    public boolean SongIsSetFavorite(int user_id, int fave_id) {
-        String stmt = "SELECT * FROM favorite WHERE user_id = ? AND fave_id = ? AND fave_type = ?";
+    public boolean songIsFavorite(int user_id, int song_id) {
+        String stmt = "SELECT * FROM favorite WHERE fave_userid = ? AND fave_id = ? AND fave_type = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1, user_id);
-            ps.setInt(2, fave_id);
+            ps.setInt(2, song_id);
             ps.setInt(3, 0);
             ResultSet rs = ps.executeQuery();
             if (rs.next())
@@ -1020,8 +1020,8 @@ public class DatabaseConnector {
         return false;
 }
 
-    public boolean PlaylistIsSetFavorite(int user_id, int fave_id) {
-        String stmt = "SELECT * FROM favorite WHERE user_id = ? AND fave_id = ? AND fave_type = ?";
+    public boolean playlistIsFavorite(int user_id, int fave_id) {
+        String stmt = "SELECT * FROM favorite WHERE fave_userid = ? AND fave_id = ? AND fave_type = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1, user_id);
@@ -1036,53 +1036,53 @@ public class DatabaseConnector {
         return false;
     }
 
-    public void songIsFavorite (int user_id, int fave_id){
-        String stmt =  "INSERT INTO favorite(fave_userid, fave_id,fave_type) VALUES (?, ?, ?)";;
+    public void setSongFavorite (int user_id, int fave_id){
+        String stmt =  "INSERT INTO favorite(fave_userid, fave_id,fave_type) VALUES (?, ?, ?)";
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1,user_id);
             ps.setInt(2,fave_id);
             ps.setInt(3,0);
-            ResultSet rs = ps.executeQuery();
+            ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void playlistIsFavorite (int user_id, int fave_id){
-        String stmt =  "INSERT INTO favorite(fave_userid, fave_id,fave_type) VALUES (?, ?, ?)";;
+    public void setPlaylistFavorite (int user_id, int fave_id){
+        String stmt =  "INSERT INTO favorite(fave_userid, fave_id,fave_type) VALUES (?, ?, ?)";
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1,user_id);
             ps.setInt(2,fave_id);
             ps.setInt(3,1);
-            ResultSet rs = ps.executeQuery();
+            ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void removeIsFavoriteSong (int user_id, int fave_id){
-        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";;
+        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1,user_id);
             ps.setInt(2,fave_id);
             ps.setInt(3,0);
-            ResultSet rs = ps.executeQuery();
+            ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void removeIsFavoritePlaylist (int user_id, int fave_id){
-        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";;
+        String stmt =  "DELETE FROM favorite where user_id=? AND fave_id=? AND fave_type=?";
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1,user_id);
             ps.setInt(2,fave_id);
             ps.setInt(3,1);
-            ResultSet rs = ps.executeQuery();
+            ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -1213,11 +1213,17 @@ public class DatabaseConnector {
         return false;
     }
 
-    public ResultSet getFavoriteSongs (int user_id, int fave_id) {
+    public ResultSet getFavoriteSongs (int user_id) {
+        String stmt = "SELECT * \n" +
+                "FROM songs\n" +
+                "INNER JOIN favorite\n" +
+                "ON songs.song_id = favorite.fave_id\n" +
+                "INNER JOIN accounts\n" +
+                "ON favorite.fave_userid = accounts.user_id\n" +
+                "WHERE accounts.user_id = ?";
         try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
             selectFavoriteSongs.setInt(1, user_id);
-            selectFavoriteSongs.setInt(2, fave_id);
-            selectFavoriteSongs.setInt(3, 0);
             ResultSet rs = selectFavoriteSongs.executeQuery();
             return rs;
         } catch (SQLException se) {
@@ -1239,6 +1245,46 @@ public class DatabaseConnector {
         return null;
     }
 
+    //Following
 
+    public boolean userIsFollowing (int follower, int following)
+    {
+        String stmt = "SELECT * FROM follow WHERE follower = ? AND following = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, follower);
+            ps.setInt(2, following);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void followUser (int follower, int following){
+        String stmt =  "INSERT INTO follow(follower, following) VALUES (?, ?)";;
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,follower);
+            ps.setInt(2,following);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void unfollowUser (int follower, int following){
+        String stmt =  "DELETE FROM follow where follower=? AND following=?";;
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,follower);
+            ps.setInt(2,following);
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
