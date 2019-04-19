@@ -3,6 +3,7 @@ package dashboard;
 import Model.ModelAbstract;
 import PlaylistView.PlaylistViewController;
 import PlaylistView.PlaylistViewModel;
+import Profile.ProfileModel;
 import Search.SearchController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -220,7 +221,13 @@ public class DashboardController extends dashboard.ControllerAbstract {
     }
 
     public void switchToUserInfo(MouseEvent mouseEvent) {
-
+        ProfileModel pm = new ProfileModel();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[8]));
+            this.setRoot(loader.load());
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
     }
 
     public void loggingOut() {
