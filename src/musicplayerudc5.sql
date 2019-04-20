@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `musicplayerudc` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `musicplayerudc`;
--- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.12, for macos10.13 (x86_64)
 --
 -- Host: localhost    Database: musicplayerudc
 -- ------------------------------------------------------
--- Server version	8.0.12
+-- Server version	8.0.13
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -77,6 +75,30 @@ INSERT INTO `albums` VALUES (1,'kirito',1999,NULL,NULL,0,1,2),(2,'asuna',2000,NU
 UNLOCK TABLES;
 
 --
+-- Table structure for table `artists`
+--
+
+DROP TABLE IF EXISTS `artists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `artists` (
+  `artist_id` int(11) NOT NULL AUTO_INCREMENT,
+  `artist_name` varchar(80) NOT NULL,
+  PRIMARY KEY (`artist_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `artists`
+--
+
+LOCK TABLES `artists` WRITE;
+/*!40000 ALTER TABLE `artists` DISABLE KEYS */;
+INSERT INTO `artists` VALUES (1,'adsdss'),(2,'dasdasd'),(3,'sadas'),(4,'sxdcfgvhb '),(5,'rosy'),(6,'ghfghfg'),(7,'dsgsdg'),(8,'klfdjgdlfk'),(9,'beepbop'),(10,'gi'),(11,'nyerp'),(12,'tfhgjh'),(13,'fuigydifg'),(14,'hkjhjkj'),(15,'Jesse&Joy'),(16,'rosyy'),(17,'Hwasa');
+/*!40000 ALTER TABLE `artists` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `favorite`
 --
 
@@ -84,11 +106,9 @@ DROP TABLE IF EXISTS `favorite`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `favorite` (
-  `pkID` int(11) NOT NULL,
   `fave_userid` int(11) NOT NULL,
   `fave_id` int(11) NOT NULL,
   `fave_type` int(1) NOT NULL,
-  PRIMARY KEY (`pkID`),
   KEY `fuserid_idx` (`fave_userid`),
   CONSTRAINT `fuserid` FOREIGN KEY (`fave_userid`) REFERENCES `accounts` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -100,7 +120,7 @@ CREATE TABLE `favorite` (
 
 LOCK TABLES `favorite` WRITE;
 /*!40000 ALTER TABLE `favorite` DISABLE KEYS */;
-INSERT INTO `favorite` VALUES (1,1,1,0),(2,2,3,1),(3,2,2,0),(4,3,1,0);
+INSERT INTO `favorite` VALUES (1,1,0),(2,3,1),(2,2,0),(3,1,0),(4,4,1);
 /*!40000 ALTER TABLE `favorite` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,4 +305,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-17  0:41:43
+-- Dump completed on 2019-04-20 12:56:17
