@@ -33,15 +33,16 @@ public class ProfileController extends ControllerAbstract {
     public Label type;
     @FXML
     public CheckBox isFollowed;
-
-    @FXML
-    public TableView songlist;
     @FXML
     public Button back;
     @FXML
     public AnchorPane newProfilePane;
     @FXML
-    public Pane tablepane;
+    public Pane usertablepane;
+    @FXML
+    public Pane songtablepane;
+    @FXML
+    public Pane playlisttablepane;
 
     private javafx.scene.control.TableView<User> UserTable;
     private TableColumn<User, String> colUsers;
