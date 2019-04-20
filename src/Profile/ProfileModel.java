@@ -16,7 +16,7 @@ public class ProfileModel extends ModelAbstract {
     }
 
     public void getFavoriteSongs() {
-        
+
     }
 
     public void setCurrentProfile(User user) {
