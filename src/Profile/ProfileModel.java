@@ -9,29 +9,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ProfileModel extends ModelAbstract {
-    public ArrayList<PlaylistBox> getListOfPlaylist(String playlistType) {
-        ArrayList<PlaylistBox> boxes = new ArrayList<>();
-        this.setUserPlaylists(boxes);
-        return boxes;
+    ProfileModel controller;
+
+    public void getUserPlaylists() {
+
     }
 
-    private ArrayList<PlaylistBox> setUserPlaylists(ArrayList<PlaylistBox> boxes) {
-        ResultSet rs = getDbc().getPlaylistInfo(getUser().getUser_id());
-        PlaylistBox box;
-        try {
-            while (rs.next()) {
-                box = new PlaylistBox();
-                box.setPlaylistId(rs.getInt("playlist_id"));
-                box.setPlaylistName(rs.getString("title"));
-                boxes.add(box);
-            }
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return boxes;
+    public void getFavoriteSongs() {
+        
     }
 
     public void setCurrentProfile(User user) {
         setUser(user);
+    }
+
+    public void setController(ProfileModel controller) {
+        System.out.println("setController()");
+        this.controller = controller;
     }
 }
