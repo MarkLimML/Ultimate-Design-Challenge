@@ -55,7 +55,7 @@ public class DatabaseConnector {
     private PreparedStatement insertSongWGenreArtistAlbumBlob;
     //    private PreparedStatement selectSongBlob;
     private PreparedStatement insertBlobToSong;
-    private PreparedStatement selectIDFromSongName;
+    private PreparedStatement selectAllIDFromSongName;
     private PreparedStatement deleteSongWID;
     private PreparedStatement deleteAlbumWID;
     private PreparedStatement removeSongInPlaylist;
@@ -88,6 +88,8 @@ public class DatabaseConnector {
 
     private PreparedStatement sortSongInPlaylistByUpload;
     private PreparedStatement sortSongInPlaylistByYear;
+
+
 
 
 
@@ -280,7 +282,7 @@ public class DatabaseConnector {
                     "NATURAL LEFT JOIN Accounts\n" +
 //                    "NATURAL LEFT JOIN Artists\n" +
                     "WHERE song_name = %?%";
-            selectIDFromSongName = connection.prepareStatement(stmt);
+            selectAllIDFromSongName = connection.prepareStatement(stmt);
 
             stmt = "INSERT INTO Times_played (song_id, user_id) VALUES (?, ?)";
             insertSongToTimesPlayed = connection.prepareStatement(stmt);
@@ -507,7 +509,6 @@ public class DatabaseConnector {
                     "WHERE playlists.user_id =? AND playlists.playlist_id=? \n"+
                     "ORDER BY songs.song_year";
             sortSongInPlaylistByYear=connection.prepareStatement(stmt);
-
 
 
 
@@ -1213,15 +1214,31 @@ public class DatabaseConnector {
 //        return song;
 //    }
 
-    public ResultSet getIDFromSongname () {
+    public ResultSet getAllIDFromSongname () {
         try {
-            return selectIDFromSongName.executeQuery();
+            return selectAllIDFromSongName.executeQuery();
         } catch (SQLException se) {
             se.printStackTrace();
         }
         return null;
     }
 
+    public int getIDFromSongName (String name) {
+        String stmt = "SELECT song_id FROM Songs WHERE song_name = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return -1;
+    }
 
     // FOR FAVORITE
     public boolean SongIsSetFavorite(int user_id, int fave_id) {
