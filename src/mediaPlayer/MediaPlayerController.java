@@ -96,6 +96,7 @@ public class MediaPlayerController
     public Duration currTime;
 
     private ConcreteModelMediaPlayer model;
+    public Iterator iter = model.getIterator();
 
     public MediaPlayerController() {
         model = new ConcreteModelMediaPlayer();
@@ -320,7 +321,10 @@ public class MediaPlayerController
                     mediaPlayer.stop();
                    /* mediaPlayer.seek(Duration.ZERO);
                     mediaPlayer.play(); // makes song actually play but each media player overlaps*/
-                    setCurrentIndex((model.getSongIndex()+1) % model.getSongList().size());
+                    if(iter.hasNext()) {
+                        setCurrentIndex((model.getSongIndex() + 1) % model.getSongList().size());
+                        iter.next();
+                    }
                 }
             });
 

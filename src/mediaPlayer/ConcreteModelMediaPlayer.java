@@ -8,7 +8,7 @@ import makePlaylist.Playlist;
 
 import java.util.ArrayList;
 
-public class ConcreteModelMediaPlayer extends ModelAbstract {
+public class ConcreteModelMediaPlayer extends ModelAbstract implements Container  {
 
     private MediaPlayerController controller;
 
@@ -17,6 +17,9 @@ public class ConcreteModelMediaPlayer extends ModelAbstract {
     private String songPath;
     private ArrayList<Song> songList;
 
+    public Iterator getIterator() {
+        return new SongIterator();
+    }
 
     public void setSongIndex(int songIndex) {
         System.out.println("SongIndex="+songIndex);
@@ -74,4 +77,27 @@ public class ConcreteModelMediaPlayer extends ModelAbstract {
 
     }
 
+    private class SongIterator implements Iterator{
+        int index;
+
+        @Override
+        public boolean hasNext() {
+
+            if(index < songList.size()){
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public Object next() {
+
+            if (this.hasNext()) {
+                return songList.get(index++);
+            }
+            return null;
+        }
+    }
 }
+
+
