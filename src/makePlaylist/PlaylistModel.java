@@ -6,6 +6,7 @@ import Model.ModelAbstract;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.Date;
 
 public class PlaylistModel extends ModelAbstract {
     private String title;
@@ -16,6 +17,15 @@ public class PlaylistModel extends ModelAbstract {
     private String playlistType;
     private ArrayList<Song> playlist;
     private ConcretePlaylistFactory playlistFactory;
+    private Date created;
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 
     public String getAlbumTitle() {
         return albumTitle;
