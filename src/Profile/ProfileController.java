@@ -211,7 +211,6 @@ public class ProfileController extends ControllerAbstract {
     }
 
     private void setArtistList() {
-        artistList.getClass();
         System.out.println("getArtistList()");
         artists = model.getArtistsFollowed();
         artistList = FXCollections.observableArrayList(artists);
