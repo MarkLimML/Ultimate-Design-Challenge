@@ -6,6 +6,7 @@ import Model.User;
 import dashboard.ControllerAbstract;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.*;
@@ -15,114 +16,200 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.util.Callback;
 import makePlaylist.Playlist;
-
-import java.awt.event.MouseEvent;
+import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class ProfileController extends ControllerAbstract {
 
+    public Button backButt;
+    public Button songsButt;
+    public Button favsButt;
+    public Button artistButt;
+    public Button listenerButt;
+    public ScrollPane scrollPane;
+    public AnchorPane tablePane;
+    public Label userNameLabel;
+    public Label userTypeLabel;
+    public Button followButt;
+    public Pane mainPane;
     private ProfileModel model;
-
-
-    @FXML
-    public Label username;
-    @FXML
-    public Label usertype; //listener or artist
-    @FXML
-    public Label name;
-    @FXML
-    public Label type;
-    @FXML
-    public CheckBox isFollowed;
-    @FXML
-    public Button back;
-    @FXML
-    public AnchorPane newProfilePane;
-    @FXML
-    public Pane usertablepane;
-    @FXML
-    public Pane songtablepane;
-    @FXML
-    public Pane playlisttablepane;
 
     private TableView<Song> SongTable;
     private TableColumn<Song, String> colSong;
     private TableView<Playlist> PlaylistTable;
     private TableColumn<Playlist, String> colPlaylist;
-    private TableView<User> UserTable;
+    private TableView<User> ListenerTable;
+    private TableView<User> ArtistTable;
     private TableColumn<User, String> colUser;
-    private TableColumn<User, String> colType;
-    private ArrayList<BooleanProperty> selectedRowList;
-    Callback<Integer,ObservableValue<Boolean>> colCbxState;
 
-    private ArrayList<User> users;
+
+    private ArrayList<User> listeners;
+    private ObservableList<User> listenerList;
+    private ArrayList<User> artists;
+    private ObservableList<User> artistList;
+    private ArrayList<Song> songs;
     private ObservableList<Song> songList;
-    private ObservableList<Playlist> playlists;
+    private ArrayList<Playlist> playlists;
+    private ObservableList<Playlist> favPlaylists;
 
     private User displayedUser;
 
     public ProfileController() {
         model = new ProfileModel();
-        ProfileView view = new ProfileView(this, model);
-        model.attach(view);
     }
 
     public void initialize() {
-        isFollowed.setOpacity(0);
-        username.setText(displayedUser.getUsername());
+        userNameLabel.setText(displayedUser.getUsername());
         if(displayedUser.getUser().isArtist())
-            usertype.setText("Artist");
+            userTypeLabel.setText("Artist");
         else
-            usertype.setText("Listener");
-        name.setText("Username");
-        type.setText("User Type");
-        if(!username.getText().equals(ModelAbstract.getUser().getUsername()))
-            isFollowed.setOpacity(1);
-
+            userTypeLabel.setText("Listener");
 
     }
 
-    private void setTableViewColumns() {
-        colUser = new TableColumn<User, String>("Name");
-        colType = new TableColumn<User, String>("Type");
+    private void setSongTableColumns() {
         colSong = new TableColumn<Song, String>("Favorite Song");
-        colPlaylist = new TableColumn<Playlist, String>("Playlists");
-
-        colUser.setMinWidth(50);
-        colType.setMinWidth(50);
         colSong.setMinWidth(350);
-        colPlaylist.setMinWidth(350);
-
-
-        colUser.setCellValueFactory(new PropertyValueFactory<>("username"));
-        colType.setCellValueFactory(new PropertyValueFactory<>("isartist"));
         colSong.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colPlaylist.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-        colUser.setEditable(true);
-        colType.setEditable(true);
         colSong.setEditable(false);
-        colPlaylist.setEditable(false);
-
-
 
         SongTable.setFixedCellSize(60.0);
         SongTable.setItems(songList);
         SongTable.getColumns().addAll(colSong);
     }
 
-    public void setIsFollowed(MouseEvent e) {
+    private void setPlaylistTableColumns() {
+        colPlaylist = new TableColumn<Playlist, String>("Playlists");
+        colPlaylist.setMinWidth(350);
+        colPlaylist.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colPlaylist.setEditable(false);
 
+        PlaylistTable.setFixedCellSize(60.0);
+        PlaylistTable.setItems(favPlaylists);
+        PlaylistTable.getColumns().addAll(colPlaylist);
     }
 
-    public void callPreviousScreen(MouseEvent e)  throws IOException
-    {
-        this.setScene(newProfilePane.getScene());
+    private void setListenerTableColumns() {
+        colUser = new TableColumn<User, String>("Name");
+        colUser.setMinWidth(50);
+        colUser.setCellValueFactory(new PropertyValueFactory<>("username"));
+        colUser.setEditable(false);
+
+        ListenerTable.setFixedCellSize(60.0);
+        ListenerTable.setItems(listenerList);
+        ListenerTable.getColumns().addAll(colUser);
+    }
+
+    private void setArtistTableColumns() {
+        colUser = new TableColumn<User, String>("Name");
+        colUser.setMinWidth(50);
+        colUser.setCellValueFactory(new PropertyValueFactory<>("username"));
+        colUser.setEditable(false);
+
+        ArtistTable.setFixedCellSize(60.0);
+        ArtistTable.setItems(artistList);
+        ArtistTable.getColumns().addAll(colUser);
+    }
+
+    public void goBack(MouseEvent mouseEvent) {
+        this.setScene(mainPane.getScene());
         this.switchScene(this.getScreenUrls()[0]);
     }
 
-    public void setDisplayedUser(User user) {
-        this.displayedUser = user;
+    public void showSongs(MouseEvent mouseEvent) {
+        //tableview should contain fav songs
+        tablePane.getChildren().removeAll();
+        System.out.println("createSongTable()");
+        SongTable = new TableView<Song>();
+        SongTable.setMinHeight(399.0);
+        SongTable.setMinWidth(1000.0);
+        SongTable.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        setSongList();
+        setSongTableColumns();
+        tablePane.getChildren().add(SongTable);
+    }
+
+    public void showPlaylists(MouseEvent mouseEvent) {
+        /*
+        favPlaylists = getFavPlaylists();
+        tableView.setItems(favPlaylists)
+
+        //Should be in model but model is empty and i dont get what you said you were trying to do cause there's nothing to use as basis
+        public Arraylist<Playlist> getFavPlaylists(){
+        ModelAbstract.getDbc().getFavoritePlaylist(userId);
+        }
+        */
+        tablePane.getChildren().removeAll();
+        System.out.println("createPlaylistTable()");
+        PlaylistTable = new TableView<Playlist>();
+        PlaylistTable.setMinHeight(399.0);
+        PlaylistTable.setMinWidth(1000.0);
+        PlaylistTable.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        setFavPlaylists();
+        setPlaylistTableColumns();
+        tablePane.getChildren().add(PlaylistTable);
+    }
+
+    public void showArtists(MouseEvent mouseEvent) {
+        //tableview should contain followed artists
+        tablePane.getChildren().removeAll();
+        System.out.println("createArtistTable()");
+        ArtistTable = new TableView<User>();
+        ArtistTable.setMinHeight(399.0);
+        ArtistTable.setMinWidth(1000.0);
+        ArtistTable.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        setArtistList();
+        setArtistTableColumns();
+        tablePane.getChildren().add(ArtistTable);
+    }
+
+    public void showListeners(MouseEvent mouseEvent) {
+        //tableview should contain followed listeners
+        tablePane.getChildren().removeAll();
+        System.out.println("createSongTable()");
+        ListenerTable = new TableView<User>();
+        ListenerTable.setMinHeight(399.0);
+        ListenerTable.setMinWidth(1000.0);
+        ListenerTable.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        setListenerList();
+        setListenerTableColumns();
+        tablePane.getChildren().add(ListenerTable);
+    }
+
+    public void followUser(MouseEvent mouseEvent) {
+        if (!(model.getDbc().userIsFollowing(model.getUser().getUser_id(), displayedUser.getUser_id()))){
+            model.getDbc().followUser(model.getUser().getUser_id(), displayedUser.getUser_id());
+    }
+        else
+            model.getDbc().unfollowUser(model.getUser().getUser_id(), displayedUser.getUser_id());
+    }
+
+    private void setSongList() {
+        System.out.println("getSongList()");
+        songs = model.getFavoriteSongs();
+        songList = FXCollections.observableArrayList(songs);
+    }
+
+    private void setFavPlaylists() {
+        System.out.println("getFavPlaylist()");
+        playlists = model.getFavoritePlaylists();
+        favPlaylists = FXCollections.observableArrayList(playlists);
+    }
+
+    private void setListenerList() {
+        System.out.println("getListenerList()");
+        listeners = model.getListenersFollowed();
+        listenerList = FXCollections.observableArrayList(listeners);
+    }
+
+    private void setArtistList() {
+        System.out.println("getArtistList()");
+        artists = model.getArtistsFollowed();
+        artistList = FXCollections.observableArrayList(artists);
     }
 }
