@@ -1,14 +1,11 @@
 package Model;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import AddSong.Song;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.Date;
+import java.util.ArrayList;
+import AddSong.Song;
 
 
 public class DatabaseConnector {
@@ -17,7 +14,7 @@ public class DatabaseConnector {
     private Connection connection;
     private LocalDate localdate = LocalDate.now();
     private DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    private Date date = new Date();
+    private Date date;
 
     private PreparedStatement selectUserFromId;
     private PreparedStatement selectSongFromId;
@@ -73,7 +70,7 @@ public class DatabaseConnector {
     private PreparedStatement selectAllSongsWAlbumYearOrder;
     private PreparedStatement selectAllSongsWAlbumUploadOrder;
     private PreparedStatement selectAllSongsWPlaylistUploadOrder;
-    
+
 
     private PreparedStatement selectSongsWithGenreIdByUpload;
     private PreparedStatement selectSongsWithArtistIdByUpload;
@@ -102,6 +99,7 @@ public class DatabaseConnector {
             se.printStackTrace();
         }
     }
+
 
     public static synchronized DatabaseConnector getInstance() {
         if (instance == null) {
@@ -244,7 +242,7 @@ public class DatabaseConnector {
             insertSongToTimesPlayed = connection.prepareStatement(stmt);
 
 
-     //Update
+            //Update
 
             stmt = "INSERT INTO Songs (song_name, song_path, song_blob, user_id) VALUES (?, ?, ?, ?)";
             insertSongWBlob = connection.prepareStatement(stmt);
@@ -336,51 +334,51 @@ public class DatabaseConnector {
             selectFavoritePlaylist = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
-            "NATURAL LEFT JOIN Albums\n" +
-            "NATURAL LEFT JOIN Genres\n" +
-            "NATURAL LEFT JOIN Accounts\n" +
-            " ORDER by songs.song_year";
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+                    " ORDER by songs.song_year";
 
             selectAllSongsWSongYearOrder = connection.prepareStatement(stmt);
 
 
             stmt = "SELECT * FROM Songs \n" +
-            "NATURAL LEFT JOIN Albums\n" +
-            "NATURAL LEFT JOIN Genres\n" +
-            "NATURAL LEFT JOIN Accounts\n" +
-            " ORDER by songs.created";
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+                    " ORDER by songs.created";
 
             selectAllSongsWSongUploadOrder = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
-            "NATURAL LEFT JOIN Albums\n" +
-            "NATURAL LEFT JOIN Genres\n" +
-            "NATURAL LEFT JOIN Accounts\n" +
-            "ORDER by albums.year";
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+                    "ORDER by albums.year";
 
             selectAllSongsWAlbumYearOrder = connection.prepareStatement(stmt);
 
 
             stmt = "SELECT * FROM Songs \n" +
-            "NATURAL LEFT JOIN Albums\n" +
-            "NATURAL LEFT JOIN Genres\n" +
-            "NATURAL LEFT JOIN Accounts\n" +
-            "ORDER by albums.created";
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+                    "ORDER by albums.created";
 
             selectAllSongsWAlbumUploadOrder = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Playlists\n" +
-             "NATURAL LEFT JOIN Playlist_Songs\n" +
-            "NATURAL LEFT JOIN Songs\n" +
-            "LEFT JOIN Albums using(user_id)\n" +
-            "NATURAL LEFT JOIN Genres\n" +
-            "NATURAL LEFT JOIN Accounts\n" +
-            "WHERE playlist_id = ? AND user_id = ?\n" +
-            "ORDER by playlists.created";
+                    "NATURAL LEFT JOIN Playlist_Songs\n" +
+                    "NATURAL LEFT JOIN Songs\n" +
+                    "LEFT JOIN Albums using(user_id)\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+                    "WHERE playlist_id = ? AND user_id = ?\n" +
+                    "ORDER by playlists.created";
 
             selectAllSongsWPlaylistUploadOrder=connection.prepareStatement(stmt);
 
-                    stmt = "SELECT * FROM Songs \n" +
+            stmt = "SELECT * FROM Songs \n" +
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Genres\n" +
                     "NATURAL LEFT JOIN Accounts\n" +
@@ -1203,7 +1201,7 @@ public class DatabaseConnector {
     }
 
 
-// FOR FAVORITE
+    // FOR FAVORITE
     public boolean SongIsSetFavorite(int user_id, int fave_id) {
         String stmt = "SELECT * FROM favorite WHERE fave_userid = ? AND fave_id = ? AND fave_type = ?";
         try {
@@ -1344,7 +1342,7 @@ public class DatabaseConnector {
 
 //pa check this part, not sure if tama or not
 
-//    check if album is empty if true we can delete it otherwise we can not
+    //    check if album is empty if true we can delete it otherwise we can not
     public boolean isAlbumEmpty(int album_id) {
         String stmt = "SELECT COUNT(*) FROM songs WHERE album_id=?";
         try {
@@ -1759,5 +1757,41 @@ public class DatabaseConnector {
         }
         return songs;
 
+    }
+    public boolean isPlaylistPublic(int playlist_id){
+        String stmt = "SELECT * FROM playlists WHERE playlist_id = ? AND publish = 1";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, playlist_id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+                return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void setPlaylistPublic (int playlist_id){
+        String stmt =  "UPDATE playlists SET publish = 1 WHERE playlist_id = ?";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,playlist_id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removePlaylistPublic (int playlist_id)
+    {
+        String stmt =  "UPDATE playlists SET publish = 0 WHERE playlist_id = ?";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,playlist_id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
