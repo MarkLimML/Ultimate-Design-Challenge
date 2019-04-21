@@ -72,6 +72,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
     }
 
     public void initialize() {
+        searchSong = new Button();
         searchSong.setVisible(false);
         playlistScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         playlistPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -221,13 +222,9 @@ public class DashboardController extends dashboard.ControllerAbstract {
     }
 
     public void switchToUserInfo(MouseEvent mouseEvent) {
-        ProfileModel pm = new ProfileModel();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[8]));
-            this.setRoot(loader.load());
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        }
+        System.out.println("switchToUserInfo()");
+        this.setScene(mainPane.getScene());
+        this.switchScene(this.getScreenUrls()[8]);
     }
 
     public void loggingOut() {
