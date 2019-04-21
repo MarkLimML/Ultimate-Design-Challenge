@@ -207,6 +207,7 @@ public class ProfileController extends ControllerAbstract {
     private void setListenerList() {
         System.out.println("getListenerList()");
         listeners = model.getListenersFollowed();
+        System.out.println(listeners.get(0).getUsername());
         listenerList = FXCollections.observableArrayList(listeners);
     }
 

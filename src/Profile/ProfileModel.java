@@ -20,12 +20,14 @@ public class ProfileModel extends ModelAbstract {
         System.out.println("getArtistsFollowed()");
         ArrayList<User> artists = new ArrayList<>();
 
-        User u = new User();
+        User u;
         ResultSet rs = getDbc().getUserFollowed(ModelAbstract.getUser().getUser_id(), 1);
         try {
             while (rs.next()) {
+                u = new User();
                 u.setUsername(rs.getString("username"));
                 artists.add(u);
+                System.out.println(u.getUsername());
             }
         } catch (SQLException se) {
             se.printStackTrace();
@@ -38,12 +40,14 @@ public class ProfileModel extends ModelAbstract {
         System.out.println("getListenersFollowed()");
         ArrayList<User> listeners = new ArrayList<>();
 
-        User u = new User();
+        User u;
         ResultSet rs = getDbc().getUserFollowed(ModelAbstract.getUser().getUser_id(), 0);
         try {
             while (rs.next()) {
+                u = new User();
                 u.setUsername(rs.getString("username"));
                 listeners.add(u);
+                System.out.println(u.getUsername());
             }
         } catch (SQLException se) {
             se.printStackTrace();
@@ -55,10 +59,11 @@ public class ProfileModel extends ModelAbstract {
     public ArrayList<PlaylistModel> getFavoritePlaylists() {
         System.out.println("getFavoritePlaylists()");
         ArrayList<PlaylistModel> favplaylists = new ArrayList<>();
-        PlaylistModel p = new PlaylistModel();
+        PlaylistModel p;
         ResultSet rs = getDbc().getFavoritePlaylist(ModelAbstract.getUser().getUser_id());
         try {
             while (rs.next()) {
+                p = new PlaylistModel();
                 p.setPlaylistID(rs.getInt("playlist_id"));
                 p.setAlbumTitle(rs.getString("title"));
                 favplaylists.add(p);
@@ -72,10 +77,11 @@ public class ProfileModel extends ModelAbstract {
     public ArrayList<Song> getFavoriteSongs() {
         System.out.println("getFavoriteSongs()");
         ArrayList<Song> songs = new ArrayList<>();
-        Song s = new Song();
+        Song s;
         ResultSet rs = getDbc().getFavoriteSongs(ModelAbstract.getUser().getUser_id());
         try {
             while (rs.next()) {
+                s = new Song();
                 s.setName(rs.getString("song_name"));
                 songs.add(s);
             }
