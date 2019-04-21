@@ -2,6 +2,9 @@ package AddSong;
 
 import javafx.stage.FileChooser;
 
+import java.sql.Date;
+
+
 public class Song implements FileF
 {
     private int songId;
@@ -16,6 +19,17 @@ public class Song implements FileF
     private String songPath;
     private String imgPath;
     private int user_id;
+    private Date created;
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+
 
     @Override
     public FileF fileCreate()
