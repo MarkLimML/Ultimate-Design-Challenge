@@ -5,19 +5,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import AddFromLib.AddFromLibView;
-import Model.ModelAbstract;
 import dashboard.ControllerAbstract;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class AddSongController extends ControllerAbstract
-{   
-	/*
+{
+    public RadioButton rbNewAlbum;
+    public RadioButton rbYourAlbums;
+    public ComboBox cmbAlbumName;
+    /*
 	 * concrete controller
 	 * factory packagey later
 	 *
@@ -105,56 +104,91 @@ public class AddSongController extends ControllerAbstract
     @FXML
     public void initialize() 
     {
+        artistNameInput.setVisible(false);
+        artistLabel.setVisible(false);
+
     	songGenreInput.getItems().removeAll(songGenreInput.getItems());
-    	songGenreInput.getItems().addAll("", "Pop", "Rock", "K-Pop", "J-Pop",
-                                                "Metal", "Jazz", "Country", "Instrumental", "Classic");
+    	songGenreInput.getItems().addAll("", "Pop", "Rock", "Kpop", "Metal", "Jazz", "Country", "Instrumental", "Classic");
     	songGenreInput.getSelectionModel().select("");
 
-    	artistNameInput.setText(ModelAbstract.getUser().getUsername());
-    	System.out.println(ModelAbstract.getUser().getUsername());
+    	model.setUserAlbumsFromDb();
+    	ArrayList<Album> albums = model.getUserAlbums();
 
-    	artistNameInput.setEditable(false);
+    	if (albums.size() == 0) {
+    	    rbYourAlbums.setDisable(true);
+        } else {
+            for (Album a : albums) {
+                cmbAlbumName.getItems().add(a.getAlbum_name() + " (" + a.getYear() + ")");
+            }
+        }
+        newAlbumMode();
+
+        cmbAlbumName.setEditable(false);
         songChosenPath.setEditable(false);
         imageChosenPath.setEditable(false);
     }
 
 
-	public void saveToDatabase(MouseEvent e)
-    {
-        String album = albumNameInput.getText();
-        String artist = artistNameInput.getText();
+	public void saveToDatabase(MouseEvent e) {
+        String album;
+//        String artist = artistNameInput.getText();
         String genre = songGenreInput.getValue();
 
-        System.out.println(album);
-        model.getSong().setAlbum(album);
+        Boolean validInputs = true;
 
-        System.out.println(artist);
-        model.getSong().setArtist(artist);
-        model.getSong().setGenre(genre);
-        model.getSong().setName(songNameInput.getText());
-        model.getSong().setYear(Integer.parseInt(albumYearInput.getText()));
-        model.getSong().setUser_id(model.getUser_id());
+//        System.out.println(artist);
+//        model.getSong().setArtist(artist);
 
-        Metadata metadata = model.returnSongMetadata(album, artist, genre);
-        metadata.saveToDatabase(model.getSong());
+        if (songNameInput.getText().trim().length() == 0) {
+            validInputs = false;
+        } if (songChosenPath.getText().trim().length() == 0) {
+            validInputs = false;
+        } if (rbNewAlbum.isSelected()) {
+            try {
+                int num = Integer.parseInt(albumYearInput.getText().trim());
+                if (num < 1)
+                    validInputs = false;
+            } catch (NumberFormatException ne) {
+                validInputs = false;
+            }
+            if (imageChosenPath.getText().trim().length() == 0) {
+                validInputs = false;
+            }
+        }
+
+        if (validInputs) {
+            model.getSong().setGenre(genre);
+            model.getSong().setName(songNameInput.getText());
+            model.getSong().setUser_id(model.getUser_id());
+
+
+            if (rbNewAlbum.isSelected()) {
+                album = albumNameInput.getText();
+                model.getSong().setAlbum(album);
+                model.getSong().setYear(Integer.parseInt(albumYearInput.getText()));
+            } else {
+                int index = cmbAlbumName.getItems().indexOf(cmbAlbumName.getValue());
+                model.getSong().setYear(model.getUserAlbums().get(index).getYear());
+                model.getSong().setAlbumId(model.getUserAlbums().get(index).getAlbum_id());
+                album = model.getUserAlbums().get(index).getAlbum_name();
+            }
+
+//        Metadata metadata = model.returnSongMetadata(album, artist, genre);
+            Metadata metadata = model.returnSongMetadata(album, genre);
+            metadata.saveToDatabase(model.getSong());
+            callPreviousScreen(e);
+        } else {
+            System.out.println("Invalid inputs.");
+        }
+
     }
     
-    public void callPreviousScreen(MouseEvent e)  throws IOException
+    public void callPreviousScreen(MouseEvent e)
     {
         this.setScene(newSongPane.getScene());
         this.switchScene(this.getScreenUrls()[0]);
     }
 
-    /*
-            0 = "/dashboard/dashboard.fxml",
-            1 = "/logIn/Login.fxml",
-            2 = "/register/Register.fxml",
-            3 = "/AddSong/NewSongView.fxml",
-            4 = "/makePlaylist/makePlaylist.fxml"
-
-            this.setScene(mainPane.getScene());
-            this.switchScene(this.getScreenUrls()[3]);
-     */
 
     public void getImage(MouseEvent e)
     {
@@ -210,7 +244,8 @@ public class AddSongController extends ControllerAbstract
             {
                 File file2 = new File(file.getAbsolutePath());
 
-                String songPath = "src\\mediaPlayer\\song\\" + file2.getName();
+
+                String songPath = "src/mediaPlayer/song/" + file2.getName();
 
                 if(file2.renameTo(new File(songPath)))
                 {
@@ -229,5 +264,35 @@ public class AddSongController extends ControllerAbstract
                 e1.printStackTrace();
             }
         }
+    }
+
+    public void newAlbumMode() {
+        if (rbYourAlbums.isSelected()) {
+            rbYourAlbums.setSelected(false);
+        }
+        rbNewAlbum.setSelected(true);
+
+        cmbAlbumName.setVisible(true);
+
+        albumNameInput.setDisable(false);
+        albumYearInput.setDisable(false);
+        chooseImageButton.setDisable(false);
+        imageChosenPath.setDisable(false);
+
+    }
+
+    public void selectAlbumMode() {
+        if (rbNewAlbum.isSelected()) {
+            rbNewAlbum.setSelected(false);
+        }
+        rbYourAlbums.setSelected(true);
+
+        cmbAlbumName.setVisible(false);
+
+        albumNameInput.setDisable(true);
+        albumYearInput.setDisable(true);
+        chooseImageButton.setDisable(true);
+        imageChosenPath.setDisable(true);
+
     }
 }

@@ -43,7 +43,10 @@ public class WithAlbumNGenre implements Metadata
         songPath = song.getSongPath();
         genre = song.getGenre();
 
-        album_id = dbc.getAlbumIdFromNameYear(album, year);
+        if (dbc.albumExists(song.getAlbumId()))
+            album_id = song.getAlbumId();
+        else
+            album_id = dbc.getAlbumIdFromNameYearUser(album, year, user_id);
         genre_id = dbc.getGenreIdFromName(genre);
         if (album_id == -1) {
             dbc.createAlbum(album, imgPath, year);

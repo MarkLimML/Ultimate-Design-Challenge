@@ -34,7 +34,7 @@ public class WithAll implements Metadata
 
     @Override
     public void saveToDatabase(Song song) {
-        int album_id, artist_id, genre_id;
+        int album_id, genre_id;
 
         user_id = song.getUser_id();
         name = song.getName();
@@ -48,7 +48,10 @@ public class WithAll implements Metadata
         System.out.println(artist);
 //        artist_id = dbc.getArtistIdFromName(artist);
 //        System.out.println(artist_id);
-        album_id = dbc.getAlbumIdFromNameYear(album, user_id);
+        if (dbc.albumExists(song.getAlbumId()))
+            album_id = song.getAlbumId();
+        else
+            album_id = dbc.getAlbumIdFromNameYearUser(album, year, user_id);
         genre_id = dbc.getGenreIdFromName(genre);
         System.out.println("if (artist_id == -1) {");
 //        if (artist_id == -1) {

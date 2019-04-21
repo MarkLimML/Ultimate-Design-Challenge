@@ -32,6 +32,7 @@ public class WithAlbum implements Metadata
     public void saveToDatabase(Song song) {
         int album_id;
 
+
         user_id = song.getUser_id();
         name = song.getName();
         album = song.getAlbum();
@@ -39,7 +40,11 @@ public class WithAlbum implements Metadata
         imgPath = song.getImgPath();
         songPath = song.getSongPath();
 
-        album_id = dbc.getAlbumIdFromNameYear(album, year);
+        if (dbc.albumExists(song.getAlbumId()))
+            album_id = song.getAlbumId();
+        else
+            album_id = dbc.getAlbumIdFromNameYearUser(album, year, user_id);
+
         if (album_id == -1) {
             dbc.createAlbum(album, imgPath, year);
             album_id = dbc.getAlbumIdFromNameYear(album, year);

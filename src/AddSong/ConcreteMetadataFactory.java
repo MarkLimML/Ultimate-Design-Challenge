@@ -11,9 +11,9 @@ public class ConcreteMetadataFactory implements MetadataFactory
                 case "WithAll":
                     metadata = new WithAll();
                     break;
-                case "WithAlbumNArtist":
-                    metadata = new WithAlbumNArtist();
-                    break;
+//                case "WithAlbumNArtist":
+//                    metadata = new WithAlbumNArtist();
+//                    break;
                 case "WithAlbumNGenre":
                     metadata = new WithAlbumNGenre();
                     break;

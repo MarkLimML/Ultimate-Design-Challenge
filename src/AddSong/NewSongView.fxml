@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
@@ -32,14 +35,17 @@
                   <Label fx:id="songNameLabel" text="Song Name" GridPane.valignment="TOP" />
                   <Label fx:id="songGenreLabel" text="Song Genre" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                   <Label fx:id="artistLabel" text="Artist" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-                  <Label fx:id="albumNameLabel" text="Album name" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+                  <Label fx:id="albumNameLabel" text="Album name" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
                   <Label fx:id="albumYearLabel" text="Album Year" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="TOP" />
                   <Label fx:id="albumArtLabel" text="Album Art" GridPane.rowIndex="4" GridPane.valignment="TOP" />
                   <Button fx:id="chooseImageButton" mnemonicParsing="false" onMouseClicked="#getImage" prefHeight="25.0" prefWidth="140.0" text="Choose File" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                   <TextField fx:id="songNameInput" GridPane.columnSpan="2147483647" GridPane.valignment="CENTER" />
                   <TextField fx:id="artistNameInput" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <TextField fx:id="albumNameInput" GridPane.rowIndex="3" />
-                  <TextField fx:id="albumYearInput" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <TextField fx:id="albumNameInput" maxWidth="-Infinity" minHeight="-Infinity" minWidth="303.0" prefHeight="27.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="albumYearInput" maxWidth="-Infinity" prefHeight="27.0" prefWidth="213.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <opaqueInsets>
+                  <Insets left="20.0" />
+               </opaqueInsets></TextField>
                   <Button fx:id="saveButton2" mnemonicParsing="false" onMouseClicked="#saveToDatabase" text="Save Song" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
                   <TextField fx:id="imageChosenPath" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                   <Button fx:id="backButton2" mnemonicParsing="false" onMouseClicked="#callPreviousScreen" text="Back" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
@@ -47,6 +53,17 @@
                   <Label fx:id="songFileLabel" text="Song File" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                   <TextField fx:id="songChosenPath" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                   <ComboBox fx:id="songGenreInput" prefWidth="150.0" GridPane.rowIndex="2" />
+            <Label text="Album" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+            <FlowPane hgap="20.0" maxHeight="58.0" prefHeight="0.0" prefWidth="200.0" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+               <children>
+                  <RadioButton fx:id="rbNewAlbum" mnemonicParsing="false" onMouseClicked="#newAlbumMode" text="New Album" />
+                  <RadioButton fx:id="rbYourAlbums" mnemonicParsing="false" onMouseClicked="#selectAlbumMode" text="Select from your albums" />
+               </children>
+               <padding>
+                  <Insets left="20.0" top="10.0" />
+               </padding>
+            </FlowPane>
+            <ComboBox fx:id="cmbAlbumName" prefHeight="27.0" prefWidth="306.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
 

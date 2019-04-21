@@ -34,7 +34,7 @@ public class WithAlbumNArtist implements Metadata
 
     @Override
     public void saveToDatabase(Song song) {
-        int album_id, artist_id;
+        int album_id;
 
         user_id = song.getUser_id();
         name = song.getName();
@@ -45,7 +45,10 @@ public class WithAlbumNArtist implements Metadata
         songPath = song.getSongPath();
 
 //        artist_id = dbc.getArtistIdFromName(artist);
-        album_id = dbc.getAlbumIdFromNameYear(album, year);
+        if (dbc.albumExists(song.getAlbumId()))
+            album_id = song.getAlbumId();
+        else
+            album_id = dbc.getAlbumIdFromNameYearUser(album, year, user_id);
 //
 //        if (artist_id == -1) {
 //            dbc.createArtist(artist);

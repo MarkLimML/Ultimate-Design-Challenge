@@ -2,6 +2,8 @@ package AddSong;
 
 import Model.ModelAbstract;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AddSongModel extends ModelAbstract {
@@ -9,7 +11,8 @@ public class AddSongModel extends ModelAbstract {
     private AddSongController controller;
 
     private Song song;
-    private int user_id;
+    private ArrayList<Album> userAlbums;
+
 
     /*
     public String year;
@@ -42,26 +45,33 @@ public class AddSongModel extends ModelAbstract {
         song = new Song();
     }
 
-    public Metadata returnSongMetadata(String album, String artist, String genre) {
+    public void setUserAlbumsFromDb() {
+        ResultSet rs = getDbc().getAlbumsOfArtist(ModelAbstract.getUser().getUser_id());
+        userAlbums = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                Album album = new Album();
+                album.setAlbum_id(rs.getInt("album_id"));
+                album.setAlbum_name(rs.getString("album_name"));
+                album.setYear(rs.getInt("year"));
+                userAlbums.add(album);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    public Metadata returnSongMetadata(String album, String genre) {
         Metadata metadata = null;
-        if (!album.equals("")&&!artist.equals("")&&!genre.equals("")){
+        if (!album.equals("")&&!genre.equals("")){
             ConcreteMetadataFactory factory = new ConcreteMetadataFactory();
             metadata = factory.create("WithAll");
-        }  else if (!album.equals("")&&!artist.equals("")){
-            ConcreteMetadataFactory factory = new ConcreteMetadataFactory();
-            metadata = factory.create("WithAlbumNArtist");
         } else if (!album.equals("")&&!genre.equals("")){
             ConcreteMetadataFactory factory = new ConcreteMetadataFactory();
             metadata = factory.create("WithAlbumNGenre");
-        } else if (!artist.equals("")&&!genre.equals("")){
-            ConcreteMetadataFactory factory = new ConcreteMetadataFactory();
-            metadata = factory.create("WithArtistNGenre");
         } else if (!album.equals("")){
             ConcreteMetadataFactory factory = new ConcreteMetadataFactory();
             metadata = factory.create("WithAlbum");
-        } else if (!artist.equals("")){
-            ConcreteMetadataFactory factory = new ConcreteMetadataFactory();
-            metadata = factory.create("WithArtist");
         } else if (!genre.equals("")) {
             ConcreteMetadataFactory factory = new ConcreteMetadataFactory();
             metadata = factory.create("WithGenre");
@@ -79,5 +89,7 @@ public class AddSongModel extends ModelAbstract {
         this.controller = controller;
     }
 
-
+    public ArrayList<Album> getUserAlbums() {
+        return userAlbums;
+    }
 }
