@@ -48,6 +48,15 @@ public class PlaylistViewModel extends ModelAbstract{
 		}
 	}
 
+	public void deleteSongsInPlaylist(ArrayList<Song> songs) {
+		for (Song s : songs) {
+			if (ModelAbstract.getDbc().isSongInPlaylist(
+					s.getSongId(), playlistModel.getPlaylistID())) {
+				ModelAbstract.getDbc().deleteSongInPlaylist(s.getSongId(), playlistModel.getPlaylistID());
+			}
+		}
+}
+
 	public void setController(PlaylistViewController controller) {
 		System.out.println("setController()");
 		this.controller = controller;

@@ -9,15 +9,17 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="playlistViewPane" prefHeight="600.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="PlaylistView.PlaylistViewController">
+<Pane fx:id="playlistViewPane" prefHeight="600.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PlaylistView.PlaylistViewController">
    <children>
+      <Button fx:id="deleteSongs" layoutX="800.0" layoutY="49.0" onMouseClicked="#deleteCheckedSongs" mnemonicParsing="false" prefHeight="71.0" prefWidth="120.0" text="Delete Songs" />
+      <Button fx:id="btnEndDeleteMode" layoutX="925.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#exitDeleteSongMode" prefHeight="71.0" prefWidth="120.0" text="Done" />
       <Label fx:id="playlistTitle" layoutX="89.0" layoutY="39.0" text="Playlist">
          <font>
             <Font size="60.0" />
          </font>
       </Label>
-      <Button fx:id="btnBack" layoutX="916.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#returnToDashboard" prefHeight="71.0" prefWidth="107.0" text="Back" />
-      <Button fx:id="btnAddSong" layoutX="793.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#addFromUserLibrary" prefHeight="71.0" prefWidth="119.0" text="Add Song" />
+      <Button fx:id="btnBack" layoutX="925.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#returnToDashboard" prefHeight="71.0" prefWidth="120.0" text="Back" />
+      <Button fx:id="btnAddSong" layoutX="800.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#addFromUserLibrary" prefHeight="71.0" prefWidth="120.0" text="Add Song" />
       <Label layoutX="135.0" layoutY="152.0" prefHeight="63.0" prefWidth="100.0" text="Title">
          <font>
             <Font size="24.0" />
@@ -37,13 +39,13 @@
                   </TableView>
                </children></AnchorPane>
          </content></ScrollPane>
-      <Button fx:id="searchButton" layoutX="674.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#switchToSearch" prefHeight="71.0" prefWidth="119.0" text="Search" />
-      <Button fx:id="deleteSongs" layoutX="554.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#deleteCheckedSongs" prefHeight="71.0" prefWidth="119.0" text="Delete Song" />
+      <Button fx:id="searchButton" layoutX="675.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#switchToSearch" prefHeight="71.0" prefWidth="120.0" text="Search" />
+      <Button fx:id="deleteSongMode" layoutX="550.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#enterDeleteSongMode" prefHeight="71.0" prefWidth="120.0" text="Delete Song" />
       <Label layoutX="564.0" layoutY="175.0" text="Sort by" />
 
       <Button fx:id="sortByUpload" layoutX="616.0" layoutY="170.0" mnemonicParsing="false" onMouseClicked="#sortUpload" text="Upload date" />
       <Button fx:id="sortByYear" layoutX="719.0" layoutY="170.0" mnemonicParsing="false" text="Year" />
-      <Button fx:id="publicButton" layoutX="304.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#setToPublicOrNot" text="Public" />
-      <Button fx:id="addFavorite" layoutX="302.0" layoutY="85.0" mnemonicParsing="false" onMouseClicked="#addToFavorites" text="Favorite" />
+      <Button fx:id="publicButton" layoutX="89.0" layoutY="120.0" mnemonicParsing="false" onMouseClicked="#setToPublicOrNot" text="Public" />
+      <Button fx:id="addFavorite" layoutX="151.0" layoutY="120.0" mnemonicParsing="false" onMouseClicked="#addToFavorites" text="Favorite" />
    </children>
 </Pane>

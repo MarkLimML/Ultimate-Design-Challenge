@@ -36,6 +36,8 @@ public class PlaylistViewController extends ControllerAbstract {
     public Button sortByYear;
     public Button publicButton;
     public Button addFavorite;
+    public Button deleteSongMode;
+    public Button btnEndDeleteMode;
 
     private PlaylistViewModel model;
 
@@ -62,6 +64,12 @@ public class PlaylistViewController extends ControllerAbstract {
     @FXML
     public TableColumn<Song, String> colAlbum;
 
+    private TableColumn<Song, Boolean> colCheckBox;
+    private ArrayList<BooleanProperty> selectedRowList;
+    private Callback<Integer,ObservableValue<Boolean>> colCbxState;
+
+
+
     private ArrayList<Song> songArrayList;
     private ObservableList<Song> songList;
     private MediaPlayerStage mediaPlayerStage;
@@ -73,7 +81,10 @@ public class PlaylistViewController extends ControllerAbstract {
     }
 
     public void initialize() {
+
         System.out.println("PlaylistViewController.initialize()");
+        deleteSongs.setVisible(false);
+        btnEndDeleteMode.setVisible(false);
     }
 
     public void setObservableValues () {
@@ -89,8 +100,8 @@ public class PlaylistViewController extends ControllerAbstract {
 
 
         if (model.getPlaylistType().equals("UserPlaylist")) {
-            //btnAddSong.setVisible(true);
-            btnAddSong.setVisible(false);
+            btnAddSong.setVisible(true);
+            //btnAddSong.setVisible(false);
         } else {
             btnAddSong.setVisible(false);
         }
@@ -115,11 +126,49 @@ public class PlaylistViewController extends ControllerAbstract {
 
         tableView.setFixedCellSize(40.0);
 
-        this.addTableButton();
         tableView.getColumns().clear();
-        tableView.getColumns().addAll(colBtn, colTitle, colArtist, colAlbum);
+
+        if (deleteSongs.isVisible()) {
+            this.addTableCheckboxColumn();
+            tableView.getColumns().add(colCheckBox);
+        } else {
+            this.addTableButton();
+            tableView.getColumns().add(colBtn);
+        }
+
+        tableView.getColumns().addAll(colTitle, colArtist, colAlbum);
         songList = getSongList();
         tableView.setItems(songList);
+    }
+
+    public void addTableCheckboxColumn () {
+        selectedRowList = new ArrayList<BooleanProperty>();
+        for(Song s : songList) {
+            selectedRowList.add( new SimpleBooleanProperty() );
+        }
+        colCbxState = new Callback<Integer,ObservableValue<Boolean>>() {
+            @Override
+            public ObservableValue<Boolean> call(Integer index) {
+                System.out.println("return selectedRowList.get(index);");
+
+                System.out.println(selectedRowList.get(index));
+                return selectedRowList.get(index);
+            }
+        };
+
+        colCheckBox = new TableColumn<>("");
+        colCheckBox.setMinWidth(50);
+        colCheckBox.setCellValueFactory( new Callback<TableColumn.CellDataFeatures<Song, Boolean>, ObservableValue<Boolean>>()  {
+            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Song, Boolean> cdf) {
+                TableView<Song> tblView = cdf.getTableView();
+                Song rowData = cdf.getValue();
+                int rowIndex = tblView.getItems().indexOf(rowData);
+                return selectedRowList.get(rowIndex);
+            }
+        });
+
+        colCheckBox.setCellFactory(CheckBoxTableCell.forTableColumn(colCbxState));
+        colCheckBox.setEditable(true);
     }
 
     public void addTableButton() {
@@ -295,7 +344,10 @@ public class PlaylistViewController extends ControllerAbstract {
     }
 
     public void setToPublicOrNot(MouseEvent mouseEvent) {
-
+        if (!(model.getDbc().isPlaylistPublic(model.getDbc().getPlaylistIdFromTitleUser(model.getPlaylistTitle(), model.getUser().getUser_id()))))
+        { model.getDbc().setPlaylistPublic(model.getDbc().getPlaylistIdFromTitleUser(model.getPlaylistTitle(), model.getUser().getUser_id()));}
+        else
+            model.getDbc().removePlaylistPublic(model.getDbc().getPlaylistIdFromTitleUser(model.getPlaylistTitle(), model.getUser().getUser_id()));
     }
 
     public void addToFavorites(MouseEvent mouseEvent) {
@@ -308,4 +360,45 @@ public class PlaylistViewController extends ControllerAbstract {
         else
             model.getDbc().removeIsFavoritePlaylist(model.getUser().getUser_id(), model.getDbc().getPlaylistIdFromTitleUser(model.getPlaylistTitle(), model.getUser().getUser_id()));
     }
+
+    public void enterDeleteSongMode(MouseEvent mouseEvent) {
+        searchButton.setVisible(false);
+        deleteSongMode.setVisible(false);
+        btnAddSong.setVisible(false);
+        btnBack.setVisible(false);
+        publicButton.setVisible(false);
+        addFavorite.setVisible(false);
+
+        deleteSongs.setVisible(true);
+        btnEndDeleteMode.setVisible(true);
+        setObservableValues();
+    }
+
+    public void exitDeleteSongMode(MouseEvent mouseEvent) {
+        searchButton.setVisible(true);
+        deleteSongMode.setVisible(true);
+        btnAddSong.setVisible(true);
+        btnBack.setVisible(true);
+        publicButton.setVisible(true);
+        addFavorite.setVisible(true);
+
+        deleteSongs.setVisible(false);
+        btnEndDeleteMode.setVisible(false);
+        setObservableValues();
+    }
+
+    public void deleteSelectedList(MouseEvent mouseEvent) {
+        System.out.println("saveUserList(MouseEvent mouseEvent)");
+        ArrayList<Song> selectedSongs = new ArrayList<>();
+
+        for (BooleanProperty p: selectedRowList) {
+            int index;
+            if (p.getValue()) {
+                index = selectedRowList.indexOf(p);
+                selectedSongs.add(songList.get(index));
+            }
+        }
+        model.deleteSongsInPlaylist(selectedSongs);
+    }
+
 }
