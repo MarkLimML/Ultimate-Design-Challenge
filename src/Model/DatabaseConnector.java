@@ -289,22 +289,22 @@ public class DatabaseConnector {
 
             updatePublish = connection.prepareStatement(stmt);
 
-            stmt = "SELECT DISTINCT * FROM Songs\n" +
-                    "NATURAL LEFT JOIN Genres\n" +
-//                    "NATURAL LEFT JOIN Artists\n" +
-                    "NATURAL LEFT JOIN Albums\n" +
-                    "NATURAL LEFT JOIN Times_played\n" +
-                    "WHERE fave_userid = ? AND fave_id=? AND fave_type=?\n" +
-                    "DESC LIMIT 10";
+            stmt = "SELECT * \n" +
+                    "FROM songs\n" +
+                    "INNER JOIN favorite\n" +
+                    "ON songs.song_id = favorite.fave_id\n" +
+                    "INNER JOIN accounts\n" +
+                    "ON favorite.fave_userid = accounts.user_id\n" +
+                    "WHERE accounts.user_id = ? AND favorite.fave_type = ?";
             selectFavoriteSongs = connection.prepareStatement(stmt);
 
-            stmt = "SELECT DISTINCT * FROM Songs\n" +
-                    "NATURAL LEFT JOIN Genres\n" +
-//                    "NATURAL LEFT JOIN Artists\n" +
-                    "NATURAL LEFT JOIN Albums\n" +
-                    "NATURAL LEFT JOIN Times_played\n" +
-                    "WHERE fave_userid = ? AND fave_id=? AND fave_type=?\n" +
-                    "DESC LIMIT 10";
+            stmt = "SELECT * \n" +
+                    "FROM playlists\n" +
+                    "INNER JOIN favorite\n" +
+                    "ON playlists.playlist_id = favorite.fave_id\n" +
+                    "INNER JOIN accounts\n" +
+                    "ON favorite.fave_userid = accounts.user_id\n" +
+                    "WHERE accounts.user_id = ? AND favorite.fave_type = ?";
             selectFavoritePlaylist = connection.prepareStatement(stmt);
 
 
@@ -1231,11 +1231,10 @@ public class DatabaseConnector {
         return false;
     }
 
-    public ResultSet getFavoriteSongs (int user_id, int fave_id) {
+    public ResultSet getFavoriteSongs (int user_id) {
         try {
             selectFavoriteSongs.setInt(1, user_id);
-            selectFavoriteSongs.setInt(2, fave_id);
-            selectFavoriteSongs.setInt(3, 0);
+            selectFavoriteSongs.setInt(2, 0);
             ResultSet rs = selectFavoriteSongs.executeQuery();
             return rs;
         } catch (SQLException se) {
@@ -1244,11 +1243,10 @@ public class DatabaseConnector {
         return null;
     }
 
-    public ResultSet getFavoritePlaylist (int user_id, int fave_id) {
+    public ResultSet getFavoritePlaylist (int user_id) {
         try {
             selectFavoritePlaylist.setInt(1, user_id);
-            selectFavoritePlaylist.setInt(2, fave_id);
-            selectFavoritePlaylist.setInt(3, 1);
+            selectFavoritePlaylist.setInt(2, 1);
             ResultSet rs = selectFavoritePlaylist.executeQuery();
             return rs;
         } catch (SQLException se) {
