@@ -26,6 +26,7 @@ import mediaPlayer.MediaPlayerController;
 import mediaPlayer.MediaPlayerStage;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class PlaylistViewController extends ControllerAbstract {
@@ -63,6 +64,10 @@ public class PlaylistViewController extends ControllerAbstract {
     public TableColumn<Song, String> colArtist;
     @FXML
     public TableColumn<Song, String> colAlbum;
+    @FXML
+    public TableColumn<Song, Date> colUploadDate;
+    @FXML
+    public TableColumn<Song, Integer> colYear;
 
     private TableColumn<Song, Boolean> colCheckBox;
     private ArrayList<BooleanProperty> selectedRowList;
@@ -114,7 +119,7 @@ public class PlaylistViewController extends ControllerAbstract {
         tablePane.getChildren().add(tableView);
     }
 
-    private void setTableViewColumns() {
+    /*private void setTableViewColumns() {
         System.out.println("setTableViewColumns()");
 
         colTitle.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -137,6 +142,27 @@ public class PlaylistViewController extends ControllerAbstract {
         }
 
         tableView.getColumns().addAll(colTitle, colArtist, colAlbum);
+        songList = getSongList();
+        tableView.setItems(songList);
+    }*/
+
+    private void setTableViewColumns() {
+        System.out.println("setTableViewColumns()");
+
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
+        colArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        colUploadDate.setCellValueFactory(new PropertyValueFactory<>("created"));
+        colYear.setCellValueFactory(new PropertyValueFactory<>("year"));
+
+        colTitle.setSortType(TableColumn.SortType.DESCENDING);
+        colAlbum.setSortable(true);
+
+        tableView.setFixedCellSize(40.0);
+
+        this.addTableButton();
+        tableView.getColumns().clear();
+        tableView.getColumns().addAll(colBtn, colTitle, colArtist, colAlbum, colUploadDate, colYear);
         songList = getSongList();
         tableView.setItems(songList);
     }
