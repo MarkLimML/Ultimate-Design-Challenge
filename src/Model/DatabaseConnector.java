@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import AddSong.Song;
 
-
 public class DatabaseConnector {
 
     private static DatabaseConnector instance = null;
@@ -88,7 +87,6 @@ public class DatabaseConnector {
 
     private PreparedStatement sortSongInPlaylistByUpload;
     private PreparedStatement sortSongInPlaylistByYear;
-
 
 
 
@@ -493,6 +491,7 @@ public class DatabaseConnector {
                     "ORDER by albums.year";
             selectSongsWithYearByAlbumYear = connection.prepareStatement(stmt);
 
+
             stmt= "Select * \n" +
                     "from playlist INNER JOIN playlist_songs \n" +
                    "on playlists.playlist_id = playlist_songs.playlist_id \n"+
@@ -509,8 +508,6 @@ public class DatabaseConnector {
                     "WHERE playlists.user_id =? AND playlists.playlist_id=? \n"+
                     "ORDER BY songs.song_year";
             sortSongInPlaylistByYear=connection.prepareStatement(stmt);
-
-
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -820,12 +817,29 @@ public class DatabaseConnector {
 //        return -1;
 //    }
 
-    public int getAlbumIdFromNameYear (String name, int user_id) {
+    public int getAlbumIdFromNameYear (String name, int year) {
         String stmt = "SELECT album_id FROM Albums WHERE album_name LIKE ? AND year = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setString(1, name);
-            ps.setInt(2, user_id);
+            ps.setInt(2, year);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return -1;
+    }
+
+    public int getAlbumIdFromNameYearUser (String name, int year, int user_id) {
+        String stmt = "SELECT album_id FROM Albums WHERE album_name LIKE ? AND year = ? AND user_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setString(1, name);
+            ps.setInt(2, year);
+            ps.setInt(3, user_id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
@@ -888,6 +902,32 @@ public class DatabaseConnector {
             se.printStackTrace();
         }
         return null;
+    }
+
+    public ResultSet getAlbumsOfArtist (int user_id) {
+        String stmt = "SELECT * FROM Albums WHERE user_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, user_id);
+            return ps.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean albumExists (int album_id) {
+        String stmt = "SELECT * FROM Albums WHERE album_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, album_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return true;
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return false;
     }
 
     public ResultSet getAlbumSongs (int album_id) {
@@ -1152,6 +1192,7 @@ public class DatabaseConnector {
         }
     }
 
+
     public void createSongWArtistAlbumBlob (String song_name, String song_path, int album_id,Blob song_blob, int user_id) {
         try {//INSERT INTO Songs (song_name, artist_id, album_id, song_path, song_blob, user_id) VALUES (?, ?, ?, ?, ?, ?)
 
@@ -1199,21 +1240,6 @@ public class DatabaseConnector {
         return null;
     }
 
-//    public Song getIDFromSongname(String song_name) {
-//        Song song = null;
-//        try {
-//            selectIDFromSongName.setString(1, song_name);
-//            ResultSet rs = selectSongFromId.executeQuery();
-//            if (rs.next()) {
-//                song = new Song();
-//                song.setName(rs.getString(song_name));
-//            }
-//        } catch (SQLException se) {
-//            se.printStackTrace();
-//        }
-//        return song;
-//    }
-
     public ResultSet getAllIDFromSongname () {
         try {
             return selectAllIDFromSongName.executeQuery();
@@ -1239,6 +1265,7 @@ public class DatabaseConnector {
 
         return -1;
     }
+
 
     // FOR FAVORITE
     public boolean SongIsSetFavorite(int user_id, int fave_id) {
@@ -1771,6 +1798,26 @@ public class DatabaseConnector {
         return songs;
     }
 
+    public ResultSet sortSonginPlaylistByPublish (int user_id , int playlist_id) {
+        try {
+            sortSongInPlaylistByUpload.setInt(1, user_id);
+            sortSongInPlaylistByUpload.setInt(2, playlist_id);
+            return sortSongInPlaylistByUpload.executeQuery();
+        } catch (SQLException se) {
+        }
+    }
+    public ResultSet sortSonginPlaylistByYear (int user_id , int playlist_id) {
+        try {
+            sortSongInPlaylistByYear.setInt(1, user_id);
+            sortSongInPlaylistByYear.setInt(2, playlist_id);
+            return sortSongInPlaylistByYear.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+
     public ArrayList<Song> getAllSongsWPlaylistUploadOrder() {
         ArrayList<Song> songs = new ArrayList<>();
         Song song = null;
@@ -1795,8 +1842,8 @@ public class DatabaseConnector {
             se.printStackTrace();
         }
         return songs;
-        }
 
+    }
 
     public ResultSet sortSonginPlaylistByPublish (int user_id , int playlist_id) {
         try {
@@ -1818,7 +1865,6 @@ public class DatabaseConnector {
             se.printStackTrace();
         }
         return null;
-    }
 
     public boolean isPlaylistPublic(int playlist_id){
         String stmt = "SELECT * FROM playlists WHERE playlist_id = ? AND publish = 1";
@@ -1857,7 +1903,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void updateRecentlyPlayed (int song_id, int user_id)
+        public void updateRecentlyPlayed (int song_id, int user_id)
     {
         String stmt = "UPDATE accounts SET recently_played_id = ? WHERE user_id = ?";
         try{
