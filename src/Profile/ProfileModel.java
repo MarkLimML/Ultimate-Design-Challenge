@@ -5,6 +5,7 @@ import Model.ModelAbstract;
 import Model.User;
 import dashboard.PlaylistBox;
 import makePlaylist.Playlist;
+import makePlaylist.PlaylistModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,30 +29,44 @@ public class ProfileModel extends ModelAbstract {
 
     public ArrayList<User> getListenersFollowed(){
         System.out.println("getListenersFollowed()");
-        ArrayList<User> listeners;
+        ArrayList<User> listeners = new ArrayList<>();
 
         //Same as the one above
 
         return null;
     }
 
-    public ArrayList<Playlist> getFavoritePlaylists() {
+    public ArrayList<PlaylistModel> getFavoritePlaylists() {
         System.out.println("getFavoritePlaylists()");
-        ArrayList<User> favplaylists;
-
-        ResultSet rs = getDbc().getFavoritePlaylist(ModelAbstract.getUser().getUser_id(),ModelAbstract.getUser().getUser_id());
+        ArrayList<PlaylistModel> favplaylists = new ArrayList<>();
+        PlaylistModel p = new PlaylistModel();
+        ResultSet rs = getDbc().getFavoritePlaylist(ModelAbstract.getUser().getUser_id());
         try {
             while (rs.next()) {
-
+                p.setPlaylistID(rs.getInt("playlist_id"));
+                p.setAlbumTitle(rs.getString("title"));
+                favplaylists.add(p);
             }
         } catch (SQLException se) {
             se.printStackTrace();
         }
-        return null;
+        return favplaylists;
     }
 
     public ArrayList<Song> getFavoriteSongs() {
-
+        System.out.println("getFavoriteSongs()");
+        ArrayList<Song> songs = new ArrayList<>();
+        Song s = new Song();
+        ResultSet rs = getDbc().getFavoriteSongs(ModelAbstract.getUser().getUser_id());
+        try {
+            while (rs.next()) {
+                s.setName(rs.getString("song_name"));
+                songs.add(s);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return songs;
     }
 
     public void setCurrentProfile(User user) {

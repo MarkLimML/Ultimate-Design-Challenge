@@ -17,6 +17,8 @@ import javafx.scene.layout.*;
 import javafx.util.Callback;
 import makePlaylist.Playlist;
 import javafx.scene.input.MouseEvent;
+import makePlaylist.PlaylistModel;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -37,8 +39,8 @@ public class ProfileController extends ControllerAbstract {
 
     private TableView<Song> SongTable;
     private TableColumn<Song, String> colSong;
-    private TableView<Playlist> PlaylistTable;
-    private TableColumn<Playlist, String> colPlaylist;
+    private TableView<PlaylistModel> PlaylistTable;
+    private TableColumn<PlaylistModel, String> colPlaylist;
     private TableView<User> ListenerTable;
     private TableView<User> ArtistTable;
     private TableColumn<User, String> colUser;
@@ -50,8 +52,8 @@ public class ProfileController extends ControllerAbstract {
     private ObservableList<User> artistList;
     private ArrayList<Song> songs;
     private ObservableList<Song> songList;
-    private ArrayList<Playlist> playlists;
-    private ObservableList<Playlist> favPlaylists;
+    private ArrayList<PlaylistModel> playlists;
+    private ObservableList<PlaylistModel> favPlaylists;
 
     private User displayedUser;
 
@@ -80,7 +82,7 @@ public class ProfileController extends ControllerAbstract {
     }
 
     private void setPlaylistTableColumns() {
-        colPlaylist = new TableColumn<Playlist, String>("Playlists");
+        colPlaylist = new TableColumn<PlaylistModel, String>("Playlists");
         colPlaylist.setMinWidth(350);
         colPlaylist.setCellValueFactory(new PropertyValueFactory<>("title"));
         colPlaylist.setEditable(false);
@@ -143,7 +145,7 @@ public class ProfileController extends ControllerAbstract {
         */
         tablePane.getChildren().removeAll();
         System.out.println("createPlaylistTable()");
-        PlaylistTable = new TableView<Playlist>();
+        PlaylistTable = new TableView<PlaylistModel>();
         PlaylistTable.setMinHeight(399.0);
         PlaylistTable.setMinWidth(1000.0);
         PlaylistTable.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
