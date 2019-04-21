@@ -1839,4 +1839,35 @@ public class DatabaseConnector {
             e.printStackTrace();
         }
     }
+
+    public void updateRecentlyPlayed (int song_id, int user_id)
+    {
+        String stmt = "UPDATE accounts SET recently_played_id = ? WHERE user_id = ?";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, song_id);
+            ps.setInt(2, user_id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet showRecentlyPlayed (int user_id)
+    {
+        String stmt = "SELECT song_name\n" +
+                "FROM songs\n" +
+                "INNER JOIN accounts\n" +
+                "ON songs.song_id = accounts.recently_played_id\n" +
+                "WHERE accounts.user_id = ?";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, user_id);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
