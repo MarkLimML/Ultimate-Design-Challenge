@@ -89,6 +89,8 @@ public class DatabaseConnector {
     private PreparedStatement selectSongsWithUserIdByAlbumYear;
     private PreparedStatement selectSongsWithYearByAlbumYear;
 
+    private PreparedStatement sortSongInPlaylistByUpload;
+    private PreparedStatement sortSongInPlaylistByYear;
 
 
 
@@ -490,6 +492,26 @@ public class DatabaseConnector {
                     "WHERE year = ?\n"+
                     "ORDER by albums.year";
             selectSongsWithYearByAlbumYear = connection.prepareStatement(stmt);
+
+            stmt= "Select * \n" +
+                    "from playlist INNER JOIN playlist_songs \n" +
+                   "on playlists.playlist_id = playlist_songs.playlist_id \n"+
+                   "INNER JOIN songs on playlist_songs.song_id = songs.song_id \n"+
+                   "WHERE playlists.user_id =? AND playlists.playlist_id=? \n"+
+                   "ORDER BY songs.created";
+
+            sortSongInPlaylistByUpload=connection.prepareStatement(stmt);
+
+            stmt= "Select * \n" +
+                    "from playlist INNER JOIN playlist_songs \n" +
+                    "on playlists.playlist_id = playlist_songs.playlist_id \n"+
+                    "INNER JOIN songs on playlist_songs.song_id = songs.song_id \n"+
+                    "WHERE playlists.user_id =? AND playlists.playlist_id=? \n"+
+                    "ORDER BY songs.song_year";
+            sortSongInPlaylistByYear=connection.prepareStatement(stmt);
+
+
+
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -1758,6 +1780,27 @@ public class DatabaseConnector {
             se.printStackTrace();
         }
         return songs;
+        }
 
+
+    public ResultSet sortSonginPlaylistByPublish (int user_id , int playlist_id) {
+        try {
+            sortSongInPlaylistByUpload.setInt(1, user_id);
+            sortSongInPlaylistByUpload.setInt(2, playlist_id);
+            return sortSongInPlaylistByUpload.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
     }
-}
+
+    public ResultSet sortSonginPlaylistByYear (int user_id , int playlist_id) {
+        try {
+            sortSongInPlaylistByYear.setInt(1, user_id);
+            sortSongInPlaylistByYear.setInt(2, playlist_id);
+            return sortSongInPlaylistByYear.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
