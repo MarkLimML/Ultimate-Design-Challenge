@@ -1804,8 +1804,11 @@ public class DatabaseConnector {
             sortSongInPlaylistByUpload.setInt(2, playlist_id);
             return sortSongInPlaylistByUpload.executeQuery();
         } catch (SQLException se) {
+            se.printStackTrace();
         }
+        return null;
     }
+
     public ResultSet sortSonginPlaylistByYear (int user_id , int playlist_id) {
         try {
             sortSongInPlaylistByYear.setInt(1, user_id);
@@ -1865,6 +1868,7 @@ public class DatabaseConnector {
             se.printStackTrace();
         }
         return null;
+    }
 
     public boolean isPlaylistPublic(int playlist_id){
         String stmt = "SELECT * FROM playlists WHERE playlist_id = ? AND publish = 1";
