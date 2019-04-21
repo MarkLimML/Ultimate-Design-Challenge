@@ -63,6 +63,19 @@ public class DatabaseConnector {
     private PreparedStatement selectFavoriteSongs;
     private PreparedStatement selectFavoritePlaylist;
 
+    private PreparedStatement selectSongsWithGenreIdByUpload;
+    private PreparedStatement selectSongsWithArtistIdByUpload;
+    private PreparedStatement selectSongsWithAlbumIdByUpload;
+    private PreparedStatement selectSongsWithPlaylistIdByUpload;
+    private PreparedStatement selectSongsWithUserIdByUpload;
+    private PreparedStatement selectSongsWithYearByUpload;
+
+    private PreparedStatement selectSongsWithGenreIdByAlbumYear;
+    private PreparedStatement selectSongsWithArtistIdByAlbumYear;
+    private PreparedStatement selectSongsWithAlbumIdByAlbumYear;
+    private PreparedStatement selectSongsWithPlaylistIdByAlbumYear;
+    private PreparedStatement selectSongsWithUserIdByAlbumYear;
+    private PreparedStatement selectSongsWithYearByAlbumYear;
 
     public DatabaseConnector() {
         try {
@@ -307,7 +320,116 @@ public class DatabaseConnector {
                     "WHERE accounts.user_id = ? AND favorite.fave_type = ?";
             selectFavoritePlaylist = connection.prepareStatement(stmt);
 
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+                    "WHERE genre_id = ?\n" +
+                    "ORDER by songs.created";
+            selectSongsWithGenreIdByUpload = connection.prepareStatement(stmt);
 
+
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+//                   "NATURAL LEFT JOIN Artists\n" +
+                    "WHERE user_id = ?\n"+
+                    "ORDER by songs.created";
+            selectSongsWithArtistIdByUpload = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
+                    "WHERE album_id = ?\n"+
+                    "ORDER by songs.created";
+            selectSongsWithAlbumIdByUpload = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Playlists\n" +
+                    "NATURAL LEFT JOIN Playlist_Songs\n" +
+                    "NATURAL LEFT JOIN Songs\n" +
+                    "LEFT JOIN Albums using(user_id)\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+                    "WHERE playlist_id = ? AND user_id = ? \n"+
+                    "ORDER by songs.created";
+            selectSongsWithPlaylistIdByUpload = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
+                    "WHERE user_id = ?\n"+
+                    "ORDER by songs.created";
+            selectSongsWithUserIdByUpload = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums \n" +
+                    "NATURAL LEFT JOIN Genres \n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+//                    "NATURAL LEFT JOIN Artists \n" +
+                    "WHERE year = ?\n"+
+                    "ORDER by songs.created";
+            selectSongsWithYearByUpload = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+                    "WHERE genre_id = ?\n" +
+                    "ORDER by albums.year";
+            selectSongsWithGenreIdByAlbumYear = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+//                   "NATURAL LEFT JOIN Artists\n" +
+                    "WHERE user_id = ?\n"+
+                    "ORDER by albums.year";
+            selectSongsWithArtistIdByAlbumYear = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
+                    "WHERE album_id = ?\n"+
+                    "ORDER by albums.year";
+            selectSongsWithAlbumIdByAlbumYear = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Playlists\n" +
+                    "NATURAL LEFT JOIN Playlist_Songs\n" +
+                    "NATURAL LEFT JOIN Songs\n" +
+                    "LEFT JOIN Albums using(user_id)\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+                    "WHERE playlist_id = ? AND user_id = ? \n"+
+                    "ORDER by albums.year";
+            selectSongsWithPlaylistIdByAlbumYear = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums\n" +
+                    "NATURAL LEFT JOIN Genres\n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+//                    "NATURAL LEFT JOIN Artists\n" +
+                    "WHERE user_id = ?\n"+
+                    "ORDER by albums.year";
+            selectSongsWithUserIdByAlbumYear = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Songs \n" +
+                    "NATURAL LEFT JOIN Albums \n" +
+                    "NATURAL LEFT JOIN Genres \n" +
+                    "NATURAL LEFT JOIN Accounts\n" +
+//                    "NATURAL LEFT JOIN Artists \n" +
+                    "WHERE year = ?\n"+
+                    "ORDER by albums.year";
+            selectSongsWithYearByAlbumYear = connection.prepareStatement(stmt);
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -1297,4 +1419,133 @@ public class DatabaseConnector {
         }
     }
 
+    public ResultSet getAlbumSongsByUpload (int album_id) {
+        try {
+            selectSongsWithAlbumIdByUpload .setInt(1, album_id);
+            return selectSongsWithAlbumIdByUpload .executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getGenreSongsByUpload (int genre_id) {
+        try {
+            selectSongsWithGenreIdByUpload.setInt(1, genre_id);
+            return selectSongsWithGenreIdByUpload.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getArtistSongsByUpload (int artist_id) {
+        try {
+            selectSongsWithArtistIdByUpload.setInt(1, artist_id);
+            return selectSongsWithArtistIdByUpload.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getPlaylistSongsByUpload (int playlist_id, int user_id) {
+        try {
+            selectSongsWithPlaylistIdByUpload.setInt(1, playlist_id);
+            selectSongsWithPlaylistIdByUpload.setInt(2, user_id);
+            return selectSongsWithPlaylistIdByUpload.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getUserSongsByUpload (int user_id) { ///artists
+        try {
+            selectSongsWithUserIdByUpload.setInt(1, user_id);
+            ResultSet rs = selectSongsWithUserIdByUpload.executeQuery();
+            System.out.println("rs == null is " + (rs == null));
+            return rs;
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getSongsFromYearByUpload (int year) {
+        try {
+            selectSongsWithYearByUpload.setInt(1, year);
+            return selectSongsWithYearByUpload.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
+
+    public ResultSet getAlbumSongsByAlbumYear (int album_id) {
+        try {
+            selectSongsWithAlbumIdByAlbumYear .setInt(1, album_id);
+            return  selectSongsWithAlbumIdByAlbumYear.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getGenreSongsByAlbumYear (int genre_id) {
+        try {
+            selectSongsWithGenreIdByAlbumYear.setInt(1, genre_id);
+            return selectSongsWithGenreIdByAlbumYear.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getArtistSongsByAlbumYear (int artist_id) {
+        try {
+            selectSongsWithArtistIdByAlbumYear.setInt(1, artist_id);
+            return selectSongsWithArtistIdByAlbumYear.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getPlaylistSongsByAlbumYear (int playlist_id, int user_id) {
+        try {
+            selectSongsWithPlaylistIdByAlbumYear.setInt(1, playlist_id);
+            selectSongsWithPlaylistIdByAlbumYear.setInt(2, user_id);
+            return selectSongsWithPlaylistIdByAlbumYear.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getUserSongsByAlbumYear (int user_id) { ///artists
+        try {
+            selectSongsWithUserIdByAlbumYear.setInt(1, user_id);
+            ResultSet rs = selectSongsWithUserIdByAlbumYear.executeQuery();
+            System.out.println("rs == null is " + (rs == null));
+            return rs;
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet getSongsFromYearByAlbumYear (int year) {
+        try {
+            selectSongsWithYearByAlbumYear.setInt(1, year);
+            return selectSongsWithYearByAlbumYear.executeQuery();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
 }
