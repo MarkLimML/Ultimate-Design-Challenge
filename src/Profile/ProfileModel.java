@@ -18,22 +18,38 @@ public class ProfileModel extends ModelAbstract {
 
     public ArrayList<User> getArtistsFollowed(){
         System.out.println("getArtistsFollowed()");
-        ArrayList<User> artists;
+        ArrayList<User> artists = new ArrayList<>();
 
-        //Missing query in DB
-        //Could be userisFollowing(), but the method is not returning a resultset
-        //artists = ModelAbstract.getDbc().getFollowedArtists();
+        User u = new User();
+        ResultSet rs = getDbc().getUserFollowed(ModelAbstract.getUser().getUser_id(), 1);
+        try {
+            while (rs.next()) {
+                u.setUsername(rs.getString("username"));
+                artists.add(u);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
 
-        return null;
+        return artists;
     }
 
     public ArrayList<User> getListenersFollowed(){
         System.out.println("getListenersFollowed()");
         ArrayList<User> listeners = new ArrayList<>();
 
-        //Same as the one above
+        User u = new User();
+        ResultSet rs = getDbc().getUserFollowed(ModelAbstract.getUser().getUser_id(), 0);
+        try {
+            while (rs.next()) {
+                u.setUsername(rs.getString("username"));
+                listeners.add(u);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
 
-        return null;
+        return listeners;
     }
 
     public ArrayList<PlaylistModel> getFavoritePlaylists() {
