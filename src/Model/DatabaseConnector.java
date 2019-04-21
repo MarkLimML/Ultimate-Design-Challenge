@@ -4,6 +4,11 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import AddSong.Song;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.Date;
 
 
 public class DatabaseConnector {
@@ -11,6 +16,8 @@ public class DatabaseConnector {
     private static DatabaseConnector instance = null;
     private Connection connection;
     private LocalDate localdate = LocalDate.now();
+    private DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private Date date = new Date();
 
     private PreparedStatement selectUserFromId;
     private PreparedStatement selectSongFromId;
@@ -62,6 +69,11 @@ public class DatabaseConnector {
     private PreparedStatement isSongPublic;
     private PreparedStatement selectFavoriteSongs;
     private PreparedStatement selectFavoritePlaylist;
+    private PreparedStatement selectAllSongsWSongYearOrder;
+    private PreparedStatement selectAllSongsWSongUploadOrder;
+    private PreparedStatement selectAllSongsWAlbumYearOrder;
+    private PreparedStatement selectAllSongsWAlbumUploadOrder;
+    private PreparedStatement selectSongsWithPlaylistIdOrderByCreated;
 
 
     public DatabaseConnector() {
@@ -275,7 +287,7 @@ public class DatabaseConnector {
             stmt ="DELETE FROM palylists WHERE song_id = ? AND user_id = ?";
             removeSongInPlaylist=connection.prepareStatement(stmt);
 
-            stmt = "DELETE FROM song WHERE album_id =?";
+            stmt = "DELETE FROM songs WHERE album_id =?";
             removeSongInAlbum=connection.prepareStatement(stmt);
 
             stmt = "DELETE FROM playlists WHERE playlist_id=?";
@@ -307,7 +319,52 @@ public class DatabaseConnector {
                     "DESC LIMIT 10";
             selectFavoritePlaylist = connection.prepareStatement(stmt);
 
+            stmt = "SELECT * FROM Songs \n" +
+            "NATURAL LEFT JOIN Albums\n" +
+            "NATURAL LEFT JOIN Genres\n" +
+            "NATURAL LEFT JOIN Accounts\n"+
+            " ORDER by songs.song_year";
 
+            selectAllSongsWSongYearOrder = connection.prepareStatement(stmt);
+
+
+
+            stmt = "SELECT * FROM Songs \n" +
+            "NATURAL LEFT JOIN Albums\n" +
+            "NATURAL LEFT JOIN Genres\n" +
+            "NATURAL LEFT JOIN Accounts\n"+
+            " ORDER by songs.created";
+
+            selectAllSongsWSongUploadOrder = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Songs \n" +
+            "NATURAL LEFT JOIN Albums\n" +
+            "NATURAL LEFT JOIN Genres\n" +
+            "NATURAL LEFT JOIN Accounts\n"+
+            " ORDER by albums.year";
+
+            selectAllSongsWAlbumYearOrder = connection.prepareStatement(stmt);
+
+
+            stmt = "SELECT * FROM Songs \n" +
+            "NATURAL LEFT JOIN Albums\n" +
+            "NATURAL LEFT JOIN Genres\n" +
+            "NATURAL LEFT JOIN Accounts\n"+
+            "ORDER by albums.created";
+
+            selectAllSongsWAlbumUploadOrder = connection.prepareStatement(stmt);
+
+            stmt = "SELECT * FROM Playlists\n" +
+            "NATURAL LEFT JOIN Playlist_Songs\n" +
+            "NATURAL LEFT JOIN Songs\n" +
+            "LEFT JOIN Albums using(user_id)\n" +
+//           "NATURAL LEFT JOIN Artists\n" +
+            "NATURAL LEFT JOIN Genres\n" +
+             "NATURAL LEFT JOIN Accounts\n" +
+             "WHERE playlist_id = ? AND user_id = ?\n"+
+             "ORDER by playlists.created";
+
+            selectSongsWithPlaylistIdOrderByCreated = connection.prepareStatement(stmt);
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -382,6 +439,8 @@ public class DatabaseConnector {
         return null;
     }
 
+
+
     public int validUser(String username, String password) {
         ResultSet rs = userExists(username);
         try {
@@ -454,7 +513,7 @@ public class DatabaseConnector {
             insertSong.setString(1, song_name);
             insertSong.setString(2, song_path);
             insertSong.setInt(3, user_id);
-            insertSong.setDate(4, Date.valueOf(localdate));
+            insertSong.setDate(4, java.sql.Date.valueOf(df.format(date)));
             insertSong.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -467,7 +526,7 @@ public class DatabaseConnector {
             insertSongWGenre.setString(2, song_path);
             insertSongWGenre.setInt(3, genre_id);
             insertSongWGenre.setInt(4, user_id);
-            insertSongWGenre.setDate(5, Date.valueOf(localdate));
+            insertSongWGenre.setDate(5, java.sql.Date.valueOf(df.format(date)));
             insertSongWGenre.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -480,7 +539,7 @@ public class DatabaseConnector {
             insertSongWArtist.setString(2, song_path);
             insertSongWArtist.setInt(3, artist_id);
             insertSongWArtist.setInt(4, user_id);
-            insertSongWArtist.setDate(5, Date.valueOf(localdate));
+            insertSongWArtist.setDate(5, java.sql.Date.valueOf(df.format(date)));
             insertSongWArtist.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -493,7 +552,7 @@ public class DatabaseConnector {
             insertSongWAlbum.setString(2, song_path);
             insertSongWAlbum.setInt(3, album_id);
             insertSongWAlbum.setInt(4, user_id);
-            insertSongWAlbum.setDate(5, Date.valueOf(localdate));
+            insertSongWAlbum.setDate(5, java.sql.Date.valueOf(df.format(date)));
             insertSongWAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -507,7 +566,7 @@ public class DatabaseConnector {
             insertSongWGenreAlbum.setInt(3, genre_id);
             insertSongWGenreAlbum.setInt(4, album_id);
             insertSongWGenreAlbum.setInt(5, user_id);
-            insertSongWGenreAlbum.setDate(6, Date.valueOf(localdate));
+            insertSongWGenreAlbum.setDate(6, java.sql.Date.valueOf(df.format(date)));
             insertSongWGenreAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -521,7 +580,7 @@ public class DatabaseConnector {
             insertSongWGenreArtist.setInt(3, genre_id);
             insertSongWGenreArtist.setInt(4, artist_id);
             insertSongWGenreArtist.setInt(5, user_id);
-            insertSongWGenreArtist.setDate(6,Date.valueOf(localdate));
+            insertSongWGenreArtist.setDate(6,java.sql.Date.valueOf(df.format(date)));
             insertSongWGenreArtist.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -534,7 +593,7 @@ public class DatabaseConnector {
             insertSongWArtistAlbum.setString(2, song_path);
             insertSongWArtistAlbum.setInt(3, album_id);
             insertSongWArtistAlbum.setInt(4, user_id);
-            insertSongWArtistAlbum.setDate(5, Date.valueOf(localdate));
+            insertSongWArtistAlbum.setDate(5,java.sql.Date.valueOf(df.format(date)));
             insertSongWArtistAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -550,7 +609,7 @@ public class DatabaseConnector {
             insertSongWGenreArtistAlbum.setInt(3, album_id);
             insertSongWGenreArtistAlbum.setString(4, song_path);
             insertSongWGenreArtistAlbum.setInt(5, user_id);
-            insertSongWGenreArtistAlbum.setDate(6,Date.valueOf(localdate));
+            insertSongWGenreArtistAlbum.setDate(6,java.sql.Date.valueOf(df.format(date)));
             insertSongWGenreArtistAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -565,7 +624,7 @@ public class DatabaseConnector {
             System.out.println("user_id="+user_id);
             insertPlaylist.setString(1, title);
             insertPlaylist.setInt(2, user_id);
-            insertPlaylist.setDate(3, Date.valueOf(localdate));
+            insertPlaylist.setDate(3,java.sql.Date.valueOf(df.format(date)));
             System.out.println();
             insertPlaylist.execute();
         } catch (SQLException se) {
@@ -1137,6 +1196,7 @@ public class DatabaseConnector {
 
     }
 
+
     public void deleteSongInPlaylist (int song_id, int user_id) {
         try {// DELETE FROM palylists WHERE song_id = ? AND user_id = ?"
             removeSongInPlaylist.setInt(1, song_id);
@@ -1299,4 +1359,105 @@ public class DatabaseConnector {
         }
     }
 
+    public ArrayList<Song> getAllSongsWSongYearOrder() {
+        ArrayList<Song> songs = new ArrayList<>();
+        Song song = null;
+        try {
+            ResultSet rs = selectAllSongsWSongYearOrder.executeQuery();
+            while (rs.next()) {
+                song = new Song();
+                song.setSongId(rs.getInt("song_id"));
+                song.setName(rs.getString("name"));
+                song.setAlbumId(rs.getInt("album_id"));
+                song.setGenreId(rs.getInt("genre_id"));
+                song.setYear(rs.getInt("year"));
+                song.setAlbum(rs.getString("album_name"));
+                song.setGenre(rs.getString("genre_name"));
+                song.setArtist(rs.getString("username"));
+                song.setImgPath(rs.getString("img_path"));
+                song.setSongPath(rs.getString("song_path"));
+                song.setCreated(rs.getDate("created"));
+                songs.add(song);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return songs;
+    }
+    public ArrayList<Song> getAllSongsWSongUploadOrder() {
+        ArrayList<Song> songs = new ArrayList<>();
+        Song song = null;
+        try {
+            ResultSet rs = selectAllSongsWSongUploadOrder.executeQuery();
+            while (rs.next()) {
+                song = new Song();
+                song.setSongId(rs.getInt("song_id"));
+                song.setName(rs.getString("name"));
+                song.setAlbumId(rs.getInt("album_id"));
+                song.setGenreId(rs.getInt("genre_id"));
+                song.setYear(rs.getInt("year"));
+                song.setAlbum(rs.getString("album_name"));
+                song.setGenre(rs.getString("genre_name"));
+                song.setArtist(rs.getString("username"));
+                song.setImgPath(rs.getString("img_path"));
+                song.setSongPath(rs.getString("song_path"));
+                song.setCreated(rs.getDate("created"));
+                songs.add(song);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return songs;
+    }
+
+    public ArrayList<Song> getAllSongsWAlbumYearOrder() {
+        ArrayList<Song> songs = new ArrayList<>();
+        Song song = null;
+        try {
+            ResultSet rs = selectAllSongsWAlbumYearOrder.executeQuery();
+            while (rs.next()) {
+                song = new Song();
+                song.setSongId(rs.getInt("song_id"));
+                song.setName(rs.getString("name"));
+                song.setAlbumId(rs.getInt("album_id"));
+                song.setGenreId(rs.getInt("genre_id"));
+                song.setYear(rs.getInt("year"));
+                song.setAlbum(rs.getString("album_name"));
+                song.setGenre(rs.getString("genre_name"));
+                song.setArtist(rs.getString("username"));
+                song.setImgPath(rs.getString("img_path"));
+                song.setSongPath(rs.getString("song_path"));
+                song.setCreated(rs.getDate("created"));
+                songs.add(song);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return songs;
+    }
+    public ArrayList<Song> getAllSongsWAlbumUploadOrder() {
+        ArrayList<Song> songs = new ArrayList<>();
+        Song song = null;
+        try {
+            ResultSet rs = selectAllSongsWAlbumUploadOrder.executeQuery();
+            while (rs.next()) {
+                song = new Song();
+                song.setSongId(rs.getInt("song_id"));
+                song.setName(rs.getString("name"));
+                song.setAlbumId(rs.getInt("album_id"));
+                song.setGenreId(rs.getInt("genre_id"));
+                song.setYear(rs.getInt("year"));
+                song.setAlbum(rs.getString("album_name"));
+                song.setGenre(rs.getString("genre_name"));
+                song.setArtist(rs.getString("username"));
+                song.setImgPath(rs.getString("img_path"));
+                song.setSongPath(rs.getString("song_path"));
+                song.setCreated(rs.getDate("created"));
+                songs.add(song);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return songs;
+    }
 }
