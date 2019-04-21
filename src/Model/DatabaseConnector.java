@@ -1377,6 +1377,27 @@ public class DatabaseConnector {
         return null;
     }
 
+    public ResultSet getUserFollowed (int follower, int type)
+    {
+        String stmt = "SELECT username \n" +
+                "FROM follow \n" +
+                "INNER JOIN accounts\n" +
+                "ON follow.following = accounts.user_id\n" +
+                "WHERE follow.follower = ? AND accounts.type = ?";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, follower);
+            ps.setInt(2, type);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
     //Following
 
     public boolean userIsFollowing (int follower, int following)
