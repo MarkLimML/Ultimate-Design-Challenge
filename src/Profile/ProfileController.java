@@ -62,12 +62,13 @@ public class ProfileController extends ControllerAbstract {
     }
 
     public void initialize() {
-        userNameLabel.setText(displayedUser.getUsername());
-        if(displayedUser.getUser().isArtist())
+        userNameLabel = new Label();
+        userTypeLabel = new Label();
+        userNameLabel.setText(ModelAbstract.getUser().getUsername());
+        if(ModelAbstract.getUser().isArtist())
             userTypeLabel.setText("Artist");
         else
             userTypeLabel.setText("Listener");
-
     }
 
     private void setSongTableColumns() {
@@ -210,6 +211,7 @@ public class ProfileController extends ControllerAbstract {
     }
 
     private void setArtistList() {
+        artistList.getClass();
         System.out.println("getArtistList()");
         artists = model.getArtistsFollowed();
         artistList = FXCollections.observableArrayList(artists);
