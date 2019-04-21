@@ -1,6 +1,7 @@
 package Model;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import AddSong.Song;
 
@@ -9,6 +10,7 @@ public class DatabaseConnector {
 
     private static DatabaseConnector instance = null;
     private Connection connection;
+    private LocalDate localdate = LocalDate.now();
 
     private PreparedStatement selectUserFromId;
     private PreparedStatement selectSongFromId;
@@ -170,31 +172,31 @@ public class DatabaseConnector {
                     "DESC LIMIT 10";
             selectMostPlayed = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, song_path, user_id) VALUES (?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, song_path, user_id,created) VALUES (?, ?, ?, ?)";
             insertSong = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, album_id, song_path, user_id) VALUES (?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, album_id, song_path, user_id,created) VALUES (?, ?, ?, ?, ?)";
             insertSongWAlbum = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, artist_id, song_path, user_id) VALUES (?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, artist_id, song_path, user_id,created) VALUES (?, ?, ?, ?,?)";
             insertSongWArtist = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, genre_id, song_path, user_id) VALUES (?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, genre_id, song_path, user_id,created) VALUES (?, ?, ?, ?,?)";
             insertSongWGenre = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, genre_id, artist_id, song_path, user_id) VALUES (?, ?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, genre_id, artist_id, song_path, user_id,created) VALUES (?, ?, ?, ?, ?,?)";
             insertSongWGenreArtist = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, genre_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, genre_id, album_id, song_path, user_id, created) VALUES (?, ?, ?, ?, ?,?)";
             insertSongWGenreAlbum = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name,  album_id, song_path, user_id) VALUES (?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name,  album_id, song_path, user_id, created) VALUES (?, ?, ?, ?,?)";
             insertSongWArtistAlbum = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Songs (song_name, genre_id, album_id, song_path, user_id) VALUES (?, ?, ?, ?, ?)";
+            stmt = "INSERT INTO Songs (song_name, genre_id, album_id, song_path, user_id,created) VALUES (?, ?, ?, ?, ?,?)";
             insertSongWGenreArtistAlbum = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO Playlists (title, user_id) VALUES (?, ?)";
+            stmt = "INSERT INTO Playlists (title, user_id,created) VALUES (?, ?,?)";
             insertPlaylist = connection.prepareStatement(stmt);
 
 
@@ -447,23 +449,25 @@ public class DatabaseConnector {
         }
     }
 
-    public void createSong (String song_name, String song_path, int user_id) {
+    public void createSong (String song_name, String song_path, int user_id ) {
         try {
             insertSong.setString(1, song_name);
             insertSong.setString(2, song_path);
             insertSong.setInt(3, user_id);
+            insertSong.setDate(4, Date.valueOf(localdate));
             insertSong.execute();
         } catch (SQLException se) {
             se.printStackTrace();
         }
     }
 
-    public void createSongWGenre (String song_name, String song_path, int genre_id, int user_id) {
+    public void createSongWGenre (String song_name, String song_path, int genre_id, int user_id){
         try {
             insertSongWGenre.setString(1, song_name);
             insertSongWGenre.setString(2, song_path);
             insertSongWGenre.setInt(3, genre_id);
             insertSongWGenre.setInt(4, user_id);
+            insertSongWGenre.setDate(5, Date.valueOf(localdate));
             insertSongWGenre.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -476,6 +480,7 @@ public class DatabaseConnector {
             insertSongWArtist.setString(2, song_path);
             insertSongWArtist.setInt(3, artist_id);
             insertSongWArtist.setInt(4, user_id);
+            insertSongWArtist.setDate(5, Date.valueOf(localdate));
             insertSongWArtist.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -488,6 +493,7 @@ public class DatabaseConnector {
             insertSongWAlbum.setString(2, song_path);
             insertSongWAlbum.setInt(3, album_id);
             insertSongWAlbum.setInt(4, user_id);
+            insertSongWAlbum.setDate(5, Date.valueOf(localdate));
             insertSongWAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -501,32 +507,34 @@ public class DatabaseConnector {
             insertSongWGenreAlbum.setInt(3, genre_id);
             insertSongWGenreAlbum.setInt(4, album_id);
             insertSongWGenreAlbum.setInt(5, user_id);
+            insertSongWGenreAlbum.setDate(6, Date.valueOf(localdate));
             insertSongWGenreAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
         }
     }
 
-//    public void createSongWGenreArtist (String song_name, String song_path, int genre_id, int artist_id, int user_id) {
-//        try {
-//            insertSongWGenreArtist.setString(1, song_name);
-//            insertSongWGenreArtist.setString(2, song_path);
-//            insertSongWGenreArtist.setInt(3, genre_id);
-//            insertSongWGenreArtist.setInt(4, artist_id);
-//            insertSongWGenreArtist.setInt(5, user_id);
-//            insertSongWGenreArtist.execute();
-//        } catch (SQLException se) {
-//            se.printStackTrace();
-//        }
-//    }
+    public void createSongWGenreArtist (String song_name, String song_path, int genre_id, int artist_id, int user_id) {
+        try {
+            insertSongWGenreArtist.setString(1, song_name);
+            insertSongWGenreArtist.setString(2, song_path);
+            insertSongWGenreArtist.setInt(3, genre_id);
+            insertSongWGenreArtist.setInt(4, artist_id);
+            insertSongWGenreArtist.setInt(5, user_id);
+            insertSongWGenreArtist.setDate(6,Date.valueOf(localdate));
+            insertSongWGenreArtist.execute();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
 
     public void createSongWArtistAlbum (String song_name, String song_path, int album_id, int user_id) {
         try {
             insertSongWArtistAlbum.setString(1, song_name);
             insertSongWArtistAlbum.setString(2, song_path);
-
             insertSongWArtistAlbum.setInt(3, album_id);
             insertSongWArtistAlbum.setInt(4, user_id);
+            insertSongWArtistAlbum.setDate(5, Date.valueOf(localdate));
             insertSongWArtistAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -542,6 +550,7 @@ public class DatabaseConnector {
             insertSongWGenreArtistAlbum.setInt(3, album_id);
             insertSongWGenreArtistAlbum.setString(4, song_path);
             insertSongWGenreArtistAlbum.setInt(5, user_id);
+            insertSongWGenreArtistAlbum.setDate(6,Date.valueOf(localdate));
             insertSongWGenreArtistAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -556,6 +565,7 @@ public class DatabaseConnector {
             System.out.println("user_id="+user_id);
             insertPlaylist.setString(1, title);
             insertPlaylist.setInt(2, user_id);
+            insertPlaylist.setDate(3, Date.valueOf(localdate));
             System.out.println();
             insertPlaylist.execute();
         } catch (SQLException se) {
