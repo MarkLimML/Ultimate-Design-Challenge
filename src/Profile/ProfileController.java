@@ -173,7 +173,7 @@ public class ProfileController extends ControllerAbstract {
     public void showListeners(MouseEvent mouseEvent) {
         //tableview should contain followed listeners
         tablePane.getChildren().removeAll();
-        System.out.println("createSongTable()");
+        System.out.println("createListenerTable()");
         ListenerTable = new TableView<User>();
         ListenerTable.setMinHeight(399.0);
         ListenerTable.setMinWidth(1000.0);
