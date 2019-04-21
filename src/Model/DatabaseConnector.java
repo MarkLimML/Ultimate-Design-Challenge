@@ -494,10 +494,10 @@ public class DatabaseConnector {
 
             stmt= "Select * \n" +
                     "from playlist INNER JOIN playlist_songs \n" +
-                   "on playlists.playlist_id = playlist_songs.playlist_id \n"+
-                   "INNER JOIN songs on playlist_songs.song_id = songs.song_id \n"+
-                   "WHERE playlists.user_id =? AND playlists.playlist_id=? \n"+
-                   "ORDER BY songs.created";
+                    "on playlists.playlist_id = playlist_songs.playlist_id \n"+
+                    "INNER JOIN songs on playlist_songs.song_id = songs.song_id \n"+
+                    "WHERE playlists.user_id =? AND playlists.playlist_id=? \n"+
+                    "ORDER BY songs.created";
 
             sortSongInPlaylistByUpload=connection.prepareStatement(stmt);
 
@@ -1798,29 +1798,6 @@ public class DatabaseConnector {
         return songs;
     }
 
-    public ResultSet sortSonginPlaylistByPublish (int user_id , int playlist_id) {
-        try {
-            sortSongInPlaylistByUpload.setInt(1, user_id);
-            sortSongInPlaylistByUpload.setInt(2, playlist_id);
-            return sortSongInPlaylistByUpload.executeQuery();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return null;
-    }
-
-    public ResultSet sortSonginPlaylistByYear (int user_id , int playlist_id) {
-        try {
-            sortSongInPlaylistByYear.setInt(1, user_id);
-            sortSongInPlaylistByYear.setInt(2, playlist_id);
-            return sortSongInPlaylistByYear.executeQuery();
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return null;
-    }
-
-
     public ArrayList<Song> getAllSongsWPlaylistUploadOrder() {
         ArrayList<Song> songs = new ArrayList<>();
         Song song = null;
@@ -1907,7 +1884,7 @@ public class DatabaseConnector {
         }
     }
 
-        public void updateRecentlyPlayed (int song_id, int user_id)
+    public void updateRecentlyPlayed (int song_id, int user_id)
     {
         String stmt = "UPDATE accounts SET recently_played_id = ? WHERE user_id = ?";
         try{
