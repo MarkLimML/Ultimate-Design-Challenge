@@ -13,8 +13,9 @@ public class UserPlaylist implements Playlist {
 	private static final String type = "UserPlaylist";
 	
     public ResultSet getSongs(int playlist_id) {
+        System.out.println("UserPlaylist.getSongs(id)");
         System.out.println(playlist_id);
-        return dbc.getPlaylistSongs(playlist_id, ModelAbstract.getUser().getUser_id());
+        return dbc.getPlaylistSongs(playlist_id);
     }
 
     public String getType(){

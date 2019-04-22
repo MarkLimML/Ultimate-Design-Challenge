@@ -80,10 +80,11 @@ public class AddSongController extends ControllerAbstract
 
     private AddSongModel model;
 
+    ///////////////////
     private boolean editing;
-
     private String song_Name;
     private int song_id;
+//////////////////////////////////
 
     /*
         0 - name
@@ -104,6 +105,7 @@ public class AddSongController extends ControllerAbstract
         return model;
     }
 
+    ////////////////////////////////////////////////
     public void setEditingMode(boolean editing, int song_id) {
         this.editing = editing;
         if(editing)
@@ -131,9 +133,9 @@ public class AddSongController extends ControllerAbstract
             songNameInput.setText(ModelAbstract.getDbc().GetSongNameFromSongID(song_id));
             albumYearInput.setText(String.valueOf(ModelAbstract.getDbc().GetSongYearFromSongID(song_id)));
             System.out.println(ModelAbstract.getUser().getUsername());
-
         }
     }
+    ////////////////////////////////////
 
     public void setModel(AddSongModel model) {
         System.out.println("AddFromLibController.setModel(model)");
@@ -151,6 +153,7 @@ public class AddSongController extends ControllerAbstract
     	songGenreInput.getSelectionModel().select("");
 
     	model.setUserAlbumsFromDb();
+    	rbNewAlbum.setSelected(true);
     	ArrayList<Album> albums = model.getUserAlbums();
 
     	if (albums.size() == 0) {
@@ -177,7 +180,7 @@ public class AddSongController extends ControllerAbstract
 
 //        System.out.println(artist);
 //        model.getSong().setArtist(artist);
-
+/////////////////////////////////////////////////////
         if(!editing){
             if (songNameInput.getText().trim().length() == 0) {
                 validInputs = false;
@@ -233,7 +236,7 @@ public class AddSongController extends ControllerAbstract
             ModelAbstract.getDbc().UpdateSongYear(song_id,albumYear);
             ModelAbstract.getDbc().UpdateGenre(song_id,genreID);
         }
-
+////////////////////////////////////////////////////////
     }
     
     public void callPreviousScreen(MouseEvent e)
@@ -323,13 +326,12 @@ public class AddSongController extends ControllerAbstract
         if (rbYourAlbums.isSelected()) {
             rbYourAlbums.setSelected(false);
         }
-        rbNewAlbum.setSelected(true);
-
-        cmbAlbumName.setVisible(true);
+        rbYourAlbums.setSelected(false);
+        cmbAlbumName.setVisible(false);
 
         albumNameInput.setDisable(false);
         albumYearInput.setDisable(false);
-        chooseImageButton.setDisable(false);
+        chooseImageButton.setDisable(true);
         imageChosenPath.setDisable(false);
 
     }
@@ -338,13 +340,13 @@ public class AddSongController extends ControllerAbstract
         if (rbNewAlbum.isSelected()) {
             rbNewAlbum.setSelected(false);
         }
-        rbYourAlbums.setSelected(true);
 
-        cmbAlbumName.setVisible(false);
+        rbYourAlbums.setSelected(true);
+        cmbAlbumName.setVisible(true);
 
         albumNameInput.setDisable(true);
         albumYearInput.setDisable(true);
-        chooseImageButton.setDisable(true);
+        chooseImageButton.setDisable(false);
         imageChosenPath.setDisable(true);
 
     }

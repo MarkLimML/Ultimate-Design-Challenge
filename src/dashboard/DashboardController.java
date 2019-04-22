@@ -282,15 +282,18 @@ public class DashboardController extends dashboard.ControllerAbstract {
     }
 
     public void searchAlbumButt(MouseEvent mouseEvent) {
-       String searchAlbums = albumInput.getText();
+       String searchAlbums = albumInput.getText().trim();
 
         playlistPane.getChildren().clear();
         currentPlaylistsType = "AlbumPlaylist";
         ArrayList<PlaylistBox> boxes;
         boxes = model.getListOfPlaylist(currentPlaylistsType);
         for (PlaylistBox box : boxes) {
-            if(box.getPlaylistName().contains("searchAlbums"))
-            this.addPlaylistBox(box);
+            if(box.getPlaylistName().equalsIgnoreCase(searchAlbums)) {
+                System.out.println("Searched: " + searchAlbums);
+                System.out.println("Compared: " + box.getPlaylistName());
+                this.addPlaylistBox(box);
+            }
         }
     }
 

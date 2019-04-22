@@ -15,7 +15,7 @@ public class SearchFromAlbum implements Playlist {
 
     public ResultSet getSongs(int album_id){
 
-        return dbc.getPlaylistSongs(album_id, ModelAbstract.getUser().getUser_id());
+        return dbc.getPlaylistSongs(album_id);
 
     }
 

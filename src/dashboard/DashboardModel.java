@@ -35,6 +35,9 @@ public class DashboardModel extends ModelAbstract {
             case "AlbumPlaylist":
                 this.setAlbumPlaylists(boxes);
                 break;
+            case "UserAlbumPlaylist":
+                this.setAlbumPlaylists(boxes);
+                break;
             case "UserPlaylist":
                 this.setUserPlaylists(boxes);
                 break;

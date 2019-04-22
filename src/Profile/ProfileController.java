@@ -214,7 +214,7 @@ public class ProfileController extends ControllerAbstract {
     }
 
     public ProfileModel getModel() {
-        return this.model;
+        return model;
     }
 
     public void setModel(ProfileModel model) {

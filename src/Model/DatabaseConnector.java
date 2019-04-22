@@ -96,7 +96,7 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/musicplayerudc?autoReconnect=true&useSSL=false",
-                    "root", "p@ssword");
+                    "root", "jude842");
             prepareStatements();
         } catch (Exception se) {
             se.printStackTrace();
@@ -154,19 +154,19 @@ public class DatabaseConnector {
                     "WHERE genre_id = ?";
             selectSongsWithGenreId = connection.prepareStatement(stmt);
 
-            stmt = "SELECT songs.song_id, songs.genre_id, songs.album_id, accounts.username, songs.song_name, genres.genre_name, albums.album_name, songs.song_year AS 'year', songs.song_path, playlists.img_path \n" +
-                    "FROM albums\n" +
-                    "INNER JOIN accounts\n" +
-                    "ON albums.user_id = accounts.user_id\n" +
-                    "INNER JOIN playlists\n" +
-                    "ON accounts.user_id = playlists.user_id\n" +
-                    "INNER JOIN playlist_songs\n" +
-                    "ON playlists.playlist_id = playlist_songs.playlist_id\n" +
-                    "INNER JOIN songs\n" +
-                    "ON playlist_songs.song_id = songs.song_id\n" +
-                    "INNER JOIN genres\n" +
+            stmt = "SELECT *\n" +
+                    "FROM songs\n" +
+                    "INNER JOIN Albums\n" +
+                    "ON songs.album_id = albums.album_id\n" +
+                    "INNER JOIN Genres\n" +
                     "ON songs.genre_id = genres.genre_id\n" +
-                    "WHERE playlists.playlist_id = ? AND accounts.user_id = ?;";
+                    "INNER JOIN Accounts\n" +
+                    "ON songs.user_id = Accounts.user_id\n" +
+                    "INNER JOIN playlist_songs\n" +
+                    "ON songs.song_id = playlist_songs.song_id\n" +
+                    "INNER JOIN playlists\n" +
+                    "ON playlist_songs.playlist_id = playlists.playlist_id\n" +
+                    "WHERE playlists.playlist_id = ?;";
             selectSongsWithPlaylistId = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
@@ -989,11 +989,14 @@ public class DatabaseConnector {
         return null;
     }
 
-    public ResultSet getPlaylistSongs (int playlist_id, int user_id) {
+    public ResultSet getPlaylistSongs (int playlist_id) {
         try {
             selectSongsWithPlaylistId.setInt(1, playlist_id);
-            selectSongsWithPlaylistId.setInt(2, user_id);
-            return selectSongsWithPlaylistId.executeQuery();
+
+            ResultSet resultSet = selectSongsWithPlaylistId.executeQuery();
+            System.out.println(resultSet == null);
+
+            return resultSet;
         } catch (SQLException se) {
             se.printStackTrace();
         }
@@ -2066,4 +2069,5 @@ public class DatabaseConnector {
         }
         return null;
     }
+
 }

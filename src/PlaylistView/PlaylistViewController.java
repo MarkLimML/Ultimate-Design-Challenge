@@ -41,6 +41,8 @@ public class PlaylistViewController extends ControllerAbstract {
     private PlaylistViewModel model;
 
     @FXML
+    public Button editSong;
+    @FXML
     public Pane playlistViewPane;
     @FXML
     public Label playlistTitle;
@@ -106,6 +108,12 @@ public class PlaylistViewController extends ControllerAbstract {
             btnAddSong.setVisible(false);
         }
 
+        if (model.getPlaylistType().equals("AlbumPlaylist")) {
+            editSong.setVisible(true);
+        } else {
+            btnAddSong.setVisible(false);
+        }
+
         tableView = new TableView<Song>();
         tableView.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         System.out.println(model.getPlaylistTitle());
@@ -113,33 +121,6 @@ public class PlaylistViewController extends ControllerAbstract {
         this.setTableViewColumns();
         tablePane.getChildren().add(tableView);
     }
-
-    /*private void setTableViewColumns() {
-        System.out.println("setTableViewColumns()");
-
-        colTitle.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
-        colArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
-
-        colTitle.setSortType(TableColumn.SortType.DESCENDING);
-        colAlbum.setSortable(false);
-
-        tableView.setFixedCellSize(40.0);
-
-        tableView.getColumns().clear();
-
-        if (deleteSongs.isVisible()) {
-            this.addTableCheckboxColumn();
-            tableView.getColumns().add(colCheckBox);
-        } else {
-            this.addTableButton();
-            tableView.getColumns().add(colBtn);
-        }
-
-        tableView.getColumns().addAll(colTitle, colArtist, colAlbum);
-        songList = getSongList();
-        tableView.setItems(songList);
-    }*/
 
     private void setTableViewColumns() {
         System.out.println("setTableViewColumns()");
@@ -175,6 +156,9 @@ public class PlaylistViewController extends ControllerAbstract {
             tableView.getColumns().add(colBtn);
         }
         tableView.getColumns().addAll(colTitle, colArtist, colAlbum, colUploadDate, colYear);
+        System.out.println("uploadnull"+ (colUploadDate == null));
+        System.out.println("uploadnull"+ (colYear == null));
+        
         songList = getSongList();
         System.out.println(songArrayList);
         tableView.setItems(songList);
@@ -358,7 +342,7 @@ public class PlaylistViewController extends ControllerAbstract {
     }
 
     public void deleteCheckedSongs(MouseEvent mouseEvent) {
-
+        deleteSelectedList(mouseEvent);
     }
 
     public void sortUpload(MouseEvent mouseEvent) {

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="newSongPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #252b32 #252b32;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddSong.AddSongController">
+<AnchorPane fx:id="newSongPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #252b32 #252b32;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddSong.AddSongController">
   <children>
       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="122.0" prefWidth="1080.0" text="Add Song" textFill="WHITE" AnchorPane.bottomAnchor="548.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="50.0">
          <font>
@@ -57,7 +57,7 @@
                   <Label fx:id="songFileLabel" text="Song File" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                   <TextField fx:id="songChosenPath" style="-fx-background-color: #cde8c3#cde8c3;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                   <ComboBox fx:id="songGenreInput" prefWidth="150.0" style="-fx-background-color: #0f6865#0f6865;" GridPane.rowIndex="2" />
-            <Label text="Album" textFill="WHITE" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+            <Label fx:id="AlbumLabel" text="Album" textFill="WHITE" GridPane.rowIndex="3" GridPane.valignment="TOP" />
             <FlowPane hgap="20.0" maxHeight="58.0" prefHeight="0.0" prefWidth="200.0" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
                <children>
                   <RadioButton fx:id="rbNewAlbum" mnemonicParsing="false" onMouseClicked="#newAlbumMode" text="New Album" textFill="WHITE" />
