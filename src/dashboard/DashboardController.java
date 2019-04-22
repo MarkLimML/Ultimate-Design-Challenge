@@ -29,6 +29,8 @@ import makePlaylist.PlaylistModel;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DashboardController extends dashboard.ControllerAbstract {
@@ -80,8 +82,21 @@ public class DashboardController extends dashboard.ControllerAbstract {
         playlistScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         playlistPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         playlistScroll.setFitToWidth(true);
-        recentlyPlayedLabel.setText("Recently Played Song: " + model.getDbc().showRecentlyPlayed(model.getUser().getUser_id()));
-
+//        recentlyPlayedLabel.setText("Recently Played Song: " + model.getDbc().showRecentlyPlayed(model.getUser().getUser_id()));
+        ResultSet rs = model.getDbc().showRecentlyPlayed(model.getUser().getUser_id());
+        String title = "";
+        try
+        {
+            if(rs.next()) {
+                title = rs.getString("song_name");
+            }
+            else
+                title = " None";
+            recentlyPlayedLabel.setText("Recently Played Song: " + title);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
         if (!model.isLogged()) {
             hbxAddSong.setDisable(true);
             hbxAddPlist.setDisable(true);
@@ -321,5 +336,18 @@ public class DashboardController extends dashboard.ControllerAbstract {
             this.addPlaylistBox(box);
         }
         currentPlaylistsType = "AlbumPlaylist";
+    }
+
+    public void searchPlaylistButt(MouseEvent mouseEvent) {
+        String searchPlaylists = albumInput.getText().trim();
+
+        playlistPane.getChildren().clear();
+        currentPlaylistsType = "AllPlaylists";
+        ArrayList<PlaylistBox> boxes;
+        boxes = model.getListOfPlaylist(currentPlaylistsType);
+        for (PlaylistBox box : boxes) {
+            if(box.getPlaylistName().equalsIgnoreCase(searchPlaylists))
+                this.addPlaylistBox(box);
+        }
     }
 }
