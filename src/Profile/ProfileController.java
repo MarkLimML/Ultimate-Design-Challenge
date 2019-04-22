@@ -33,6 +33,7 @@ public class ProfileController extends ControllerAbstract {
     public AnchorPane tablePane;
     public Label userNameLabel;
     public Label userTypeLabel;
+    public Label userFollowLabel;
     public Button followButt;
     public Pane mainPane;
     private ProfileModel model;
@@ -179,9 +180,12 @@ public class ProfileController extends ControllerAbstract {
     public void followUser(MouseEvent mouseEvent) {
         if (!(model.getDbc().userIsFollowing(model.getUser().getUser_id(), model.getDisplayedUser().getUser_id()))){
             model.getDbc().followUser(model.getUser().getUser_id(), model.getDisplayedUser().getUser_id());
-    }
-        else
+            userFollowLabel.setText("Followed");
+        }
+        else {
             model.getDbc().unfollowUser(model.getUser().getUser_id(), model.getDisplayedUser().getUser_id());
+            userFollowLabel.setText("Not Followed");
+        }
     }
 
     private void setSongList() {
@@ -224,5 +228,13 @@ public class ProfileController extends ControllerAbstract {
             userTypeLabel.setText("Artist");
         else
             userTypeLabel.setText("Listener");
+        if(ModelAbstract.getUser().getUser_id() == model.getDisplayedUser().getUser_id())
+            userFollowLabel.setOpacity(0);
+        else
+            userFollowLabel.setOpacity(1);
+        if(!model.getDbc().userIsFollowing(ModelAbstract.getUser().getUser_id(), model.getDisplayedUser().getUser_id()))
+            userFollowLabel.setText("Followed");
+        else
+            userFollowLabel.setText("Not Followed");
     }
 }

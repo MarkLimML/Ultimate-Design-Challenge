@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" prefHeight="600.0" prefWidth="1145.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Profile.ProfileController">
+<Pane fx:id="mainPane" prefHeight="600.0" prefWidth="1145.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Profile.ProfileController">
     <children>
         <Button fx:id="backButt" layoutX="945.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#goBack" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Back" textFill="WHITE" />
         <Button fx:id="songsButt" layoutX="116.0" layoutY="62.0" mnemonicParsing="false" onMouseClicked="#showSongs" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" text="Fav Songs" textFill="#cde8c3">
@@ -34,5 +34,6 @@
       <Label fx:id="userNameLabel" layoutX="116.0" layoutY="29.0" prefHeight="17.0" prefWidth="94.0" text="Username" textFill="#58c6b3" />
       <Label fx:id="userTypeLabel" layoutX="385.0" layoutY="29.0" text="User Type" textFill="#58c6b3" />
       <Button fx:id="followButt" layoutX="957.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#followUser" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: #58c6b3#58c6b3; -fx-border-width: 2;" text="Follow" textFill="WHITE" />
+      <Label fx:id="userFollowLabel" layoutX="628.0" layoutY="29.0" text="Follow" textFill="#58c6b3" />
     </children>
 </Pane>
