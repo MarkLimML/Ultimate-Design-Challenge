@@ -49,7 +49,6 @@ public class MediaPlayerController
     public Label albumNamelabel;
     private Label time;
     Duration duration;
-    private final double OFFSET = 0.5;
 
     @FXML
     public ProgressBar songProgression;
@@ -83,8 +82,6 @@ public class MediaPlayerController
     public Button shuffleSongs;
     @FXML
     public Button repeatSong;
-    @FXML
-    public Slider slider;
 
 
     private boolean replay;
@@ -96,7 +93,6 @@ public class MediaPlayerController
     public Duration currTime;
 
     private ConcreteModelMediaPlayer model;
-    public Iterator iter = model.getIterator();
 
     public MediaPlayerController() {
         model = new ConcreteModelMediaPlayer();
@@ -229,18 +225,6 @@ public class MediaPlayerController
         }
     }
 
-    public void initPlayer() {
-        mediaPlayer.totalDurationProperty().addListener((ObservableValue<? extends Duration> obs, Duration oldValue, Duration newValue) ->slider.setMax(newValue.toSeconds()));
-
-        slider.valueProperty().addListener((ObservableValue<? extends Number> obs, Number oldValue, Number newValue) -> {
-            if(!slider.isValueChanging()) {
-                double current = mediaPlayer.getCurrentTime().toSeconds();
-                if (Math.abs(current - newValue.doubleValue()) > OFFSET)
-                    mediaPlayer.seek(Duration.seconds(newValue.doubleValue()));
-            }
-        });
-    }
-
     public void shuffle(MouseEvent e){
         Collections.shuffle(model.getSongList());
         setCurrentIndex(0);
@@ -274,27 +258,12 @@ public class MediaPlayerController
             titleLabel.setText(model.getSongList().get(model.getSongIndex()).getName());
             albumNamelabel.setText(model.getSongList().get(model.getSongIndex()).getAlbum());
             model.incrementTimesPlayed();
-
+        model.getDbc().updateRecentlyPlayed(model.getDbc().getIDFromSongName(model.getSongList().get(model.getSongIndex()).getName()), model.getUser().getUser_id());
             mediaPlayer = new MediaPlayer(media);
             mediaView.setMediaPlayer(mediaPlayer);
             mediaPlayer.setAutoPlay(false);
             mediaPlayer.currentTimeProperty().addListener((Observable ov) -> {
                 updateValues();
-            });
-
-            mediaPlayer.totalDurationProperty().addListener((ObservableValue<? extends Duration> obs, Duration oldValue, Duration newValue) ->slider.setMax(newValue.toSeconds()));
-
-            slider.valueProperty().addListener((ObservableValue<? extends Number> obs, Number oldValue, Number newValue) -> {
-                if(!slider.isValueChanging()) {
-                    double current = mediaPlayer.getCurrentTime().toSeconds();
-                    if (Math.abs(current - newValue.doubleValue()) > OFFSET)
-                        mediaPlayer.seek(Duration.seconds(newValue.doubleValue()));
-                }
-            });
-
-            mediaPlayer.currentTimeProperty().addListener((ObservableValue<? extends Duration> obs, Duration oldValue, Duration newValue) -> {
-                if (!slider.isValueChanging())
-                    slider.setValue(newValue.toSeconds());
             });
 
             mediaPlayer.setOnReady(() -> {
@@ -321,10 +290,7 @@ public class MediaPlayerController
                     mediaPlayer.stop();
                    /* mediaPlayer.seek(Duration.ZERO);
                     mediaPlayer.play(); // makes song actually play but each media player overlaps*/
-                    if(iter.hasNext()) {
-                        setCurrentIndex((model.getSongIndex() + 1) % model.getSongList().size());
-                        iter.next();
-                    }
+                    setCurrentIndex((model.getSongIndex()+1) % model.getSongList().size());
                 }
             });
 

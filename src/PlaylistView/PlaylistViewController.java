@@ -1,6 +1,7 @@
 package PlaylistView;
 
 import AddFromLib.AddFromLibController;
+import AddSong.AddSongController;
 import AddSong.Song;
 import Search.SearchController;
 import dashboard.ControllerAbstract;
@@ -420,6 +421,43 @@ public class PlaylistViewController extends ControllerAbstract {
             }
         }
         model.deleteSongsInPlaylist(selectedSongs);
+        setObservableValues();
     }
 
+    public void switchToEditSongView(MouseEvent mouseEvent){
+
+        int songIDTemp=-1;
+        int row = -1;
+        try{
+            TablePosition position = (TablePosition) tableView.getSelectionModel().getSelectedCells().get(0);
+            row = position.getRow();
+            songIDTemp = songArrayList.get(row).getSongId();
+        }catch(Exception e){
+            System.out.println("no song selected");
+        }
+
+
+        if(songIDTemp > 0){
+            this.setScene(playlistViewPane.getScene());
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[3]));
+                this.setRoot(loader.load());
+                AddSongController addSongController = loader.getController();
+                addSongController.getModel().setController(addSongController);
+
+
+
+                addSongController.setEditingMode(true, songArrayList.get(row).getSongId());
+
+                //SearchController searchController = loader.getController();
+                //searchController.getModel().setPlaylistModel(model.getPlaylistModel());
+                //searchController.getModel().setController(searchController);
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        }
+        else
+            System.out.println("No selected song");
+
+    }
 }

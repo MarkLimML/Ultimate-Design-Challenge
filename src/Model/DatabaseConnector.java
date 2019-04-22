@@ -96,7 +96,7 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/musicplayerudc?autoReconnect=true&useSSL=false",
-                    "despa2", "#str3ssp4");
+                    "root", "jude842");
             prepareStatements();
         } catch (Exception se) {
             se.printStackTrace();
@@ -306,7 +306,7 @@ public class DatabaseConnector {
             stmt = "DELETE FROM albums WHERE album_id=?";
             deleteAlbumWID = connection.prepareStatement(stmt);
 
-            stmt ="DELETE FROM playlist_songs WHERE song_id = ? AND playlist_id = ?";
+            stmt ="DELETE FROM palylists WHERE song_id = ? AND user_id = ?";
             removeSongInPlaylist = connection.prepareStatement(stmt);
 
             stmt = "DELETE FROM song WHERE album_id =?";
@@ -1389,10 +1389,10 @@ public class DatabaseConnector {
 
     }
 
-    public void deleteSongInPlaylist (int song_id, int playlist_id) {
-        try {// DELETE FROM playlists WHERE song_id = ? AND user_id = ?"
+    public void deleteSongInPlaylist (int song_id, int user_id) {
+        try {// DELETE FROM palylists WHERE song_id = ? AND user_id = ?"
             removeSongInPlaylist.setInt(1, song_id);
-            removeSongInPlaylist.setInt(2, playlist_id);
+            removeSongInPlaylist.setInt(2, user_id);
             removeSongInPlaylist.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -1913,6 +1913,130 @@ public class DatabaseConnector {
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1, user_id);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //UPDATE METADATA
+
+    public void UpdateGenre(int song_id, int new_genre_id){
+        String stmt =  "UPDATE songs SET songs.genre_id = ? WHERE songs.song_id = ?;";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,new_genre_id);
+            ps.setInt(2,song_id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void UpdateAlbum(int song_id, int new_album_id){
+        String stmt =  "UPDATE songs SET songs.album_id = ? WHERE songs.song_id = ?;";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,new_album_id);
+            ps.setInt(2,song_id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void UpdateSongName(int song_id, String new_song_name){
+        String stmt =  "UPDATE songs SET songs.song_name = ? WHERE songs.song_id = ?;";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setString(1,new_song_name);
+            ps.setInt(2,song_id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void UpdateSongYear(int song_id, int new_song_year){
+        String stmt =  "UPDATE songs SET songs.song_year = ? WHERE songs.song_id = ?;";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1,new_song_year);
+            ps.setInt(2,song_id);
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int GetSongGenreFromSongID(int song_id){
+        String stmt = "SELECT genre_id FROM songs WHERE song_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, song_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    public int GetSongAlbumIDFromSongID(int song_id){
+        String stmt = "SELECT album_id FROM songs WHERE song_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, song_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    public String GetSongNameFromSongID(int song_id){
+        String stmt = "SELECT song_name FROM songs WHERE song_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, song_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public int GetSongYearFromSongID(int song_id){
+        String stmt = "SELECT song_year FROM songs WHERE song_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, song_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return -1;
+    }
+    public ResultSet getAllUsers()
+    {
+        String stmt = "SELECT username FROM accounts";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
             ResultSet rs = ps.executeQuery();
             return rs;
         } catch (SQLException e) {

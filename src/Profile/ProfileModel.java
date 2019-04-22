@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class ProfileModel extends ModelAbstract {
     ProfileController controller;
-  //  private User displayedUser;
+    private User displayedUser;
 
 
     public ArrayList<User> getArtistsFollowed(){
@@ -91,8 +91,10 @@ public class ProfileModel extends ModelAbstract {
         return songs;
     }
 
-    public void setCurrentProfile(User user) {
-        setUser(user);
+    public void setCurrentProfile(int id) {
+        User u = new User();
+        u = getDbc().getUserFromID(id);
+        setDisplayedUser(u);
     }
 
     public void setController(ProfileController controller) {
@@ -100,7 +102,11 @@ public class ProfileModel extends ModelAbstract {
         this.controller = controller;
     }
 
-/*    public void setDisplayedUser(User user) {
+    public void setDisplayedUser(User user) {
         this.displayedUser = user;
-    }*/
+    }
+
+    public User getDisplayedUser() {
+        return this.displayedUser;
+    }
 }

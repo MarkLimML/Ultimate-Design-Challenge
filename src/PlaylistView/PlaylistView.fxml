@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="playlistViewPane" prefHeight="600.0" prefWidth="1145.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PlaylistView.PlaylistViewController">
+<Pane fx:id="playlistViewPane" prefHeight="600.0" prefWidth="1145.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PlaylistView.PlaylistViewController">
    <children>
-      <Button fx:id="deleteSongs" layoutX="800.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#deleteSelectedList" prefHeight="71.0" prefWidth="120.0" text="Delete Songs" />
+      <Button fx:id="deleteSongs" layoutX="800.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#deleteCheckedSongs" prefHeight="71.0" prefWidth="120.0" text="Delete Songs" />
       <Button fx:id="btnEndDeleteMode" layoutX="925.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#exitDeleteSongMode" prefHeight="71.0" prefWidth="120.0" text="Done" />
       <Label fx:id="playlistTitle" layoutX="89.0" layoutY="39.0" text="Playlist" textFill="#cde8c3">
          <font>
@@ -25,7 +25,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="tableScroll" fitToWidth="true" hbarPolicy="NEVER" layoutX="89.0" layoutY="215.0" prefHeight="300.0" prefWidth="950.0">
+      <ScrollPane fx:id="tableScroll" fitToWidth="true" layoutX="89.0" layoutY="215.0" prefHeight="300.0" prefWidth="950.0">
          <content>
             <AnchorPane fx:id="tablePane" prefHeight="300.0" prefWidth="950.0">
                <children>
@@ -47,5 +47,6 @@
       <Button fx:id="sortByYear" layoutX="719.0" layoutY="170.0" mnemonicParsing="false" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Year" textFill="#58c6b3" />
       <Button fx:id="publicButton" layoutX="89.0" layoutY="120.0" mnemonicParsing="false" onMouseClicked="#setToPublicOrNot" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Public" textFill="#58c6b3" />
       <Button fx:id="addFavorite" layoutX="151.0" layoutY="120.0" mnemonicParsing="false" onMouseClicked="#addToFavorites" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Favorite" textFill="#58c6b3" />
+      <Button fx:id="editSong" layoutX="985.0" layoutY="170.0" mnemonicParsing="false" onMouseClicked="#switchToEditSongView" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Edit" textFill="#58c6b3" />
    </children>
 </Pane>

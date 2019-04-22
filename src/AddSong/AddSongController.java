@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import AddFromLib.AddFromLibView;
+import Model.ModelAbstract;
 import dashboard.ControllerAbstract;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -45,6 +46,8 @@ public class AddSongController extends ControllerAbstract
     @FXML
     Button chooseImageButton;
     @FXML
+    Label AlbumLabel;
+    @FXML
     Label songNameLabel;
     @FXML
     Label songFileLabel;
@@ -77,6 +80,11 @@ public class AddSongController extends ControllerAbstract
 
     private AddSongModel model;
 
+    private boolean editing;
+
+    private String song_Name;
+    private int song_id;
+
     /*
         0 - name
         1 - imagePath
@@ -94,6 +102,37 @@ public class AddSongController extends ControllerAbstract
     public AddSongModel getModel() {
         System.out.println("getModel()");
         return model;
+    }
+
+    public void setEditingMode(boolean editing, int song_id) {
+        this.editing = editing;
+        if(editing)
+        {
+            this.song_id = song_id;
+
+            songFileLabel.setVisible(false);
+            chooseSongButton.setVisible(false);
+            songChosenPath.setVisible(false);
+            artistNameInput.setVisible(false);
+            artistLabel.setVisible(false);
+            imageChosenPath.setVisible(false);
+            chooseImageButton.setVisible(false);
+            albumArtLabel.setVisible(false);
+            albumNameLabel.setVisible(false);
+            albumNameInput.setVisible(false);
+            AlbumLabel.setVisible(false);
+            rbNewAlbum.setVisible(false);
+            rbYourAlbums.setVisible(false);
+            cmbAlbumName.setVisible(false);
+            albumNameLabel.setVisible(false);
+
+
+            songGenreInput.getSelectionModel().select(ModelAbstract.getDbc().GetSongGenreFromSongID(song_id));
+            songNameInput.setText(ModelAbstract.getDbc().GetSongNameFromSongID(song_id));
+            albumYearInput.setText(String.valueOf(ModelAbstract.getDbc().GetSongYearFromSongID(song_id)));
+            System.out.println(ModelAbstract.getUser().getUsername());
+
+        }
     }
 
     public void setModel(AddSongModel model) {
@@ -139,46 +178,60 @@ public class AddSongController extends ControllerAbstract
 //        System.out.println(artist);
 //        model.getSong().setArtist(artist);
 
-        if (songNameInput.getText().trim().length() == 0) {
-            validInputs = false;
-        } if (songChosenPath.getText().trim().length() == 0) {
-            validInputs = false;
-        } if (rbNewAlbum.isSelected()) {
-            try {
-                int num = Integer.parseInt(albumYearInput.getText().trim());
-                if (num < 1)
+        if(!editing){
+            if (songNameInput.getText().trim().length() == 0) {
+                validInputs = false;
+            } if (songChosenPath.getText().trim().length() == 0) {
+                validInputs = false;
+            } if (rbNewAlbum.isSelected()) {
+                try {
+                    int num = Integer.parseInt(albumYearInput.getText().trim());
+                    if (num < 1)
+                        validInputs = false;
+                } catch (NumberFormatException ne) {
                     validInputs = false;
-            } catch (NumberFormatException ne) {
-                validInputs = false;
+                }
+                if (imageChosenPath.getText().trim().length() == 0) {
+                    validInputs = false;
+                }
             }
-            if (imageChosenPath.getText().trim().length() == 0) {
-                validInputs = false;
+
+            if (validInputs) {
+                model.getSong().setGenre(genre);
+                model.getSong().setName(songNameInput.getText());
+                model.getSong().setUser_id(model.getUser_id());
+
+
+                if (rbNewAlbum.isSelected()) {
+                    album = albumNameInput.getText();
+                    model.getSong().setAlbum(album);
+                    model.getSong().setYear(Integer.parseInt(albumYearInput.getText()));
+                } else {
+                    int index = cmbAlbumName.getItems().indexOf(cmbAlbumName.getValue());
+                    model.getSong().setYear(model.getUserAlbums().get(index).getYear());
+                    model.getSong().setAlbumId(model.getUserAlbums().get(index).getAlbum_id());
+                    album = model.getUserAlbums().get(index).getAlbum_name();
+                }
+
+//        Metadata metadata = model.returnSongMetadata(album, artist, genre);
+                Metadata metadata = model.returnSongMetadata(album, genre);
+                metadata.saveToDatabase(model.getSong());
+                callPreviousScreen(e);
+            } else {
+                System.out.println("Invalid inputs.");
             }
         }
 
-        if (validInputs) {
-            model.getSong().setGenre(genre);
-            model.getSong().setName(songNameInput.getText());
-            model.getSong().setUser_id(model.getUser_id());
 
+        if (editing)
+        {
+            String songName = songNameInput.getText();
+            int genreID = songGenreInput.getItems().indexOf(songGenreInput.getValue())+1;
+            int albumYear = Integer.parseInt(albumYearInput.getText());
 
-            if (rbNewAlbum.isSelected()) {
-                album = albumNameInput.getText();
-                model.getSong().setAlbum(album);
-                model.getSong().setYear(Integer.parseInt(albumYearInput.getText()));
-            } else {
-                int index = cmbAlbumName.getItems().indexOf(cmbAlbumName.getValue());
-                model.getSong().setYear(model.getUserAlbums().get(index).getYear());
-                model.getSong().setAlbumId(model.getUserAlbums().get(index).getAlbum_id());
-                album = model.getUserAlbums().get(index).getAlbum_name();
-            }
-
-//        Metadata metadata = model.returnSongMetadata(album, artist, genre);
-            Metadata metadata = model.returnSongMetadata(album, genre);
-            metadata.saveToDatabase(model.getSong());
-            callPreviousScreen(e);
-        } else {
-            System.out.println("Invalid inputs.");
+            ModelAbstract.getDbc().UpdateSongName(song_id,songName);
+            ModelAbstract.getDbc().UpdateSongYear(song_id,albumYear);
+            ModelAbstract.getDbc().UpdateGenre(song_id,genreID);
         }
 
     }

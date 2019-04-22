@@ -55,7 +55,6 @@ public class ProfileController extends ControllerAbstract {
     private ArrayList<PlaylistModel> playlists;
     private ObservableList<PlaylistModel> favPlaylists;
 
-    private User displayedUser;
 
     public ProfileController() {
         model = new ProfileModel();
@@ -64,8 +63,8 @@ public class ProfileController extends ControllerAbstract {
     public void initialize() {
         userNameLabel = new Label();
         userTypeLabel = new Label();
-        userNameLabel.setText(ModelAbstract.getUser().getUsername());
-        if(ModelAbstract.getUser().isArtist())
+        userNameLabel.setText(model.getDisplayedUser().getUsername());
+        if(model.getDisplayedUser().isArtist())
             userTypeLabel.setText("Artist");
         else
             userTypeLabel.setText("Listener");
@@ -183,13 +182,12 @@ public class ProfileController extends ControllerAbstract {
         setListenerTableColumns();
         tablePane.getChildren().add(ListenerTable);
     }
-
     public void followUser(MouseEvent mouseEvent) {
-        if (!(model.getDbc().userIsFollowing(model.getUser().getUser_id(), displayedUser.getUser_id()))){
-            model.getDbc().followUser(model.getUser().getUser_id(), displayedUser.getUser_id());
+        if (!(model.getDbc().userIsFollowing(model.getUser().getUser_id(), model.getDisplayedUser().getUser_id()))){
+            model.getDbc().followUser(model.getUser().getUser_id(), model.getDisplayedUser().getUser_id());
     }
         else
-            model.getDbc().unfollowUser(model.getUser().getUser_id(), displayedUser.getUser_id());
+            model.getDbc().unfollowUser(model.getUser().getUser_id(), model.getDisplayedUser().getUser_id());
     }
 
     private void setSongList() {
@@ -215,5 +213,13 @@ public class ProfileController extends ControllerAbstract {
         System.out.println("getArtistList()");
         artists = model.getArtistsFollowed();
         artistList = FXCollections.observableArrayList(artists);
+    }
+
+    public ProfileModel getModel() {
+        return model;
+    }
+
+    public void setModel(ProfileModel model) {
+        this.model = model;
     }
 }

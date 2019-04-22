@@ -3,6 +3,7 @@ package dashboard;
 import Model.ModelAbstract;
 import PlaylistView.PlaylistViewController;
 import PlaylistView.PlaylistViewModel;
+import Profile.ProfileController;
 import Profile.ProfileModel;
 import Search.SearchController;
 import javafx.event.EventHandler;
@@ -43,6 +44,8 @@ public class DashboardController extends dashboard.ControllerAbstract {
     private DashboardModel model;
 
     @FXML
+    private Label recentlyPlayedLabel;
+    @FXML
     public FlowPane playlistPane;
     @FXML
     public ScrollPane playlistScroll;
@@ -77,6 +80,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
         playlistScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         playlistPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         playlistScroll.setFitToWidth(true);
+        recentlyPlayedLabel.setText("Recently Played Song: " + model.getDbc().showRecentlyPlayed(model.getUser().getUser_id()));
 
         if (!model.isLogged()) {
             hbxAddSong.setDisable(true);
@@ -97,7 +101,6 @@ public class DashboardController extends dashboard.ControllerAbstract {
         imageView.setFitHeight(200);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
-        System.out.println(box.getImgPath());
         String imgpath = box.getImgPath().replace("src", "");
         System.out.println(imgpath);
         Image img = new Image(imgpath);
@@ -111,7 +114,11 @@ public class DashboardController extends dashboard.ControllerAbstract {
         box.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent me) {
                 System.out.println("handle()");
-                switchToPlaylistView(me);
+                if(box.getImgPath()=="Artist") {
+                    switchToUserInfoWithId(box.getPlaylistId());
+                }
+                else
+                    switchToPlaylistView(me);
             }
         });
 
@@ -228,6 +235,21 @@ public class DashboardController extends dashboard.ControllerAbstract {
         this.switchScene(this.getScreenUrls()[8]);
     }
 
+    public void switchToUserInfoWithId(int user_id) {
+        System.out.println("switchToUserInfo()");
+        this.setScene(mainPane.getScene());
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[8]));
+            this.setRoot(loader.load());
+            ProfileController profileController = loader.getController();
+            profileController.getModel().setCurrentProfile(user_id);
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
+
+    }
+
     public void loggingOut() {
         ModelAbstract.setUser(null);
         this.setScene(mainPane.getScene());
@@ -235,9 +257,28 @@ public class DashboardController extends dashboard.ControllerAbstract {
     }
 
     public void searchArtistButt(MouseEvent mouseEvent) {
+        String searchArtist = artistInput.getText();
+
+        playlistPane.getChildren().clear();
+        ArrayList<PlaylistBox> boxes;
+        boxes = model.getUserList();
+        for (PlaylistBox box : boxes) {
+            if(box.getPlaylistName().contains(searchArtist))
+                this.addPlaylistBox(box);
+        }
     }
 
     public void searchAlbumButt(MouseEvent mouseEvent) {
+       String searchAlbums = albumInput.getText();
+
+        playlistPane.getChildren().clear();
+        currentPlaylistsType = "AlbumPlaylist";
+        ArrayList<PlaylistBox> boxes;
+        boxes = model.getListOfPlaylist(currentPlaylistsType);
+        for (PlaylistBox box : boxes) {
+            if(box.getPlaylistName().contains("searchAlbums"))
+            this.addPlaylistBox(box);
+        }
     }
 
     public void searchSongButt(MouseEvent mouseEvent) {
@@ -254,7 +295,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
             ie.printStackTrace();
         }
     }
-
+    
     public void viewUserAlbumPlaylists(MouseEvent mouseEvent) {
         playlistPane.getChildren().clear();
         currentPlaylistsType = "UserAlbumPlaylist";
@@ -263,6 +304,6 @@ public class DashboardController extends dashboard.ControllerAbstract {
         for (PlaylistBox box : boxes) {
             this.addPlaylistBox(box);
         }
-        currentPlaylistsType = "albumPlaylist";
+        currentPlaylistsType = "AlbumPlaylist";
     }
 }

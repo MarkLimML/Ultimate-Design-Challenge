@@ -2,20 +2,38 @@ package dashboard;
 
 import AddSong.Song;
 import Model.ModelAbstract;
+import Model.User;
+import makePlaylist.Playlist;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DashboardModel extends ModelAbstract {
+    public ArrayList<PlaylistBox> getUserList() {
+        ArrayList<PlaylistBox> boxes =new ArrayList<>();
+        ResultSet rs = getDbc().getAllUsers();
+        PlaylistBox box;
+        try {
+            while (rs.next()) {
+                if(rs.getInt("type")==1) {
+                    box = new PlaylistBox();
+                    box.setPlaylistName(rs.getString("username"));
+                    box.setPlaylistId(rs.getInt("user_id"));
+                    box.setImgPath("Artist");
+                    boxes.add(box);
+                }
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return boxes;
+    }
     public ArrayList<PlaylistBox> getListOfPlaylist(String playlistType) {
         ArrayList<PlaylistBox> boxes = new ArrayList<>();
         switch (playlistType) {
             case "AlbumPlaylist":
                 this.setAlbumPlaylists(boxes);
-                break;
-            case "UserAlbumPlaylist":
-                this.setUserAlbumPlaylists(boxes);
                 break;
             case "UserPlaylist":
                 this.setUserPlaylists(boxes);
@@ -82,26 +100,7 @@ public class DashboardModel extends ModelAbstract {
     }
 
     private ArrayList<PlaylistBox> setAlbumPlaylists(ArrayList<PlaylistBox> boxes) {
-        System.out.println("setAlbumPlaylists()");
         ResultSet rs = getDbc().getAlbumInfo();
-        PlaylistBox box;
-        try {
-            while (rs.next()) {
-                box = new PlaylistBox();
-                box.setPlaylistId(rs.getInt("album_id"));
-                box.setPlaylistName(rs.getString("album_name"));
-                System.out.println(rs.getString("img_path"));
-                box.setImgPath(rs.getString("img_path"));
-                boxes.add(box);
-            }
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return boxes;
-    }
-
-    private ArrayList<PlaylistBox> setUserAlbumPlaylists(ArrayList<PlaylistBox> boxes) {
-        ResultSet rs = getDbc().getAlbumsOfArtist(ModelAbstract.getUser().getUser_id());
         PlaylistBox box;
         try {
             while (rs.next()) {

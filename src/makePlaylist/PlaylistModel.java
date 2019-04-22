@@ -140,11 +140,10 @@ public class PlaylistModel extends ModelAbstract {
                         System.out.println(rs.getInt("album_id"));
                         System.out.println(rs.getString("img_path"));
 
-
+                        song.setArtist(rs.getString("username"));
                         song.setSongId(rs.getInt("song_id"));
                         song.setGenreId(rs.getInt("genre_id"));
                         song.setAlbumId(rs.getInt("album_id"));
-                        song.setArtist(rs.getString("artist_name"));
                         song.setName(rs.getString("song_name"));
                         song.setGenre(rs.getString("genre_name"));
                         song.setAlbum(rs.getString("album_name"));
