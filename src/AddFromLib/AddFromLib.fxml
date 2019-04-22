@@ -7,33 +7,39 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="addFromLibPane" prefHeight="600.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddFromLib.AddFromLibController">
+<Pane fx:id="addFromLibPane" prefHeight="600.0" prefWidth="1145.0" style="-fx-background-color: #252b32 #252b32;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddFromLib.AddFromLibController">
    <children>
-      <Label fx:id="playlistTitle" layoutX="89.0" layoutY="39.0" text="User Library">
+      <Label fx:id="playlistTitle" layoutX="89.0" layoutY="39.0" text="User Library" textFill="#cde8c3">
          <font>
             <Font size="60.0" />
          </font>
       </Label>
-      <Button fx:id="btnCancel" layoutX="877.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#backToLastScene" prefHeight="71.0" prefWidth="107.0" text="Cancel" />
-      <Button fx:id="btnSave" layoutX="691.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#saveUserList" prefHeight="71.0" prefWidth="119.0" text="Save" />
-      <Label layoutX="162.0" layoutY="152.0" prefHeight="63.0" prefWidth="100.0" text="Title">
+      <Button fx:id="btnCancel" layoutX="877.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#backToLastScene" prefHeight="71.0" prefWidth="107.0" style="-fx-background-color: #252b32 #252b32;" text="Cancel" textFill="#58c6b3">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button fx:id="btnSave" layoutX="691.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#saveUserList" prefHeight="71.0" prefWidth="119.0" style="-fx-background-color: #252b32 #252b32;" text="Save" textFill="#58c6b3">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Label layoutX="162.0" layoutY="152.0" prefHeight="63.0" prefWidth="100.0" text="Title" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="520.0" layoutY="152.0" prefHeight="63.0" prefWidth="107.0" text="Artist">
+      <Label layoutX="520.0" layoutY="152.0" prefHeight="63.0" prefWidth="107.0" text="Artist" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="751.0" layoutY="152.0" prefHeight="63.0" prefWidth="119.0" text="Album">
+      <Label layoutX="751.0" layoutY="152.0" prefHeight="63.0" prefWidth="119.0" text="Album" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
       <ScrollPane fx:id="tableScroll" fitToWidth="true" hbarPolicy="NEVER" layoutX="89.0" layoutY="215.0" prefHeight="300.0" prefWidth="950.0">
          <content>
-            <AnchorPane fx:id="tablePane" prefHeight="300.0" prefWidth="950.0" />
+            <AnchorPane fx:id="tablePane" prefHeight="300.0" prefWidth="950.0" style="-fx-background-color: #252b32 #252b32;" />
          </content></ScrollPane>
    </children>
 </Pane>
