@@ -65,7 +65,7 @@ public class PlaylistViewController extends ControllerAbstract {
     @FXML
     public TableColumn<Song, String> colAlbum;
     @FXML
-    public TableColumn<Song, Date> colUploadDate;
+    public TableColumn<Song, String> colUploadDate;
     @FXML
     public TableColumn<Song, Integer> colYear;
 
@@ -152,18 +152,22 @@ public class PlaylistViewController extends ControllerAbstract {
         colTitle.setCellValueFactory(new PropertyValueFactory<>("name"));
         colAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
         colArtist.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        colUploadDate = new TableColumn<Song, String>("Upload Date");
         colUploadDate.setCellValueFactory(new PropertyValueFactory<>("created"));
+        colYear = new TableColumn<Song, Integer>(" Upload Year");
         colYear.setCellValueFactory(new PropertyValueFactory<>("year"));
 
         colTitle.setSortType(TableColumn.SortType.DESCENDING);
         colAlbum.setSortable(true);
 
         tableView.setFixedCellSize(40.0);
-
+        colUploadDate.setMinWidth(100.0);
+        colYear.setMinWidth(100.0);
         this.addTableButton();
         tableView.getColumns().clear();
-        tableView.getColumns().addAll(colBtn, colTitle, colArtist, colAlbum, colUploadDate, colYear);
+            tableView.getColumns().addAll(colBtn, colTitle, colArtist, colAlbum, colUploadDate, colYear);
         songList = getSongList();
+        System.out.println(songArrayList);
         tableView.setItems(songList);
     }
 
@@ -248,7 +252,8 @@ public class PlaylistViewController extends ControllerAbstract {
         if (songArrayList == null) {
             if (model.getPlaylistModel() != null)
                 songArrayList = model.getPlaylistSongs();
-            return null;
+            else
+                return null;
         }
         return FXCollections.observableArrayList(songArrayList);
     }
