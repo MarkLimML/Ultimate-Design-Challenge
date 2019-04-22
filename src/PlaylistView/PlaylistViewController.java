@@ -1,6 +1,6 @@
 package PlaylistView;
 
-import AddFromLib.AddFromLibToCurPlaylist;
+import AddFromLib.AddFromLibController;
 import AddSong.Song;
 import Search.SearchController;
 import dashboard.ControllerAbstract;
@@ -9,7 +9,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,12 +20,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
-import makePlaylist.PlaylistModel;
 import mediaPlayer.MediaPlayerController;
 import mediaPlayer.MediaPlayerStage;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class PlaylistViewController extends ControllerAbstract {
@@ -64,9 +61,7 @@ public class PlaylistViewController extends ControllerAbstract {
     public TableColumn<Song, String> colArtist;
     @FXML
     public TableColumn<Song, String> colAlbum;
-    @FXML
     public TableColumn<Song, String> colUploadDate;
-    @FXML
     public TableColumn<Song, Integer> colYear;
 
     private TableColumn<Song, Boolean> colCheckBox;
@@ -103,10 +98,9 @@ public class PlaylistViewController extends ControllerAbstract {
             });
         }
 
-
         if (model.getPlaylistType().equals("UserPlaylist")) {
-            btnAddSong.setVisible(true);
-            //btnAddSong.setVisible(false);
+            if (!deleteSongs.isVisible())
+                btnAddSong.setVisible(true);
         } else {
             btnAddSong.setVisible(false);
         }
@@ -165,17 +159,28 @@ public class PlaylistViewController extends ControllerAbstract {
         colYear.setMinWidth(100.0);
         this.addTableButton();
         tableView.getColumns().clear();
-            tableView.getColumns().addAll(colBtn, colTitle, colArtist, colAlbum, colUploadDate, colYear);
+        if (deleteSongs.isVisible()) {
+            this.addTableCheckboxColumn();
+            tableView.getColumns().add(colCheckBox);
+            tableView.setEditable(true);
+            colCheckBox.setEditable(true);
+            colTitle.setEditable(false);
+            colUploadDate.setEditable(false);
+            colYear.setEditable(false);
+            colAlbum.setEditable(false);
+            colArtist.setEditable(false);
+        } else {
+            this.addTableButton();
+            tableView.getColumns().add(colBtn);
+        }
+        tableView.getColumns().addAll(colTitle, colArtist, colAlbum, colUploadDate, colYear);
         songList = getSongList();
         System.out.println(songArrayList);
         tableView.setItems(songList);
     }
 
     public void addTableCheckboxColumn () {
-        selectedRowList = new ArrayList<BooleanProperty>();
-        for(Song s : songList) {
-            selectedRowList.add( new SimpleBooleanProperty() );
-        }
+
         colCbxState = new Callback<Integer,ObservableValue<Boolean>>() {
             @Override
             public ObservableValue<Boolean> call(Integer index) {
@@ -185,6 +190,11 @@ public class PlaylistViewController extends ControllerAbstract {
                 return selectedRowList.get(index);
             }
         };
+
+        selectedRowList = new ArrayList<BooleanProperty>();
+        for(Song s : songList) {
+            selectedRowList.add( new SimpleBooleanProperty() );
+        }
 
         colCheckBox = new TableColumn<>("");
         colCheckBox.setMinWidth(50);
@@ -198,7 +208,6 @@ public class PlaylistViewController extends ControllerAbstract {
         });
 
         colCheckBox.setCellFactory(CheckBoxTableCell.forTableColumn(colCbxState));
-        colCheckBox.setEditable(true);
     }
 
     public void addTableButton() {
@@ -266,12 +275,10 @@ public class PlaylistViewController extends ControllerAbstract {
     {
         if (mediaPlayerStage == null) {
             mediaPlayerStage = new MediaPlayerStage();
-            mediaPlayerController = mediaPlayerStage.getController();
-            mediaPlayerController.setSongList(songArrayList);
-            mediaPlayerController.setCurrentIndex(songArrayList.indexOf(currentSong));
-        } else {
-
         }
+        mediaPlayerController = mediaPlayerStage.getController();
+        mediaPlayerController.setSongList(songArrayList);
+        mediaPlayerController.setCurrentIndex(songArrayList.indexOf(currentSong));
     }
     
     public void back(MouseEvent e)
@@ -295,32 +302,15 @@ public class PlaylistViewController extends ControllerAbstract {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[5]));
             this.setRoot(loader.load());
-            loader.setController(new AddFromLibToCurPlaylist());
-            AddFromLibToCurPlaylist addFromLibController = loader.getController();
+            AddFromLibController addFromLibController = loader.getController();
             model.getPlaylistModel().setPlaylistType("UserPlaylist");
+            addFromLibController.setAddMode(true);
             addFromLibController.getModel().setController(addFromLibController);
-            addFromLibController.getModel().attachPlaylistModel(model.getPlaylistModel());
             addFromLibController.attachCurPlaylistModel(model.getPlaylistModel());
+            addFromLibController.getModel().attachPlaylistModel(model.getPlaylistModel());
         } catch (IOException ie) {
             ie.printStackTrace();
         }
-        /*
-        if (playlistName.length() > 0) {
-                this.setScene(playlistMakerPanel.getScene());
-                model.setPlaylistType("UserPlaylist");
-                model.setTitle(playlistName);
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[5]));
-                    this.setRoot(loader.load());
-                    AddFromLibController addFromLibController = loader.getController();
-                    addFromLibController.getModel().setController(addFromLibController);
-                    addFromLibController.getModel().attachPlaylistModel(model);
-
-                } catch (IOException ie) {
-                    ie.printStackTrace();
-                }
-            }
-         */
     }
 
     public void setPlaylistTitle (String title) {
