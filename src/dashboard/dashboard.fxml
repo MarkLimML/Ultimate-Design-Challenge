@@ -32,7 +32,7 @@
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox fx:id="hbxUserAlbums" alignment="CENTER_LEFT" onMouseClicked="#switchToAddPlaylist" prefWidth="150.0" style="-fx-border-width: 0 0 0 5px; -fx-border-color: white;">
+                  <HBox fx:id="hbxUserAlbums" alignment="CENTER_LEFT" onMouseClicked="#viewUserAlbumPlaylists" prefWidth="150.0" style="-fx-border-width: 0 0 0 5px; -fx-border-color: white;">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: white; -fx-font-size: 1.3em;" text="Your Albums" wrappingWidth="120.0">
                            <HBox.margin>

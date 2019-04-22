@@ -14,6 +14,9 @@ public class DashboardModel extends ModelAbstract {
             case "AlbumPlaylist":
                 this.setAlbumPlaylists(boxes);
                 break;
+            case "UserAlbumPlaylist":
+                this.setUserAlbumPlaylists(boxes);
+                break;
             case "UserPlaylist":
                 this.setUserPlaylists(boxes);
                 break;
@@ -79,7 +82,26 @@ public class DashboardModel extends ModelAbstract {
     }
 
     private ArrayList<PlaylistBox> setAlbumPlaylists(ArrayList<PlaylistBox> boxes) {
+        System.out.println("setAlbumPlaylists()");
         ResultSet rs = getDbc().getAlbumInfo();
+        PlaylistBox box;
+        try {
+            while (rs.next()) {
+                box = new PlaylistBox();
+                box.setPlaylistId(rs.getInt("album_id"));
+                box.setPlaylistName(rs.getString("album_name"));
+                System.out.println(rs.getString("img_path"));
+                box.setImgPath(rs.getString("img_path"));
+                boxes.add(box);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return boxes;
+    }
+
+    private ArrayList<PlaylistBox> setUserAlbumPlaylists(ArrayList<PlaylistBox> boxes) {
+        ResultSet rs = getDbc().getAlbumsOfArtist(ModelAbstract.getUser().getUser_id());
         PlaylistBox box;
         try {
             while (rs.next()) {
