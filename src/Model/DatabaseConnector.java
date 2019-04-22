@@ -154,14 +154,19 @@ public class DatabaseConnector {
                     "WHERE genre_id = ?";
             selectSongsWithGenreId = connection.prepareStatement(stmt);
 
-            stmt = "SELECT * FROM Playlists\n" +
-                    "NATURAL LEFT JOIN Playlist_Songs\n" +
-                    "NATURAL LEFT JOIN Songs\n" +
-                    "LEFT JOIN Albums using(user_id)\n" +
-//                    "NATURAL LEFT JOIN Artists\n" +
-                    "NATURAL LEFT JOIN Genres\n" +
-                    "NATURAL LEFT JOIN Accounts\n" +
-                    "WHERE playlist_id = ? AND user_id = ?";
+            stmt = "SELECT songs.song_id, songs.genre_id, songs.album_id, accounts.username, songs.song_name, genres.genre_name, albums.album_name, songs.song_year AS 'year', songs.song_path, playlists.img_path \n" +
+                    "FROM albums\n" +
+                    "INNER JOIN accounts\n" +
+                    "ON albums.user_id = accounts.user_id\n" +
+                    "INNER JOIN playlists\n" +
+                    "ON accounts.user_id = playlists.user_id\n" +
+                    "INNER JOIN playlist_songs\n" +
+                    "ON playlists.playlist_id = playlist_songs.playlist_id\n" +
+                    "INNER JOIN songs\n" +
+                    "ON playlist_songs.song_id = songs.song_id\n" +
+                    "INNER JOIN genres\n" +
+                    "ON songs.genre_id = genres.genre_id\n" +
+                    "WHERE playlists.playlist_id = ? AND accounts.user_id = ?;";
             selectSongsWithPlaylistId = connection.prepareStatement(stmt);
 
             stmt = "SELECT * FROM Songs \n" +
