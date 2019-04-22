@@ -14,7 +14,7 @@ public class SearchFromYear implements Playlist {
     private static final String type = "SearchFromYear";
 
     public ResultSet getSongs(int year){
-        return dbc.getPlaylistSongs(year, ModelAbstract.getUser().getUser_id());
+        return dbc.getPlaylistSongs(year);
     }
 
     public String getType(){

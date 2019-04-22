@@ -103,12 +103,16 @@ public class PlaylistModel extends ModelAbstract {
         else if(playlistType.equals("GenrePlaylist"))
             playlistID = getDbc().getGenreIdFromName(genre);
         else if(playlistType.equals("YearPlaylist"))
-            playlistID = albumYear;
+        playlistID = albumYear;
+        else {
+            System.out.println("Invalid playlist type");
+        }
     }
 
     public void setPlaylistID(int playlistID) {
         this.playlistID = playlistID;
     }
+
 
     public int getUser_id() {
         return getUser().getUser_id(); // returns user.getUser_id() from the ModelAbstract
@@ -117,10 +121,9 @@ public class PlaylistModel extends ModelAbstract {
     public String getImg_path() {
         return img_path;
     }
-
     public void setImg_path(String img_path) {
         if(playlistType=="AlbumPlaylist")
-        this.img_path = img_path;
+            this.img_path = img_path;
         else
             this.img_path = null;
     }
@@ -133,6 +136,7 @@ public class PlaylistModel extends ModelAbstract {
                 if (rs.getInt("song_id") > 0) {
                     songs = new ArrayList<>();
                     do {
+                        System.out.println("pasok");
                         Song song = new Song();
 
                         System.out.println(rs.getInt("song_id"));
@@ -160,6 +164,7 @@ public class PlaylistModel extends ModelAbstract {
             }
         } catch (SQLException se) {
             se.printStackTrace();
+            System.out.println("oh no");
         }
         return songs;
     }

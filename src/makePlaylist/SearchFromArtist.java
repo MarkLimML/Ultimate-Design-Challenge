@@ -14,7 +14,7 @@ public class SearchFromArtist implements Playlist {
     private static final String type = "SearchFromArtist";
 
     public ResultSet getSongs(int artist_id){
-        return dbc.getPlaylistSongs(artist_id, ModelAbstract.getUser().getUser_id());
+        return dbc.getPlaylistSongs(artist_id);
 
     }
 

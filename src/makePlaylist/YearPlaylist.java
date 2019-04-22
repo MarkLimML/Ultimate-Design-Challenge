@@ -10,6 +10,7 @@ public class YearPlaylist implements Playlist {
     private static final String type = "YearPlaylist";
 
     public ResultSet getSongs(int year){
+        System.out.println("YearPlaylist.getSongs(id)");
         return dbc.getSongsFromYear(year);
     }
 

@@ -13,6 +13,7 @@ public class MostPlayed implements Playlist {
 
     @Override
     public ResultSet getSongs(int id) {
+        System.out.println("MostPlayed.getSongs(id)");
         return dbc.getMostPlayedSongs(id);
     }
 

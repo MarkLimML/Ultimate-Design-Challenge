@@ -15,7 +15,7 @@ public class SearchFromAll implements Playlist {
 
     public ResultSet getSongs(int user_id){
 
-        return dbc.getPlaylistSongs(user_id, ModelAbstract.getUser().getUser_id());
+        return dbc.getPlaylistSongs(user_id);
 
     }
 

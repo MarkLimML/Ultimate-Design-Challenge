@@ -13,6 +13,7 @@ public class GenrePlaylist implements Playlist {
 	private static final String type = "GenrePlaylist";
 
 	public ResultSet getSongs(int genre_id){
+        System.out.println("GenrePlaylist.getSongs(id)");
 	    return dbc.getGenreSongs(genre_id);
 	}
 

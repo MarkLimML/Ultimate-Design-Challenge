@@ -15,7 +15,7 @@ public class SearchFromGenre implements Playlist {
 
     public ResultSet getSongs(int genre_id){
 
-        return dbc.getPlaylistSongs(genre_id, ModelAbstract.getUser().getUser_id());
+        return dbc.getPlaylistSongs(genre_id);
 
     }
 

@@ -12,6 +12,7 @@ public class AllUserSongs implements Playlist {
 	private static final String type = "AllUserSongs";
 
 		public ResultSet getSongs(int user_id){
+            System.out.println("AllUserSongs.getSongs(id)");
 			return dbc.getUserSongs(user_id);
 
 		}
