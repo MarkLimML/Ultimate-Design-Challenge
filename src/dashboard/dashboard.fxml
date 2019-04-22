@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<HBox fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.DashboardController">
+<HBox fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.DashboardController">
    <children>
       <ScrollPane fx:id="side_scroll" hbarPolicy="NEVER" pannable="true" prefHeight="720.0" prefWidth="170.0" style="-fx-background-color: #252b32;">
          <content>
@@ -226,11 +226,15 @@
             </HBox>
             <AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="artistInput" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="336.0" style="-fx-background-color: #cde8c3#cde8c3;" />
-                  <TextField fx:id="albumInput" layoutX="13.0" layoutY="51.0" prefHeight="27.0" prefWidth="336.0" style="-fx-background-color: #cde8c3#cde8c3;" />
-                  <Button fx:id="searchArtist" layoutX="382.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#searchArtistButt" style="-fx-background-color: #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Search Artist" textFill="#58c6b3" />
-                  <Button fx:id="searchAlbum" layoutX="382.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#searchAlbumButt" style="-fx-background-color: #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Search Album" textFill="#58c6b3" />
+                  <TextField fx:id="artistInput" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="170.0" style="-fx-background-color: #cde8c3#cde8c3;" />
+                  <TextField fx:id="albumInput" layoutX="13.0" layoutY="51.0" prefHeight="27.0" prefWidth="170.0" style="-fx-background-color: #cde8c3#cde8c3;" />
+                  <Button fx:id="searchArtist" layoutX="197.0" layoutY="13.0" mnemonicParsing="false" onMouseClicked="#searchArtistButt" prefHeight="31.0" prefWidth="108.0" style="-fx-background-color: #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Search Artist" textFill="#58c6b3" />
+                  <Button fx:id="searchAlbum" layoutX="197.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#searchAlbumButt" style="-fx-background-color: #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Search Album" textFill="#58c6b3" />
                   <Button fx:id="searchSong" layoutX="989.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#searchSongButt" style="-fx-background-color: #252b32 #252b32; -fx-border-width: 2; -fx-border-color: white;" text="Search a Song" textFill="#58c6b3" />
+                  <TextField fx:id="listenerInput" layoutX="322.0" layoutY="15.0" style="-fx-background-color: #cde8c3#cde8c3 #cde8c3#cde8c3;" />
+                  <TextField fx:id="playlistInput" layoutX="322.0" layoutY="51.0" style="-fx-background-color: #cde8c3#cde8c3 #cde8c3#cde8c3;" />
+                  <Button fx:id="searchListener" layoutX="504.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#searchListenerButt" style="-fx-background-color: #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Search Listener" textFill="#58c6b3" />
+                  <Button fx:id="searchPlaylist" layoutX="505.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#searchPlaylistButt" prefHeight="31.0" prefWidth="118.0" style="-fx-background-color: #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Search Playist" textFill="#58c6b3" />
                </children>
             </AnchorPane>
             <HBox prefHeight="600.0" prefWidth="1129.0" VBox.vgrow="ALWAYS">
