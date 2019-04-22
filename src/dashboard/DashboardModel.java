@@ -50,6 +50,9 @@ public class DashboardModel extends ModelAbstract {
             case "YearPlaylist":
                 this.setYearPlaylist(boxes);
                 break;
+            case "AllPlaylists":
+                this.setPlaylists(boxes);
+                break;
         }
         return boxes;
     }
@@ -137,5 +140,21 @@ public class DashboardModel extends ModelAbstract {
 
     public boolean isArtist () {
         return getUser().isArtist();
+    }
+
+    private ArrayList<PlaylistBox> setPlaylists(ArrayList<PlaylistBox> boxes) {
+        ResultSet rs = getDbc().getAllPublicPlaylist();
+        PlaylistBox box;
+        try {
+            while (rs.next()) {
+                box = new PlaylistBox();
+                box.setPlaylistId(rs.getInt("playlist_id"));
+                box.setPlaylistName(rs.getString("title"));
+                boxes.add(box);
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return boxes;
     }
 }
