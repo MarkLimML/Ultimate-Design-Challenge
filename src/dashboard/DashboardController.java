@@ -114,9 +114,8 @@ public class DashboardController extends dashboard.ControllerAbstract {
         box.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent me) {
                 System.out.println("handle()");
-                if(box.getImgPath()=="Artist") {
+                if(box.getImgPath()=="Artist")
                     switchToUserInfoWithId(box.getPlaylistId());
-                }
                 else
                     switchToPlaylistView(me);
             }
@@ -232,15 +231,26 @@ public class DashboardController extends dashboard.ControllerAbstract {
     public void switchToUserInfo(MouseEvent mouseEvent) {
         System.out.println("switchToUserInfo()");
         this.setScene(mainPane.getScene());
-        this.switchScene(this.getScreenUrls()[8]);
-    }
-
-    public void switchToUserInfoWithId(int user_id) {
-        System.out.println("switchToUserInfo()");
-        this.setScene(mainPane.getScene());
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[8]));
+            this.setRoot(loader.load());
+            ProfileController profileController = loader.getController();
+            profileController.getModel().setCurrentProfile(ModelAbstract.getUser().getUser_id());
+            profileController.setInfo();
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
+    }
+
+    public void switchToUserInfoWithId(int user_id) {
+        System.out.println("switchToUserInfoWithId()");
+        this.setScene(mainPane.getScene());
+
+        try {
+            System.out.println("are");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[8]));
+            System.out.println("arent");
             this.setRoot(loader.load());
             ProfileController profileController = loader.getController();
             profileController.getModel().setCurrentProfile(user_id);

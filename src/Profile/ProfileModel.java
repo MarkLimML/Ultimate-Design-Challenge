@@ -92,7 +92,7 @@ public class ProfileModel extends ModelAbstract {
     }
 
     public void setCurrentProfile(int id) {
-        User u = new User();
+        User u;
         u = getDbc().getUserFromID(id);
         setDisplayedUser(u);
     }

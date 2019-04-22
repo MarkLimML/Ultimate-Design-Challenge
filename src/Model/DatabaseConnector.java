@@ -96,7 +96,7 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/musicplayerudc?autoReconnect=true&useSSL=false",
-                    "root", "jude842");
+                    "root", "p@ssword");
             prepareStatements();
         } catch (Exception se) {
             se.printStackTrace();
@@ -578,9 +578,19 @@ public class DatabaseConnector {
     }
 
     public User getUserFromID (int user_id) {
+        User u = new User();
         try {
             selectUserFromId.setInt(1, user_id);
-            //return selectUserFromId.executeQuery();
+            ResultSet rs = selectUserFromId.executeQuery();
+            while (rs.next()) {
+                u.setUser_id(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                if(rs.getInt("type")==1)
+                    u.setArtist(true);
+                else
+                    u.setArtist(false);
+                return u;
+            }
         } catch (SQLException se) {
             se.printStackTrace();
 

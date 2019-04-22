@@ -57,17 +57,11 @@ public class ProfileController extends ControllerAbstract {
 
 
     public ProfileController() {
-        model = new ProfileModel();
+        this.model = new ProfileModel();
     }
 
     public void initialize() {
-        userNameLabel = new Label();
-        userTypeLabel = new Label();
-        userNameLabel.setText(model.getDisplayedUser().getUsername());
-        if(model.getDisplayedUser().isArtist())
-            userTypeLabel.setText("Artist");
-        else
-            userTypeLabel.setText("Listener");
+
     }
 
     private void setSongTableColumns() {
@@ -216,10 +210,19 @@ public class ProfileController extends ControllerAbstract {
     }
 
     public ProfileModel getModel() {
-        return model;
+        return this.model;
     }
 
     public void setModel(ProfileModel model) {
         this.model = model;
+    }
+
+    public void setInfo() {
+        System.out.println("setInfo()");
+        userNameLabel.setText(this.model.getDisplayedUser().getUsername());
+        if(model.getDisplayedUser().isArtist())
+            userTypeLabel.setText("Artist");
+        else
+            userTypeLabel.setText("Listener");
     }
 }
