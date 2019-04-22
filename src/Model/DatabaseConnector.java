@@ -2044,4 +2044,16 @@ public class DatabaseConnector {
         }
         return null;
     }
+
+    public ResultSet getAllPublicPlaylist(){
+        String stmt= "SELECT * FROM playlists";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
