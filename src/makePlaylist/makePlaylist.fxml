@@ -18,14 +18,14 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <AnchorPane prefHeight="546.0" prefWidth="1035.0">
+      <AnchorPane prefHeight="546.0" prefWidth="1035.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;">
          <children>
-            <Label fx:id="playlistLabel" layoutX="115.0" layoutY="216.0" text="Playlist Name" />
-            <TextField fx:id="nameInput" layoutX="109.0" layoutY="255.0" prefHeight="27.0" prefWidth="822.0" />
-            <Button fx:id="backButton" layoutX="872.0" layoutY="409.0" mnemonicParsing="false" onMouseClicked="#returnToDashboard" text="Back" />
+            <Label fx:id="playlistLabel" layoutX="115.0" layoutY="216.0" text="Playlist Name" textFill="WHITE" />
+            <TextField fx:id="nameInput" layoutX="109.0" layoutY="255.0" prefHeight="27.0" prefWidth="822.0" style="-fx-background-color: #cde8c3#cde8c3 #cde8c3#cde8c3;" />
+            <Button fx:id="backButton" layoutX="872.0" layoutY="409.0" mnemonicParsing="false" onMouseClicked="#returnToDashboard" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Back" textFill="#58c6b3" />
             <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="30.0" layoutX="111.0" layoutY="314.0" prefHeight="78.0" prefWidth="822.0" vgap="20.0">
                <children>
-                  <Button fx:id="songLibraryButton" mnemonicParsing="false" onMouseClicked="#callUserLibrary" text="Add Song: Library" />
+                  <Button fx:id="songLibraryButton" mnemonicParsing="false" onMouseClicked="#callUserLibrary" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Add Song: Library" textFill="#58c6b3" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
