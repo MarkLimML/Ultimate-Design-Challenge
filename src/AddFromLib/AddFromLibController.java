@@ -1,6 +1,7 @@
 package AddFromLib;
 
 import AddSong.Song;
+import PlaylistView.PlaylistViewController;
 import dashboard.ControllerAbstract;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -8,13 +9,16 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Callback;
+import makePlaylist.PlaylistModel;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class AddFromLibController extends ControllerAbstract {
@@ -39,21 +43,33 @@ public class AddFromLibController extends ControllerAbstract {
     private TableColumn<Song, String> colSong;
     private TableColumn<Song, String> colArtist;
     private TableColumn<Song, String> colAlbum;
+    public TableColumn<Song, String> colUploadDate;
+    public TableColumn<Song, Integer> colYear;
     private ArrayList<BooleanProperty> selectedRowList;
-    Callback<Integer,ObservableValue<Boolean>> colCbxState;
+    private Callback<Integer,ObservableValue<Boolean>> colCbxState;
 
     private ArrayList<Song> userLibrary;
     private ObservableList<Song> songList;
 
+    private boolean addMode;
+
     private AddFromLibModel model;
+    private PlaylistModel curPlaylistModel;
 
     public AddFromLibController() {
+        addMode = false;
         System.out.println();
         model = new AddFromLibModel();
         AddFromLibView view = new AddFromLibView(this, model);
         model.attach(view);
         System.out.println();
     }
+
+    public void setAddMode(boolean mode) {
+        addMode = mode;
+    }
+
+
 
     public AddFromLibModel getModel() {
         System.out.println("getModel()");
@@ -76,7 +92,7 @@ public class AddFromLibController extends ControllerAbstract {
         tableView.setMinWidth(950.0);
         tableView.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        selectedRowList = new ArrayList<BooleanProperty>();
+
         colCbxState = new Callback<Integer,ObservableValue<Boolean>>() {
             @Override
             public ObservableValue<Boolean> call(Integer index) {
@@ -89,11 +105,14 @@ public class AddFromLibController extends ControllerAbstract {
 
         setSongList();
 
+        selectedRowList = new ArrayList<BooleanProperty>();
         for(Song s : songList) {
             selectedRowList.add( new SimpleBooleanProperty() );
         }
 
         setTableViewColumns();
+        System.out.println(tablePane == null);
+        System.out.println(tableView == null);
         tablePane.getChildren().add(tableView);
     }
 
@@ -102,6 +121,11 @@ public class AddFromLibController extends ControllerAbstract {
         colSong = new TableColumn<Song, String>("Name");
         colAlbum = new TableColumn<Song, String>("Artist");
         colArtist = new TableColumn<Song, String>("Album");
+
+        colUploadDate = new TableColumn<Song, String>("Upload Date");
+        colUploadDate.setCellValueFactory(new PropertyValueFactory<>("created"));
+        colYear = new TableColumn<Song, Integer>(" Upload Year");
+        colYear.setCellValueFactory(new PropertyValueFactory<>("year"));
 
         colCheckBox.setMinWidth(50);
         colSong.setMinWidth(350);
@@ -148,23 +172,51 @@ public class AddFromLibController extends ControllerAbstract {
     }
 
     public void backToLastScene(MouseEvent mouseEvent) {
-        this.setScene(addFromLibPane.getScene());
-        this.switchScene(this.getScreenUrls()[0]);
+
+        if (addMode) {
+            this.setScene(addFromLibPane.getScene());
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[6]));
+                this.setRoot(loader.load());
+                PlaylistViewController playlistViewController = loader.getController();
+                playlistViewController.getModel().setController(playlistViewController);
+                playlistViewController.getModel().attachPlaylistModel(curPlaylistModel);
+                playlistViewController.setPlaylistTitle(curPlaylistModel.getTitle());
+
+            } catch (IOException ie) {
+                ie.printStackTrace();
+            }
+        } else {
+            this.setScene(addFromLibPane.getScene());
+            this.switchScene(this.getScreenUrls()[0]);
+        }
     }
 
     public void saveUserList(MouseEvent mouseEvent) {
         System.out.println("saveUserList(MouseEvent mouseEvent)");
         ArrayList<Song> selectedSongs = new ArrayList<>();
 
-        for (BooleanProperty p: selectedRowList) {
-            int index;
-            if (p.getValue()) {
-                index = selectedRowList.indexOf(p);
-                selectedSongs.add(songList.get(index));
+        if (addMode) {
+            for (BooleanProperty p: getSelectedRowList()) {
+                int index;
+                if (p.getValue()) {
+                    index = getSelectedRowList().indexOf(p);
+                    selectedSongs.add(getSongListObservable().get(index));
+                }
+            }
+        } else {
+            for (BooleanProperty p: selectedRowList) {
+                int index;
+                if (p.getValue()) {
+                    index = selectedRowList.indexOf(p);
+                    selectedSongs.add(songList.get(index));
+                }
             }
         }
+
         model.saveSongsToPlaylist(selectedSongs);
         backToLastScene(mouseEvent);
+
     }
 
     public ObservableList<Song> getSongListObservable () {
@@ -173,6 +225,10 @@ public class AddFromLibController extends ControllerAbstract {
 
     public ArrayList<BooleanProperty> getSelectedRowList() {
         return selectedRowList;
+    }
+
+    public void attachCurPlaylistModel (PlaylistModel curPlaylistModel) {
+        this.curPlaylistModel = curPlaylistModel;
     }
 
 }
