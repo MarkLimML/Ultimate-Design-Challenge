@@ -9,27 +9,27 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="playlistViewPane" prefHeight="600.0" prefWidth="1145.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PlaylistView.PlaylistViewController">
+<Pane fx:id="playlistViewPane" prefHeight="600.0" prefWidth="1145.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PlaylistView.PlaylistViewController">
    <children>
       <Button fx:id="deleteSongs" layoutX="800.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#deleteCheckedSongs" prefHeight="71.0" prefWidth="120.0" text="Delete Songs" />
       <Button fx:id="btnEndDeleteMode" layoutX="925.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#exitDeleteSongMode" prefHeight="71.0" prefWidth="120.0" text="Done" />
-      <Label fx:id="playlistTitle" layoutX="89.0" layoutY="39.0" text="Playlist">
+      <Label fx:id="playlistTitle" layoutX="89.0" layoutY="39.0" text="Playlist" textFill="#cde8c3">
          <font>
             <Font size="60.0" />
          </font>
       </Label>
-      <Button fx:id="btnBack" layoutX="925.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#returnToDashboard" prefHeight="71.0" prefWidth="120.0" text="Back" />
-      <Button fx:id="btnAddSong" layoutX="800.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#addFromUserLibrary" prefHeight="71.0" prefWidth="120.0" text="Add Song" />
-      <Label layoutX="135.0" layoutY="152.0" prefHeight="63.0" prefWidth="100.0" text="Title">
+      <Button fx:id="btnBack" layoutX="925.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#returnToDashboard" prefHeight="71.0" prefWidth="120.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Back" textFill="#58c6b3" />
+      <Button fx:id="btnAddSong" layoutX="800.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#addFromUserLibrary" prefHeight="71.0" prefWidth="120.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Add Song" textFill="#58c6b3" />
+      <Label layoutX="135.0" layoutY="152.0" prefHeight="63.0" prefWidth="100.0" text="Title" textFill="#cde8c3">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="tableScroll" layoutX="89.0" layoutY="215.0" prefHeight="300.0" prefWidth="950.0">
+      <ScrollPane fx:id="tableScroll" fitToWidth="true" hbarPolicy="NEVER" layoutX="89.0" layoutY="215.0" prefHeight="300.0" prefWidth="950.0">
          <content>
             <AnchorPane fx:id="tablePane" prefHeight="300.0" prefWidth="950.0">
                <children>
-                  <TableView fx:id="tableView" layoutX="52.0" layoutY="44.0" prefHeight="301.0" prefWidth="932.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tableView" layoutX="52.0" layoutY="44.0" prefHeight="301.0" prefWidth="932.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="colBtn" prefWidth="42.203880310058594" />
                       <TableColumn fx:id="colTitle" prefWidth="358.3689270019531" text="Title" />
@@ -39,13 +39,13 @@
                   </TableView>
                </children></AnchorPane>
          </content></ScrollPane>
-      <Button fx:id="searchButton" layoutX="675.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#switchToSearch" prefHeight="71.0" prefWidth="120.0" text="Search" />
-      <Button fx:id="deleteSongMode" layoutX="550.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#enterDeleteSongMode" prefHeight="71.0" prefWidth="120.0" text="Delete Song" />
-      <Label layoutX="564.0" layoutY="175.0" text="Sort by" />
+      <Button fx:id="searchButton" layoutX="675.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#switchToSearch" prefHeight="71.0" prefWidth="120.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Search" textFill="#58c6b3" />
+      <Button fx:id="deleteSongMode" layoutX="550.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#enterDeleteSongMode" prefHeight="71.0" prefWidth="120.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Delete Song" textFill="#58c6b3" />
+      <Label layoutX="564.0" layoutY="175.0" text="Sort by:" textFill="#58c6b3" />
 
-      <Button fx:id="sortByUpload" layoutX="616.0" layoutY="170.0" mnemonicParsing="false" onMouseClicked="#sortUpload" text="Upload date" />
-      <Button fx:id="sortByYear" layoutX="719.0" layoutY="170.0" mnemonicParsing="false" text="Year" />
-      <Button fx:id="publicButton" layoutX="89.0" layoutY="120.0" mnemonicParsing="false" onMouseClicked="#setToPublicOrNot" text="Public" />
-      <Button fx:id="addFavorite" layoutX="151.0" layoutY="120.0" mnemonicParsing="false" onMouseClicked="#addToFavorites" text="Favorite" />
+      <Button fx:id="sortByUpload" layoutX="616.0" layoutY="170.0" mnemonicParsing="false" onMouseClicked="#sortUpload" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Upload date" textFill="#58c6b3" />
+      <Button fx:id="sortByYear" layoutX="719.0" layoutY="170.0" mnemonicParsing="false" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Year" textFill="#58c6b3" />
+      <Button fx:id="publicButton" layoutX="89.0" layoutY="120.0" mnemonicParsing="false" onMouseClicked="#setToPublicOrNot" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Public" textFill="#58c6b3" />
+      <Button fx:id="addFavorite" layoutX="151.0" layoutY="120.0" mnemonicParsing="false" onMouseClicked="#addToFavorites" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Favorite" textFill="#58c6b3" />
    </children>
 </Pane>
