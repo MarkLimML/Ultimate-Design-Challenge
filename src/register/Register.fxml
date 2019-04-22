@@ -65,7 +65,7 @@
                                  <children>
                                     <CheckBox fx:id="checkArtist" layoutX="71.0" layoutY="8.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="151.0" text="I am an artist" />
                                  </children></Pane>
-                              <Button fx:id="btnRegister" mnemonicParsing="false" onMouseClicked="#registerUser" prefHeight="27.0" prefWidth="189.0" text="Register" />
+                              <Button fx:id="btnRegister" mnemonicParsing="false" onMouseClicked="#registerUser" prefHeight="27.0" prefWidth="189.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" text="Register" textFill="WHITE" />
                            </children>
                         </FlowPane>
                      </children>
