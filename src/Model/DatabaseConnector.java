@@ -96,7 +96,7 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/musicplayerudc?autoReconnect=true&useSSL=false",
-                    "root", "jude842");
+                    "root", "p@ssword");
             prepareStatements();
         } catch (Exception se) {
             se.printStackTrace();
@@ -1577,7 +1577,7 @@ public class DatabaseConnector {
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1,follower);
             ps.setInt(2,following);
-            ResultSet rs = ps.executeQuery();
+            ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
