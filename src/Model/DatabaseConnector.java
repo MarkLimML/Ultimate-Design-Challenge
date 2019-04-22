@@ -2044,7 +2044,7 @@ public class DatabaseConnector {
     }
     public ResultSet getAllUsers()
     {
-        String stmt = "SELECT username FROM accounts";
+        String stmt = "SELECT * FROM accounts";
         try{
             PreparedStatement ps = connection.prepareStatement(stmt);
             ResultSet rs = ps.executeQuery();

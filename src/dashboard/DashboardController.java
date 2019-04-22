@@ -103,8 +103,10 @@ public class DashboardController extends dashboard.ControllerAbstract {
         imageView.setPreserveRatio(true);
         String imgpath = box.getImgPath().replace("src", "");
         System.out.println(imgpath);
-        Image img = new Image(imgpath);
-        imageView.setImage(img);
+        if(imgpath!="Artist") {
+            Image img = new Image(imgpath);
+            imageView.setImage(img);
+        }
 
         box.getChildren().add(imageView);
 
@@ -254,6 +256,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
             this.setRoot(loader.load());
             ProfileController profileController = loader.getController();
             profileController.getModel().setCurrentProfile(user_id);
+            profileController.setInfo();
         } catch (IOException ie) {
             ie.printStackTrace();
         }
