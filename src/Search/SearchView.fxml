@@ -6,12 +6,12 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Search.SearchController">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Search.SearchController">
    <children>
-      <Button fx:id="searchButton" layoutX="942.0" layoutY="355.0" mnemonicParsing="false" onMouseClicked="#startSearch" prefHeight="37.0" prefWidth="126.0" text="Search" />
-      <Button fx:id="backButton" layoutX="1045.0" layoutY="599.0" mnemonicParsing="false" onMouseClicked="#goBack" prefHeight="68.0" prefWidth="106.0" text="Back" />
-      <TextField fx:id="searchField" layoutX="139.0" layoutY="360.0" prefHeight="27.0" prefWidth="782.0" />
-      <Label layoutX="139.0" layoutY="270.0" prefHeight="80.0" prefWidth="332.0" text="Search">
+      <Button fx:id="searchButton" layoutX="942.0" layoutY="355.0" mnemonicParsing="false" onMouseClicked="#startSearch" prefHeight="37.0" prefWidth="126.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Search" textFill="#58c6b3" />
+      <Button fx:id="backButton" layoutX="1045.0" layoutY="599.0" mnemonicParsing="false" onMouseClicked="#goBack" prefHeight="68.0" prefWidth="106.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" text="Back" textFill="#58c6b3" />
+      <TextField fx:id="searchField" layoutX="139.0" layoutY="360.0" prefHeight="27.0" prefWidth="782.0" style="-fx-background-color: #cde8c3#cde8c3 #cde8c3#cde8c3;" />
+      <Label layoutX="139.0" layoutY="270.0" prefHeight="80.0" prefWidth="332.0" text="Search" textFill="#cde8c3">
          <font>
             <Font size="50.0" />
          </font>
