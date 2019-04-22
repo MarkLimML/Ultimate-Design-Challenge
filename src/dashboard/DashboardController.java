@@ -97,6 +97,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
         imageView.setFitHeight(200);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
+        System.out.println(box.getImgPath());
         String imgpath = box.getImgPath().replace("src", "");
         System.out.println(imgpath);
         Image img = new Image(imgpath);
@@ -252,5 +253,16 @@ public class DashboardController extends dashboard.ControllerAbstract {
         } catch (IOException ie) {
             ie.printStackTrace();
         }
+    }
+
+    public void viewUserAlbumPlaylists(MouseEvent mouseEvent) {
+        playlistPane.getChildren().clear();
+        currentPlaylistsType = "UserAlbumPlaylist";
+        ArrayList<PlaylistBox> boxes;
+        boxes = model.getListOfPlaylist(currentPlaylistsType);
+        for (PlaylistBox box : boxes) {
+            this.addPlaylistBox(box);
+        }
+        currentPlaylistsType = "albumPlaylist";
     }
 }
