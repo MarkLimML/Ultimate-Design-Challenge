@@ -12,8 +12,9 @@ public class DatabaseConnector {
     private static DatabaseConnector instance = null;
     private Connection connection;
     private LocalDate localdate = LocalDate.now();
-    private DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    private Date date;
+    private java.util.Date date = new java.util.Date();
+    private java.text.SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private String create=df.format(date);
 
     private PreparedStatement selectUserFromId;
     private PreparedStatement selectSongFromId;
@@ -95,7 +96,7 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/musicplayerudc?autoReconnect=true&useSSL=false",
-                    "despa2", "#str3ssp4");
+                    "root", "jude842");
             prepareStatements();
         } catch (Exception se) {
             se.printStackTrace();
@@ -654,7 +655,7 @@ public class DatabaseConnector {
             insertSong.setString(1, song_name);
             insertSong.setString(2, song_path);
             insertSong.setInt(3, user_id);
-            insertSong.setDate(4, java.sql.Date.valueOf(df.format(date)));
+            insertSong.setString(4,create);
             insertSong.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -667,7 +668,7 @@ public class DatabaseConnector {
             insertSongWGenre.setString(2, song_path);
             insertSongWGenre.setInt(3, genre_id);
             insertSongWGenre.setInt(4, user_id);
-            insertSongWGenre.setDate(5, java.sql.Date.valueOf(df.format(date)));
+            insertSongWGenre.setString(5, create);
             insertSongWGenre.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -680,7 +681,7 @@ public class DatabaseConnector {
             insertSongWArtist.setString(2, song_path);
             insertSongWArtist.setInt(3, artist_id);
             insertSongWArtist.setInt(4, user_id);
-            insertSongWArtist.setDate(5, java.sql.Date.valueOf(df.format(date)));
+            insertSongWArtist.setString(5, create);
             insertSongWArtist.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -693,7 +694,7 @@ public class DatabaseConnector {
             insertSongWAlbum.setString(2, song_path);
             insertSongWAlbum.setInt(3, album_id);
             insertSongWAlbum.setInt(4, user_id);
-            insertSongWAlbum.setDate(5,java.sql.Date.valueOf(df.format(date)));
+            insertSongWAlbum.setString(5,create);
             insertSongWAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -707,7 +708,7 @@ public class DatabaseConnector {
             insertSongWGenreAlbum.setInt(3, genre_id);
             insertSongWGenreAlbum.setInt(4, album_id);
             insertSongWGenreAlbum.setInt(5, user_id);
-            insertSongWGenreAlbum.setDate(6,java.sql.Date.valueOf(df.format(date)));
+            insertSongWGenreAlbum.setString(6,create);
             insertSongWGenreAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -721,7 +722,7 @@ public class DatabaseConnector {
             insertSongWGenreArtist.setInt(3, genre_id);
             insertSongWGenreArtist.setInt(4, artist_id);
             insertSongWGenreArtist.setInt(5, user_id);
-            insertSongWGenreArtist.setDate(6,java.sql.Date.valueOf(df.format(date)));
+            insertSongWGenreArtist.setString(6,create);
             insertSongWGenreArtist.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -734,7 +735,7 @@ public class DatabaseConnector {
             insertSongWArtistAlbum.setString(2, song_path);
             insertSongWArtistAlbum.setInt(3, album_id);
             insertSongWArtistAlbum.setInt(4, user_id);
-            insertSongWArtistAlbum.setDate(5, java.sql.Date.valueOf(df.format(date)));
+            insertSongWArtistAlbum.setString(5, create);
             insertSongWArtistAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -750,7 +751,7 @@ public class DatabaseConnector {
             insertSongWGenreArtistAlbum.setInt(3, album_id);
             insertSongWGenreArtistAlbum.setString(4, song_path);
             insertSongWGenreArtistAlbum.setInt(5, user_id);
-            insertSongWGenreArtistAlbum.setDate(6,java.sql.Date.valueOf(df.format(date)));
+            insertSongWGenreArtistAlbum.setString(6,create);
             insertSongWGenreArtistAlbum.execute();
         } catch (SQLException se) {
             se.printStackTrace();
@@ -765,7 +766,7 @@ public class DatabaseConnector {
             System.out.println("user_id= " + user_id);
             insertPlaylist.setString(1, title);
             insertPlaylist.setInt(2, user_id);
-            insertPlaylist.setDate(3, java.sql.Date.valueOf(df.format(date)));
+            insertPlaylist.setString(3, create);
             System.out.println();
             insertPlaylist.execute();
         } catch (SQLException se) {
@@ -1711,7 +1712,7 @@ public class DatabaseConnector {
                 song.setArtist(rs.getString("username"));
                 song.setImgPath(rs.getString("img_path"));
                 song.setSongPath(rs.getString("song_path"));
-                song.setCreated(rs.getDate("created"));
+                song.setCreated(rs.getString("created"));
                 songs.add(song);
             }
         } catch (SQLException se) {
@@ -1737,7 +1738,7 @@ public class DatabaseConnector {
                 song.setArtist(rs.getString("username"));
                 song.setImgPath(rs.getString("img_path"));
                 song.setSongPath(rs.getString("song_path"));
-                song.setCreated(rs.getDate("created"));
+                song.setCreated(rs.getString("created"));
                 songs.add(song);
             }
         } catch (SQLException se) {
@@ -1763,7 +1764,7 @@ public class DatabaseConnector {
                 song.setArtist(rs.getString("username"));
                 song.setImgPath(rs.getString("img_path"));
                 song.setSongPath(rs.getString("song_path"));
-                song.setCreated(rs.getDate("created"));
+                song.setCreated(rs.getString("created"));
                 songs.add(song);
             }
         } catch (SQLException se) {
@@ -1789,7 +1790,7 @@ public class DatabaseConnector {
                 song.setArtist(rs.getString("username"));
                 song.setImgPath(rs.getString("img_path"));
                 song.setSongPath(rs.getString("song_path"));
-                song.setCreated(rs.getDate("created"));
+                song.setCreated(rs.getString("created"));
                 songs.add(song);
             }
         } catch (SQLException se) {
@@ -1815,7 +1816,7 @@ public class DatabaseConnector {
                 song.setArtist(rs.getString("username"));
                 song.setImgPath(rs.getString("img_path"));
                 song.setSongPath(rs.getString("song_path"));
-                song.setCreated(rs.getDate("created"));
+                song.setCreated(rs.getString("created"));
                 songs.add(song);
             }
         } catch (SQLException se) {
