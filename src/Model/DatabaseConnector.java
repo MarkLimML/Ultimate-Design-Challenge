@@ -96,7 +96,7 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/musicplayerudc?autoReconnect=true&useSSL=false",
-                    "root", "jude842");
+                    "despa2", "#str3ssp4");
             prepareStatements();
         } catch (Exception se) {
             se.printStackTrace();
@@ -306,7 +306,7 @@ public class DatabaseConnector {
             stmt = "DELETE FROM albums WHERE album_id=?";
             deleteAlbumWID = connection.prepareStatement(stmt);
 
-            stmt ="DELETE FROM palylists WHERE song_id = ? AND user_id = ?";
+            stmt ="DELETE FROM playlist_songs WHERE song_id = ? AND playlist_id = ?";
             removeSongInPlaylist = connection.prepareStatement(stmt);
 
             stmt = "DELETE FROM song WHERE album_id =?";
@@ -1389,10 +1389,10 @@ public class DatabaseConnector {
 
     }
 
-    public void deleteSongInPlaylist (int song_id, int user_id) {
-        try {// DELETE FROM palylists WHERE song_id = ? AND user_id = ?"
+    public void deleteSongInPlaylist (int song_id, int playlist_id) {
+        try {// DELETE FROM playlists WHERE song_id = ? AND user_id = ?"
             removeSongInPlaylist.setInt(1, song_id);
-            removeSongInPlaylist.setInt(2, user_id);
+            removeSongInPlaylist.setInt(2, playlist_id);
             removeSongInPlaylist.execute();
         } catch (SQLException se) {
             se.printStackTrace();
