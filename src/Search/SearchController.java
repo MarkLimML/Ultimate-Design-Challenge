@@ -33,7 +33,7 @@ public class SearchController extends ControllerAbstract {
     private SearchModel model;
 
     public SearchController(){
-      model = new SearchModel();
+      this.model = new SearchModel();
     }
 
     private ArrayList<Song> currentPlaylist;
@@ -43,7 +43,7 @@ public class SearchController extends ControllerAbstract {
         currentPlaylist = model.getPlaylistSongs();
     }
 
-    public void startSearch(){
+    public void startSearch(MouseEvent mouseEvent){
 
         model.setSearchSong(searchField.getText());
 
@@ -55,10 +55,10 @@ public class SearchController extends ControllerAbstract {
             this.setRoot(loader.load());
             PlaylistViewController playlistViewController = loader.getController();
             model.getPlaylistModel().setPlaylist(model.searchSongs());
-            playlistViewController.getModel().attachPlaylistModel(model.getPlaylistModel());
             playlistViewController.getModel().setController(playlistViewController);
-            //playlistViewController.setSearchPlaylist(model.searchSongs());
-            playlistViewController.setPlaylistTitle("Songs containing: " + model.getSearchSong());
+            playlistViewController.getModel().attachPlaylistModel(model.getPlaylistModel());
+            playlistViewController.setSearchPlaylist(model.searchSongs());
+            playlistViewController.setPlaylistTitle("Search: " + model.getSearchSong());
         } catch (IOException ie) {
             ie.printStackTrace();
         }
@@ -71,5 +71,7 @@ public class SearchController extends ControllerAbstract {
 
     public void goBack(){
     //switch screen
+        this.setScene(mainPane.getScene());
+        this.switchScene(this.getScreenUrls()[0]);
     }
 }

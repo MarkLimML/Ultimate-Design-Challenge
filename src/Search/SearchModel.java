@@ -14,9 +14,6 @@ public class SearchModel extends ModelAbstract {
     private SearchController searchController;
     private int searchSongID;
 
-    public SearchModel () {
-        searchSongs = getPlaylistSongs();
-    }
 
     public PlaylistModel getPlaylistModel() {
         return playlistModel;
@@ -51,6 +48,10 @@ public class SearchModel extends ModelAbstract {
             }
         }
         return searchedSongs;
+    }
+
+    public void setSongs() {
+        searchSongs = getPlaylistSongs();
     }
 
 

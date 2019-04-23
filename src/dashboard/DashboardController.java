@@ -335,8 +335,10 @@ public class DashboardController extends dashboard.ControllerAbstract {
             this.setRoot(loader.load());
             SearchController searchController = loader.getController();
             PlaylistModel pm = new PlaylistModel();
-            pm.setPlaylistType("All");
-            //searchController.getModel().setPlaylistModel();
+            pm.setPlaylistType("AllUserSongs");
+            pm.setPlaylistID();
+            searchController.getModel().setPlaylistModel(pm);
+            searchController.getModel().setSongs();
             searchController.getModel().setController(searchController);
         } catch (IOException ie) {
             ie.printStackTrace();
