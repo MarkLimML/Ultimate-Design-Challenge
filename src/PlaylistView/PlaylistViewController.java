@@ -3,6 +3,7 @@ package PlaylistView;
 import AddFromLib.AddFromLibController;
 import AddSong.AddSongController;
 import AddSong.Song;
+import Model.ModelAbstract;
 import Search.SearchController;
 import dashboard.ControllerAbstract;
 import javafx.beans.property.BooleanProperty;
@@ -24,6 +25,7 @@ import javafx.util.Callback;
 import mediaPlayer.MediaPlayerController;
 import mediaPlayer.MediaPlayerStage;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -101,15 +103,24 @@ public class PlaylistViewController extends ControllerAbstract {
             });
         }
 
-        if (model.getPlaylistType().equals("UserPlaylist")) {
-            if (!deleteSongs.isVisible())
+        if (model.getPlaylistType().equals("UserPlaylist") &&
+                model.getPlaylistModel().getPlaylistID() == ModelAbstract.getUser().getUser_id()) {
+            if (!deleteSongs.isVisible()) {
                 btnAddSong.setVisible(true);
+                deleteSongMode.setVisible(true);
+            }
         } else {
             btnAddSong.setVisible(false);
         }
 
         if (model.getPlaylistType().equals("AlbumPlaylist")) {
-            editSong.setVisible(true);
+            int playlistId = model.getPlaylistModel().getPlaylistID();
+
+            if (ModelAbstract.getDbc().getArtistIdOfAlbum(playlistId)
+                    == ModelAbstract.getUser().getUser_id()) {
+                editSong.setVisible(true);
+                deleteSongMode.setVisible(true);
+            }
         } else {
             btnAddSong.setVisible(false);
         }
@@ -404,7 +415,13 @@ public class PlaylistViewController extends ControllerAbstract {
                 selectedSongs.add(songList.get(index));
             }
         }
-        model.deleteSongsInPlaylist(selectedSongs);
+        if (model.getPlaylistType().equals("UserPlaylist"))
+            model.deleteSongsInPlaylist(selectedSongs);
+        else {
+            if (model.deleteSongsInAlbum(selectedSongs)) {
+                returnToDashboard(mouseEvent);
+            }
+        }
         setObservableValues();
     }
 
