@@ -40,7 +40,10 @@ public class DashboardController extends dashboard.ControllerAbstract {
     public AnchorPane anchorPane;
     public TextField artistInput;
     public TextField albumInput;
+    public TextField listenerInput;
+    public TextField playlistInput;
     public Button searchArtist;
+    public Button searchListener;
     public Button searchAlbum;
     public Button searchSong;
     private DashboardModel model;
@@ -118,7 +121,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
         imageView.setPreserveRatio(true);
         String imgpath = box.getImgPath().replace("src", "");
         System.out.println(imgpath);
-        if(imgpath!="Artist") {
+        if(imgpath!="Artist" && imgpath!="Listener") {
             Image img = new Image(imgpath);
             imageView.setImage(img);
         }
@@ -265,9 +268,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
         this.setScene(mainPane.getScene());
 
         try {
-            System.out.println("are");
             FXMLLoader loader = new FXMLLoader(getClass().getResource(this.getScreenUrls()[8]));
-            System.out.println("arent");
             this.setRoot(loader.load());
             ProfileController profileController = loader.getController();
             profileController.getModel().setCurrentProfile(user_id);
@@ -291,9 +292,23 @@ public class DashboardController extends dashboard.ControllerAbstract {
         ArrayList<PlaylistBox> boxes;
         boxes = model.getUserList();
         for (PlaylistBox box : boxes) {
-            if(box.getPlaylistName().contains(searchArtist))
+            if(box.getPlaylistName().contains(searchArtist) && box.getImgPath().equals("Artist"))
                 this.addPlaylistBox(box);
         }
+        artistInput.setText("");
+    }
+
+    public void searchListenerButt(MouseEvent mouseEvent) {
+        String searchListener = listenerInput.getText();
+
+        playlistPane.getChildren().clear();
+        ArrayList<PlaylistBox> boxes;
+        boxes = model.getUserList();
+        for (PlaylistBox box : boxes) {
+            if(box.getPlaylistName().contains(searchListener) && box.getImgPath().equals("Listener"))
+                this.addPlaylistBox(box);
+        }
+        listenerInput.setText("");
     }
 
     public void searchAlbumButt(MouseEvent mouseEvent) {
@@ -310,6 +325,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
                 this.addPlaylistBox(box);
             }
         }
+        albumInput.setText("");
     }
 
     public void searchSongButt(MouseEvent mouseEvent) {
@@ -339,7 +355,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
     }
 
     public void searchPlaylistButt(MouseEvent mouseEvent) {
-        String searchPlaylists = albumInput.getText().trim();
+        String searchPlaylists = playlistInput.getText().trim();
 
         playlistPane.getChildren().clear();
         currentPlaylistsType = "AllPlaylists";
@@ -349,5 +365,6 @@ public class DashboardController extends dashboard.ControllerAbstract {
             if(box.getPlaylistName().equalsIgnoreCase(searchPlaylists))
                 this.addPlaylistBox(box);
         }
+        playlistInput.setText("");
     }
 }

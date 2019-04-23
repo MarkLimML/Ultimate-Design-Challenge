@@ -23,6 +23,13 @@ public class DashboardModel extends ModelAbstract {
                     box.setImgPath("Artist");
                     boxes.add(box);
                 }
+                else {
+                    box = new PlaylistBox();
+                    box.setPlaylistName(rs.getString("username"));
+                    box.setPlaylistId(rs.getInt("user_id"));
+                    box.setImgPath("Listener");
+                    boxes.add(box);
+                }
             }
         } catch (SQLException se) {
             se.printStackTrace();
