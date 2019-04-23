@@ -96,8 +96,9 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/musicplayerudc?autoReconnect=true&useSSL=false",
-                    "root", "p@ssword");
+                    "despa2", "#str3ssp4");
             prepareStatements();
+
         } catch (Exception se) {
             se.printStackTrace();
         }
@@ -1374,7 +1375,7 @@ public class DatabaseConnector {
 // END OF FAVORITE
 
 
-    public void DeleteSong (int song_id) {
+    public void deleteSong (int song_id) {
         try {
             deleteSongWID.setInt(1, song_id);
             deleteSongWID.execute();
@@ -1383,7 +1384,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void DeleteAlbum ( int album_id) {
+    public void deleteAlbum ( int album_id) {
         try {
             deleteAlbumWID.setInt(1, album_id);
             deleteAlbumWID.execute();
@@ -1392,7 +1393,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void DeletePlaylist(int playlist_id){
+    public void deletePlaylist(int playlist_id){
         try{//"DELETE FROM playlists WHERE playlist_id=?"
             deletePlaylistWID.setInt(1,playlist_id);
             deletePlaylistWID.execute();
@@ -1412,7 +1413,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void deleteSongInAlbum (int album_id) {
+    public void deleteAllSongInAlbum (int album_id) {
         try {// "DELETE FROM song WHERE album_id =?";
             removeSongInAlbum.setInt(1, album_id);
             removeSongInAlbum.execute();
@@ -1420,8 +1421,6 @@ public class DatabaseConnector {
             se.printStackTrace();
         }
     }
-
-
 
 
 
@@ -1434,7 +1433,7 @@ public class DatabaseConnector {
             PreparedStatement ps = connection.prepareStatement(stmt);
             ps.setInt(1, album_id);
             ResultSet rs = ps.executeQuery();
-            if (rs.equals("0"))
+            if (rs.next() && rs.getInt("COUNT(*)") == 0)
                 return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -2069,5 +2068,42 @@ public class DatabaseConnector {
         }
         return null;
     }
+
+    public int getArtistIdOfAlbum (int album_id) {
+        String stmt= "SELECT user_id FROM Albums WHERE album_id = ?";
+        try{
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, album_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("user_id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public boolean isSongInAlbum (int song_id, int album_id) {
+        String stmt = "SELECT * FROM Songs WHERE song_id = ? AND album_id = ?";
+        ResultSet rs;
+        try {
+            PreparedStatement ps = connection.prepareStatement(stmt);
+            ps.setInt(1, song_id);
+            ps.setInt(2, album_id);
+
+            rs = ps.executeQuery();
+
+            if (rs.next())
+                return true;
+
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return false;
+    }
+
 
 }
