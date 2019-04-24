@@ -763,7 +763,6 @@ public class DatabaseConnector {
 
             insertSongWGenreArtistAlbum.setString(1, song_name);
             insertSongWGenreArtistAlbum.setInt(2, genre_id);
-
             insertSongWGenreArtistAlbum.setInt(3, album_id);
             insertSongWGenreArtistAlbum.setString(4, song_path);
             insertSongWGenreArtistAlbum.setInt(5, user_id);

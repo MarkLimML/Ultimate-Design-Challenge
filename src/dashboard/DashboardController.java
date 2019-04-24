@@ -121,10 +121,17 @@ public class DashboardController extends dashboard.ControllerAbstract {
         imageView.setPreserveRatio(true);
         String imgpath = box.getImgPath().replace("src", "");
         System.out.println(imgpath);
-        if(imgpath!="Artist" && imgpath!="Listener") {
+        if (imgpath == "Artist")
+            imgpath = "/dashboard/Artist.png";
+        else if (imgpath == "Listener")
+            imgpath = "/dashboard/Listener.png";
+
+        //if(imgpath!="Artist" && imgpath!="Listener") {
+
             Image img = new Image(imgpath);
             imageView.setImage(img);
-        }
+        //}
+
 
         box.getChildren().add(imageView);
 
@@ -134,7 +141,7 @@ public class DashboardController extends dashboard.ControllerAbstract {
         box.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent me) {
                 System.out.println("handle()");
-                if(box.getImgPath()=="Artist")
+                if(box.getImgPath()=="Artist" || box.getImgPath()=="Listener")
                     switchToUserInfoWithId(box.getPlaylistId());
                 else
                     switchToPlaylistView(me);

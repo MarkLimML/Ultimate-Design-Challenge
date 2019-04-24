@@ -327,11 +327,12 @@ public class AddSongController extends ControllerAbstract
             rbYourAlbums.setSelected(false);
         }
         rbYourAlbums.setSelected(false);
+        rbNewAlbum.setSelected(true);
         cmbAlbumName.setVisible(false);
 
         albumNameInput.setDisable(false);
         albumYearInput.setDisable(false);
-        chooseImageButton.setDisable(true);
+        chooseImageButton.setDisable(false);
         imageChosenPath.setDisable(false);
 
     }
@@ -342,11 +343,12 @@ public class AddSongController extends ControllerAbstract
         }
 
         rbYourAlbums.setSelected(true);
+        rbNewAlbum.setSelected(false);
         cmbAlbumName.setVisible(true);
 
         albumNameInput.setDisable(true);
         albumYearInput.setDisable(true);
-        chooseImageButton.setDisable(false);
+        chooseImageButton.setDisable(true);
         imageChosenPath.setDisable(true);
 
     }

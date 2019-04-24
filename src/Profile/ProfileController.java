@@ -9,7 +9,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -228,10 +227,14 @@ public class ProfileController extends ControllerAbstract {
             userTypeLabel.setText("Artist");
         else
             userTypeLabel.setText("Listener");
-        if(ModelAbstract.getUser().getUser_id() == model.getDisplayedUser().getUser_id())
-            userFollowLabel.setOpacity(0);
-        else
-            userFollowLabel.setOpacity(1);
+        if(ModelAbstract.getUser().getUser_id() == model.getDisplayedUser().getUser_id()) {
+            userFollowLabel.setVisible(false);
+            followButt.setVisible(false);
+        }
+        else {
+            userFollowLabel.setVisible(true);
+            followButt.setVisible(true);
+        }
         if(!model.getDbc().userIsFollowing(ModelAbstract.getUser().getUser_id(), model.getDisplayedUser().getUser_id()))
             userFollowLabel.setText("Followed");
         else
