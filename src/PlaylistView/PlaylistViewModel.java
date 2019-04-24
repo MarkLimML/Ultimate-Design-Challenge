@@ -79,11 +79,10 @@ public class PlaylistViewModel extends ModelAbstract{
 
 	public boolean deleteSongsInAlbum (ArrayList<Song> songs) {
 		for (Song s : songs) {
-			if (ModelAbstract.getDbc().isSongInPlaylist(
+			if (ModelAbstract.getDbc().isSongInAlbum(
 					s.getSongId(), playlistModel.getPlaylistID())) {
 				ModelAbstract.getDbc().deleteSong(s.getSongId());
 			}
-
 		}
 		if (ModelAbstract.getDbc().isAlbumEmpty(playlistModel.getPlaylistID())) {
 			ModelAbstract.getDbc().deleteAlbum(playlistModel.getPlaylistID());

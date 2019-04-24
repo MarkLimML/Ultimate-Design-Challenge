@@ -415,8 +415,9 @@ public class PlaylistViewController extends ControllerAbstract {
                 selectedSongs.add(songList.get(index));
             }
         }
-        if (model.getPlaylistType().equals("UserPlaylist"))
+        if (model.getPlaylistType().equals("UserPlaylist")) {
             model.deleteSongsInPlaylist(selectedSongs);
+        }
         else {
             if (model.deleteSongsInAlbum(selectedSongs)) {
                 returnToDashboard(mouseEvent);
