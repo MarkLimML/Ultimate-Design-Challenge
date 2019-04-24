@@ -203,7 +203,6 @@ public class DatabaseConnector {
                     "NATURAL LEFT JOIN Albums\n" +
                     "NATURAL LEFT JOIN Times_played\n" +
                     "WHERE user_id = ?\n" +
-                    "ORDER BY Times_played\n" +
                     "DESC LIMIT 10";
             selectMostPlayed = connection.prepareStatement(stmt);
 
@@ -235,18 +234,18 @@ public class DatabaseConnector {
             insertPlaylist = connection.prepareStatement(stmt);
 
 
-            stmt = "SELECT times_played FROM Times_played\n" +
+            stmt = "SELECT playCount FROM Times_played\n" +
                     "WHERE song_id = ? AND user_id = ?";
             timesPlayedFromID = connection.prepareStatement(stmt);
 
             stmt = "UPDATE Times_played\n" +
-                    "SET times_played = ?\n" +
+                    "SET playCount = ?\n" +
                     "WHERE song_id = ?\n" +
                     "AND user_id = ?\n";
 
             updateTimesPlayed = connection.prepareStatement(stmt);
 
-            stmt = "INSERT INTO songs (song_id, user_id) VALUES (?, ?)";
+            stmt = "INSERT INTO Times_played (song_id, user_id) VALUES (?, ?)";
 
             insertSongToTimesPlayed = connection.prepareStatement(stmt);
 
