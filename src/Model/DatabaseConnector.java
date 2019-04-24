@@ -301,13 +301,13 @@ public class DatabaseConnector {
 //DELETE/REMOVE
 
 
-            stmt = "DELETE FROM Songs WHERE songs_id=?";
+            stmt = "DELETE FROM Songs WHERE song_id=?";
             deleteSongWID = connection.prepareStatement(stmt);
 
             stmt = "DELETE FROM albums WHERE album_id=?";
             deleteAlbumWID = connection.prepareStatement(stmt);
 
-            stmt ="DELETE FROM palylists WHERE song_id = ? AND user_id = ?";
+            stmt ="DELETE FROM playlists WHERE song_id = ? AND user_id = ?";
             removeSongInPlaylist = connection.prepareStatement(stmt);
 
             stmt = "DELETE FROM song WHERE album_id =?";
