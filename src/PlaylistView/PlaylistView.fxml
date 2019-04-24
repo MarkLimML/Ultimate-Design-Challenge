@@ -11,8 +11,9 @@
 
 <Pane fx:id="playlistViewPane" prefHeight="600.0" prefWidth="1145.0" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PlaylistView.PlaylistViewController">
    <children>
-      <Button fx:id="deleteSongs" visible="false" layoutX="800.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#deleteSelectedList" prefHeight="71.0" prefWidth="120.0" text="Delete Songs" />
-      <Button fx:id="btnEndDeleteMode" layoutX="925.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#exitDeleteSongMode" prefHeight="71.0" prefWidth="120.0" text="Done" />
+      <Button fx:id="deletePlaylist" visible="false" layoutX="425.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#deletePlaylist" prefHeight="71.0" prefWidth="120.0" text="Delete Playlist" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" textFill="#58c6b3" />
+      <Button fx:id="deleteSongs" visible="false" layoutX="800.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#deleteSelectedList" prefHeight="71.0" prefWidth="120.0" text="Delete Songs" style="-fx-background-color: #252b32 #252b32 #252b32 #252b32; -fx-border-color: white; -fx-border-width: 2;" textFill="#58c6b3" />
+      <Button fx:id="btnEndDeleteMode" layoutX="925.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#exitDeleteSongMode" prefHeight="71.0" prefWidth="120.0" text="Done"  />
       <Label fx:id="playlistTitle" layoutX="89.0" layoutY="39.0" text="Playlist" textFill="#cde8c3">
          <font>
             <Font size="60.0" />

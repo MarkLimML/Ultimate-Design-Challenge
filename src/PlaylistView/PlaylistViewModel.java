@@ -90,4 +90,8 @@ public class PlaylistViewModel extends ModelAbstract{
 		}
 		return false;
 	}
+
+	public void deletePlaylist () {
+		ModelAbstract.getDbc().deletePlaylist(playlistModel.getPlaylistID());
+	}
 }

@@ -39,6 +39,7 @@ public class PlaylistViewController extends ControllerAbstract {
     public Button addFavorite;
     public Button deleteSongMode;
     public Button btnEndDeleteMode;
+    public Button deletePlaylist;
 
     private PlaylistViewModel model;
 
@@ -93,6 +94,7 @@ public class PlaylistViewController extends ControllerAbstract {
     }
 
     public void setObservableValues () {
+
         System.out.println("setObservableValues()");
 
         if (!model.getPlaylistModel().isPlaylistNull()) {
@@ -103,17 +105,15 @@ public class PlaylistViewController extends ControllerAbstract {
             });
         }
 
+        deleteSongMode.setVisible(false);
         if (model.getPlaylistType().equals("UserPlaylist") &&
                 model.getPlaylistModel().getPlaylistID() == ModelAbstract.getUser().getUser_id()) {
             if (!deleteSongs.isVisible()) {
                 btnAddSong.setVisible(true);
                 deleteSongMode.setVisible(true);
+                deletePlaylist.setVisible(true);
             }
-        } else {
-            btnAddSong.setVisible(false);
-        }
-
-        if (model.getPlaylistType().equals("AlbumPlaylist")) {
+        } else if (model.getPlaylistType().equals("AlbumPlaylist")) {
             int playlistId = model.getPlaylistModel().getPlaylistID();
 
             if (ModelAbstract.getDbc().getArtistIdOfAlbum(playlistId)
@@ -176,7 +176,6 @@ public class PlaylistViewController extends ControllerAbstract {
     }
 
     public void addTableCheckboxColumn () {
-
         colCbxState = new Callback<Integer,ObservableValue<Boolean>>() {
             @Override
             public ObservableValue<Boolean> call(Integer index) {
@@ -254,12 +253,11 @@ public class PlaylistViewController extends ControllerAbstract {
 
     private ObservableList<Song> getSongList() {
         System.out.println("getSongList()");
-        if (songArrayList == null) {
-            if (model.getPlaylistModel() != null)
-                songArrayList = model.getPlaylistSongs();
-            else
-                return null;
-        }
+
+        if (model.getPlaylistModel() != null)
+            songArrayList = model.getPlaylistSongs();
+        else
+            return null;
         return FXCollections.observableArrayList(songArrayList);
     }
 
@@ -461,5 +459,10 @@ public class PlaylistViewController extends ControllerAbstract {
         else
             System.out.println("No selected song");
 
+    }
+
+    public void deletePlaylist(MouseEvent mouseEvent) {
+        model.deletePlaylist();
+        returnToDashboard(mouseEvent);
     }
 }
